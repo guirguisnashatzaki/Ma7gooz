@@ -46,7 +46,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 padding: MaterialStateProperty.all(
                     const EdgeInsets.fromLTRB(30, 10, 30, 10))),
             onPressed: (){
-              Navigator.popAndPushNamed(context, ordersPage);
+              Navigator.pop(context);
             },
             child: Text(
               AppLocalizations.of(context)!.ordersPage,

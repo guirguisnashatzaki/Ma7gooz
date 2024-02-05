@@ -168,7 +168,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.access_time),
+                    const Icon(Icons.access_time_filled),
                     const SizedBox(
                       width: 10,
                     ),

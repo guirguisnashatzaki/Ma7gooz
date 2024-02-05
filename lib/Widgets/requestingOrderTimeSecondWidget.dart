@@ -3,6 +3,7 @@ import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:minamakram/models/order/orderObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../constants/colors.dart';
+import 'iconWidget.dart';
 
 class RequestingOrderTimeSecondWidget extends StatefulWidget {
   Order order;
@@ -141,7 +142,7 @@ class _RequestingOrderTimeSecondWidgetState extends State<RequestingOrderTimeSec
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.home_filled),
+                    IconWidget(path: "assets/images/img_4.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -355,7 +356,7 @@ class _myListItemSecondState extends State<myListItemSecond> {
               },
               icon: const Icon(Icons.info)
           ),
-          SizedBox(width: MediaQuery.of(context).size.width/16,),
+          SizedBox(width: MediaQuery.of(context).size.width/30,),
           Text(widget.text),
         ],
       ),

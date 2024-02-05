@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:minamakram/Screens/HomePage.dart';
 import 'package:minamakram/Screens/profilePage.dart';
+import 'package:minamakram/Widgets/iconWidget.dart';
 import '../Widgets/requestingOrderHallFirstWidget.dart';
 import '../Widgets/requestingOrderHallSecondWidget.dart';
 import '../Widgets/requestingOrderHallThirdWidget.dart';
@@ -37,6 +40,8 @@ class _mainHomePageState extends State<mainHomePage> {
   PreferredSizeWidget bookingAppbar = AppBar();
   PreferredSizeWidget? mainAppBar = AppBar();
   Widget body = Container();
+  bool isProfile = false;
+  bool isOrders = false;
   bool isRequesting = true;
   late Widget firstWidget = Container();
   var warnings = ["ugukuj","jbkhbh"];
@@ -58,7 +63,7 @@ class _mainHomePageState extends State<mainHomePage> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.popAndPushNamed(context, "/home");
+            Navigator.popAndPushNamed(context, home,arguments: false);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -68,58 +73,72 @@ class _mainHomePageState extends State<mainHomePage> {
         backgroundColor: Colors.white,
       );
       homeAppBar = AppBar(
-        leading: IconButton(
+        automaticallyImplyLeading: false,
+        actions:[
+          IconButton(
           onPressed: () {
-            _key.currentState!.openDrawer();
+            _key.currentState!.openEndDrawer();
           },
           icon: const Icon(
             Icons.person,
             color: Colors.black,
           ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, notification);
-            },
-          ),
-          IconButton(
-              onPressed: (){
-                showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        AlertDialog(
-                          content: Container(
-                            alignment: Alignment.center,
-                            width: 200,
-                            height: 300,
-                            child: ListView(
-                              children: List.generate(warnings.length, (index) =>
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListTile(
-                                      leading: Text(
-                                        warnings[index],
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  )
-                              ),
-                            ),
-                          )
-                        )
-                );
+        )],
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: const Icon(
+                Icons.notifications,
+                color: Colors.black,
+              ),
+              onPressed: () async{
+                await Navigator.pushNamed(context, notification);
+                setState(() {
+                  mainAppBar = orderAppBar;
+                  body = const OrderPage();
+                  isHome = false;
+                  isProfile = false;
+                  isOrders = true;
+                  isRequesting = false;
+                });
               },
-              icon: Icon(
-                Icons.info,
-                color: warnings.isNotEmpty? Colors.orange:Colors.grey,
-              )
-          )
-        ],
+            ),
+            IconButton(
+                onPressed: (){
+                  showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          AlertDialog(
+                              content: Container(
+                                alignment: Alignment.center,
+                                width: 200,
+                                height: 300,
+                                child: ListView(
+                                  children: List.generate(warnings.length, (index) =>
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ListTile(
+                                          leading: Text(
+                                            warnings[index],
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      )
+                                  ),
+                                ),
+                              )
+                          )
+                  );
+                },
+                icon: Icon(
+                  Icons.error,
+                  color: warnings.isNotEmpty? Colors.red:Colors.grey,
+                )
+            )
+          ],
+        ),
+        leading: null,
         backgroundColor: Colors.white,
       );
       bookingAppbar = AppBar(
@@ -135,7 +154,7 @@ class _mainHomePageState extends State<mainHomePage> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.popAndPushNamed(context, "/home");
+            Navigator.popAndPushNamed(context, home,arguments: false);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -146,6 +165,9 @@ class _mainHomePageState extends State<mainHomePage> {
       );
       mainAppBar = homeAppBar;
       isRequesting = widget.isRequesting;
+      if(isRequesting){
+        isHome = false;
+      }
     });
 
     setState(() {
@@ -188,7 +210,7 @@ class _mainHomePageState extends State<mainHomePage> {
             alignment: Alignment.centerRight,
             child: Row(
               children: [
-                const Icon(Icons.card_travel),
+                IconWidget(path: "assets/images/img_1.png"),
                 const SizedBox(
                   width: 10,
                 ),
@@ -436,7 +458,7 @@ class _mainHomePageState extends State<mainHomePage> {
           });
         }else if(startWidget is RequestingOrderHallFirstWidget){
           setState(() {
-            startWidget = startWidget = Column(
+            startWidget = Column(
               children: [
                 Container(
                   alignment: Alignment.centerRight,
@@ -568,7 +590,7 @@ class _mainHomePageState extends State<mainHomePage> {
           });
         }else if(startWidget is RequestingOrderTimeFirstWidget){
           setState(() {
-            startWidget = startWidget = Column(
+            startWidget = Column(
               children: [
                 Container(
                   alignment: Alignment.centerRight,
@@ -698,9 +720,15 @@ class _mainHomePageState extends State<mainHomePage> {
             colors[6] = Colors.white;
           });
         }else{
-          Navigator.popAndPushNamed(context, home);
+          setState(() {
+            isHome = true;
+            mainAppBar = homeAppBar;
+            body = const homeWidget();
+            isProfile = false;
+            isOrders = false;
+            isRequesting = false;
+          });
         }
-
         return Future(() => false);
       },
       child: Scaffold(
@@ -995,7 +1023,12 @@ class _mainHomePageState extends State<mainHomePage> {
                   colors[6] = Colors.white;
                 });
               }else{
-                Navigator.popAndPushNamed(context, home);
+                setState(() {
+                  isHome = true;
+                  mainAppBar = homeAppBar;
+                  body = const homeWidget();
+                  isRequesting = false;
+                });
               }
             },
             icon: const Icon(
@@ -1005,471 +1038,616 @@ class _mainHomePageState extends State<mainHomePage> {
           ),
           backgroundColor: Colors.white,
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  opacity: 0.1,
-                  image: AssetImage(
-                    "assets/images/knissa.png",
-                  ),
-                  fit: BoxFit.contain
-              )
-          ),
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.all(21),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors[0],
-                            border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
-                      ),
-                      Container(
-                        width: 66,
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: colors[1],
-                        ),
-                      ),
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors[2],
-                            border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
-                      ),
-                      Container(
-                        width: 66,
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: colors[3],
-                        ),
-                      ),
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors[4],
-                            border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
-                      ),
-                      Container(
-                        width: 66,
-                        height: 2,
-                        decoration: BoxDecoration(
-                          color: colors[5],
-                        ),
-                      ),
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: colors[6],
-                            border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
-                  startWidget
-                ],
-              ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.white,
-          elevation: 20,
-          selectedLabelStyle: const TextStyle(color: Colors.black),
-          unselectedLabelStyle: const TextStyle(color: Colors.black),
-          currentIndex: 3,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedItemColor: MyColors.primaryColor,
-          unselectedItemColor: Colors.black,
-          onTap: (index) {
-            switch (index){
-              case 0:
-                setState(() {
-                  isHome = false;
-                  mainAppBar = null;
-                  isRequesting = false;
-                  startWidget = firstWidget;
-                  body = const profilePage();
-                });
-                break;
-              case 1:
-                setState(() {
-                  isHome = true;
-                  mainAppBar = homeAppBar;
-                  isRequesting = false;
-                  startWidget = firstWidget;
-                  body = homeWidget();
-                });
-                break;
-              case 2:
-                setState(() {
-                  mainAppBar = orderAppBar;
-                  body = const OrderPage();
-                  isRequesting = false;
-                  startWidget = firstWidget;
-                  isHome = false;
-                });
-                break;
-              case 3:
-                setState(() {
-                  mainAppBar = bookingAppbar;
-                  isRequesting = true;
-                  isHome = false;
-                });
-                break;
-
-            }
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.person),
-              label: AppLocalizations.of(context)!.profile,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              label: AppLocalizations.of(context)!.home,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.add_shopping_cart),
-              label: AppLocalizations.of(context)!.orders,
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.shopping_bag_outlined),
-              label: AppLocalizations.of(context)!.booking,
-            ),
-          ],
-        ),
-      ),
-    ):Scaffold(
-      backgroundColor: Colors.white,
-      key: _key,
-      drawer: isHome? Drawer(
-        backgroundColor: Colors.white,
-        child: Column(
+        body: Stack(
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              alignment: Alignment.centerRight,
-              child: const Column(
-                children: [
-                  CircleAvatar(
-                    radius: 30.0,
-                    backgroundColor: Color(0xFF778899),
-                    // backgroundImage:
-                    //     NetworkImage("Your Photo Url"), // for Network image
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "اسم الخادم",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                        fontFamily: 'Tajawal'),
-                  )
-                ],
-              ),
-            ),
-            const Divider(
-              thickness: 2,
-              color: Color.fromRGBO(237, 228, 228, 1),
-            ),
-            InkWell(
-              onTap: (){
-                setState(() {
-                  langShown = !langShown;
-                });
-              },
+            Positioned(
               child: Container(
-                padding: const EdgeInsets.all(10),
-                alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        // setState(() {
-                        //   langShown = !langShown;
-                        // });
-                      },
-                      icon: Icon(
-                        langShown ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Row(
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        opacity: 0.1,
+                        image: AssetImage(
+                          "assets/images/knissa.png",
+                        ),
+                        fit: BoxFit.contain
+                    )
+                ),
+                child: SingleChildScrollView(
+                  child: Container(
+                    margin: const EdgeInsets.all(21),
+                    child: Column(
                       children: [
-                        Text(
-                          AppLocalizations.of(context)!.chooseLan,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16,
-                              decoration: TextDecoration.none,
-                              fontFamily: 'Tajawal'),
+                        Row(
+                          children: [
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors[0],
+                                  border: Border.all(
+                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            ),
+                            Container(
+                              width: 66,
+                              height: 2,
+                              decoration: BoxDecoration(
+                                color: colors[1],
+                              ),
+                            ),
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors[2],
+                                  border: Border.all(
+                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            ),
+                            Container(
+                              width: 66,
+                              height: 2,
+                              decoration: BoxDecoration(
+                                color: colors[3],
+                              ),
+                            ),
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors[4],
+                                  border: Border.all(
+                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            ),
+                            Container(
+                              width: 66,
+                              height: 2,
+                              decoration: BoxDecoration(
+                                color: colors[5],
+                              ),
+                            ),
+                            Container(
+                              width: 35,
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors[6],
+                                  border: Border.all(
+                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            )
+                          ],
                         ),
                         const SizedBox(
-                          width: 15,
+                          height: 32,
                         ),
-                        const Icon(Icons.language)
+                        startWidget
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
             ),
-            langShown
-                ? Material(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () async {
-                  setState(() {
-                    isAr = true;
-                  });
-                  Locale local = await setLocale("ar");
-                  MyApp.setLocale(context, local);
-                },
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: isAr
-                        ? const Color.fromRGBO(208, 215, 225, 1)
-                        : Colors.white,
-                  ),
-                  margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
-                  padding: const EdgeInsets.all(15),
-                  alignment: Alignment.centerRight,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Flag.fromString("EG")),
-                      SizedBox(
-                        width: 10,
+                  height: 70,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
                       ),
-                      Text(
-                        "العربية",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            decoration: TextDecoration.none,
-                            fontFamily: 'Tajawal'),
-                      )
                     ],
                   ),
-                ),
-              ),
-            )
-                : const SizedBox(),
-            langShown
-                ? Material(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () async {
-                  setState(() {
-                    isAr = false;
-                  });
-                  Locale local0 = await setLocale("en");
-                  MyApp.setLocale(context, local0);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: isAr
-                        ? Colors.white
-                        : const Color.fromRGBO(208, 215, 225, 1),
-                  ),
-                  margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
-                  padding: const EdgeInsets.all(15),
-                  alignment: Alignment.centerRight,
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: Flag.fromString("US")),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "English",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            decoration: TextDecoration.none,
-                            fontFamily: 'Tajawal'),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-                : const SizedBox(),
-            // Material(
-            //   color: Colors.white,
-            //   child: InkWell(
-            //     onTap: () {
-            //       Navigator.pushNamed(context, buildings);
-            //     },
-            //     child: Container(
-            //       padding: const EdgeInsets.all(10),
-            //       alignment: Alignment.centerRight,
-            //       child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.end,
-            //         children: [
-            //           Text(
-            //             AppLocalizations.of(context)!.building,
-            //             style: const TextStyle(
-            //                 color: Colors.black,
-            //                 fontWeight: FontWeight.w700,
-            //                 fontSize: 16,
-            //                 decoration: TextDecoration.none,
-            //                 fontFamily: 'Tajawal'),
-            //           ),
-            //           const SizedBox(
-            //             width: 15,
-            //           ),
-            //           const Icon(Icons.blinds)
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            const Divider(
-              thickness: 2,
-              color: Color.fromRGBO(237, 228, 228, 1),
-            ),
-            Material(
-              color: Colors.white,
-              child: InkWell(
-                onTap: () {
-                  //TODO:API CALL
-
-                  Navigator.popAndPushNamed(context, login);
-
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  alignment: Alignment.centerRight,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.logout,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            decoration: TextDecoration.none,
-                            fontFamily: 'Tajawal'),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isHome = false;
+                            mainAppBar = null;
+                            body = const profilePage();
+                            isProfile = true;
+                            isOrders = false;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.person,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.profile,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isProfile? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
                       ),
-                      const SizedBox(
-                        width: 15,
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isHome = true;
+                            mainAppBar = homeAppBar;
+                            body = const homeWidget();
+                            isProfile = false;
+                            isOrders = false;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.home,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.home,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isHome? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
                       ),
-                      const Icon(Icons.close)
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            mainAppBar = orderAppBar;
+                            body = const OrderPage();
+                            isHome = false;
+                            isProfile = false;
+                            isOrders = true;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.add_shopping_cart,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.orders,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isOrders? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            mainAppBar = bookingAppbar;
+                            isHome = false;
+                            isRequesting = true;
+                            isProfile = false;
+                            isOrders = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  Icon(Icons.shopping_bag_outlined,color: isRequesting? MyColors.primaryColor:Colors.black,),
+                                  Text(AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isRequesting? MyColors.primaryColor:Colors.black),),
+                                ],
+                              ),
+                              isRequesting? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ),
-            ),
+                )
+            )
           ],
         ),
-      ):null,
-      appBar: mainAppBar,
-
-      body: body,
-
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        elevation: 20,
-        selectedLabelStyle: const TextStyle(color: Colors.black),
-        unselectedLabelStyle: const TextStyle(color: Colors.black),
-        currentIndex: 1,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedItemColor: MyColors.primaryColor,
-        unselectedItemColor: Colors.black,
-        onTap: (index) {
-          switch (index){
-            case 0:
-              setState(() {
-                isHome = false;
-                mainAppBar = null;
-                body = const profilePage();
-              });
-              //Navigator.popAndPushNamed(context, profile);
-              break;
-            case 1:
-              setState(() {
-                isHome = true;
-                mainAppBar = homeAppBar;
-                body = homeWidget();
-              });
-              break;
-            case 2:
-              setState(() {
-                mainAppBar = orderAppBar;
-                body = const OrderPage();
-                isHome = false;
-              });
-              //Navigator.popAndPushNamed(context, ordersPage);
-              break;
-            case 3:
-              setState(() {
-                mainAppBar = bookingAppbar;
-                isHome = false;
-                isRequesting = true;
-              });
-              //Navigator.popAndPushNamed(context, requestingOrderPage);
-              break;
-
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: AppLocalizations.of(context)!.profile,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: AppLocalizations.of(context)!.home,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.add_shopping_cart),
-            label: AppLocalizations.of(context)!.orders,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_bag_outlined),
-            label: AppLocalizations.of(context)!.booking,
-          ),
-        ],
       ),
+    ):WillPopScope(
+      onWillPop: (){
+        if(isHome){
+          exit(0);
+        }else{
+          setState(() {
+            isHome = true;
+            mainAppBar = homeAppBar;
+            body = const homeWidget();
+            isProfile = false;
+            isOrders = false;
+            isRequesting = false;
+          });
+        }
+        return Future(() => false);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        key: _key,
+        endDrawer: isHome? Drawer(
+          backgroundColor: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    alignment: Alignment.centerRight,
+                    child: const Column(
+                      children: [
+                        CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: Color(0xFF778899),
+                          // backgroundImage:
+                          //     NetworkImage("Your Photo Url"), // for Network image
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "اسم الخادم",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: Color.fromRGBO(7, 45, 68, 1),
+                              fontFamily: 'Tajawal'),
+                        )
+                      ],
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 2,
+                    color: Color.fromRGBO(237, 228, 228, 1),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        langShown = !langShown;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.language,color: Color.fromRGBO(7, 45, 68, 1)),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.chooseLan,
+                                style: const TextStyle(
+                                    color: Color.fromRGBO(7, 45, 68, 1),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    decoration: TextDecoration.none,
+                                    fontFamily: 'Tajawal'),
+                              ),
+                            ],
+                          ),
+                          Icon(
+                            langShown ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+                            color: const Color.fromRGBO(7, 45, 68, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  langShown
+                      ? Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          isAr = true;
+                        });
+                        Locale local = await setLocale("ar");
+                        MyApp.setLocale(context, local);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isAr
+                              ? const Color.fromRGBO(208, 215, 225, 1)
+                              : Colors.white,
+                        ),
+                        margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
+                        padding: const EdgeInsets.all(15),
+                        alignment: Alignment.centerRight,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: Flag.fromString("EG")),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "العربية",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'Tajawal'),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
+                  langShown
+                      ? Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () async {
+                        setState(() {
+                          isAr = false;
+                        });
+                        Locale local0 = await setLocale("en");
+                        MyApp.setLocale(context, local0);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: isAr
+                              ? Colors.white
+                              : const Color.fromRGBO(208, 215, 225, 1),
+                        ),
+                        margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
+                        padding: const EdgeInsets.all(15),
+                        alignment: Alignment.centerRight,
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: Flag.fromString("US")),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "English",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'Tajawal'),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                      : const SizedBox(),
+                ],
+              ),
 
+              Column(
+                children: [
+                  const Divider(
+                    thickness: 2,
+                    color: Color.fromRGBO(237, 228, 228, 1),
+                  ),
+                  Material(
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        //TODO:API CALL
+
+                        Navigator.popAndPushNamed(context, login);
+
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.transparent,
+                                    border: Border.all(
+                                        color: const Color.fromRGBO(7, 45, 68, 1),
+                                        width: 2.5
+                                    )
+                                ),
+                                child: const Icon(size: 10,Icons.clear_rounded,color: Color.fromRGBO(7, 45, 68, 1))
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              AppLocalizations.of(context)!.logout,
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.none,
+                                  fontFamily: 'Tajawal'),
+                            ),
+
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ):null,
+        appBar: mainAppBar,
+        body: Stack(
+          children: [
+            Positioned(child: body),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: 70,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isHome = false;
+                            mainAppBar = null;
+                            body = const profilePage();
+                            isProfile = true;
+                            isOrders = false;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.person,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.profile,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isProfile? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            isHome = true;
+                            mainAppBar = homeAppBar;
+                            body = const homeWidget();
+                            isProfile = false;
+                            isOrders = false;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.home,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.home,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isHome? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            mainAppBar = orderAppBar;
+                            body = const OrderPage();
+                            isHome = false;
+                            isProfile = false;
+                            isOrders = true;
+                            isRequesting = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  const Icon(Icons.add_shopping_cart,color: MyColors.primaryColor,),
+                                  Text(AppLocalizations.of(context)!.orders,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                ],
+                              ),
+                              isOrders? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            mainAppBar = bookingAppbar;
+                            isHome = false;
+                            isRequesting = true;
+                            isProfile = false;
+                            isOrders = false;
+                          });
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width/4,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  const SizedBox(height: 10,),
+                                  Icon(Icons.shopping_bag_outlined,color: isRequesting? MyColors.primaryColor:Colors.black,),
+                                  Text(AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isRequesting? MyColors.primaryColor:Colors.black),),
+                                ],
+                              ),
+                              isRequesting? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            )
+          ],
+        ),
+      ),
     );
   }
 }

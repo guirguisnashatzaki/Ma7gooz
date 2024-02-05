@@ -6,6 +6,8 @@ import '../constants/colors.dart';
 import '../models/order/orderObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'iconWidget.dart';
+
 class RequestingOrderTimeFirstWidget extends StatefulWidget {
   const RequestingOrderTimeFirstWidget({Key? key}) : super(key: key);
 
@@ -68,7 +70,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.monitor_heart_outlined),
+                    IconWidget(path: "assets/images/img_2.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -150,7 +152,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.date_range),
+                    IconWidget(path: "assets/images/img_3.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -255,7 +257,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.access_time),
+                    const Icon(Icons.access_time_filled,color: MyColors.primaryColor,),
                     const SizedBox(
                       width: 10,
                     ),

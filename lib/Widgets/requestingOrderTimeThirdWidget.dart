@@ -237,31 +237,9 @@ class _RequestingOrderTimeThirdWidgetState extends State<RequestingOrderTimeThir
                                             .w700),
                                     textAlign: TextAlign.center,
                                   ),
-                                  // const SizedBox(height: 5,),
-                                  // Text(
-                                  //   AppLocalizations.of(context)!.messageSent2,
-                                  //   style: const TextStyle(
-                                  //       color: Color
-                                  //           .fromRGBO(
-                                  //           6,
-                                  //           68,
-                                  //           105,
-                                  //           1),
-                                  //       fontFamily:
-                                  //       'Tajawal',
-                                  //       fontSize:
-                                  //       20,
-                                  //       fontWeight:
-                                  //       FontWeight
-                                  //           .w700),
-                                  // ),
-                                  // const SizedBox(
-                                  //   height: 20,
-                                  // ),
                                   InkWell(
                                     onTap: (){
-                                      Navigator.pop(context);
-                                      Navigator.popAndPushNamed(context,home);
+                                      Navigator.popAndPushNamed(context,home,arguments: false);
                                     },
                                     child: SizedBox(
                                       width: 86,

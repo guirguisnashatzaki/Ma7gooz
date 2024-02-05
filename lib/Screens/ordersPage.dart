@@ -3,158 +3,6 @@ import 'package:minamakram/models/order/orderObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../constants/Language.dart';
 import '../constants/colors.dart';
-import '../constants/strings.dart';
-
-class OredersPage extends StatefulWidget {
-  const OredersPage({Key? key}) : super(key: key);
-
-  @override
-  State<OredersPage> createState() => _OredersPageState();
-}
-
-class _OredersPageState extends State<OredersPage> {
-  bool isAr = true;
-  bool langShown = false;
-  String name = "";
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
-
-  Color rejectedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
-  Color acceptedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
-  Color waitingBackgroundColor = Colors.white;
-  Color rejectedTextColor = Colors.white;
-  Color acceptedTextColor = Colors.white;
-  Color waitingTextColor = const Color.fromRGBO(6, 68, 105, 1);
-
-  List<Order> rejectedOrders = [];
-  List<Order> acceptedOrders = [];
-  List<Order> waitingOrders = [
-    Order(
-        id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
-    Order(
-        id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
-    Order(
-        id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
-  ];
-  List<Order> shownOrders = [];
-
-  @override
-  void initState() {
-    getLocale().then((value) {
-      if (value.languageCode == "ar") {
-        setState(() {
-          isAr = true;
-        });
-      } else {
-        setState(() {
-          isAr = false;
-        });
-      }
-    });
-    setState(() {
-      shownOrders = waitingOrders;
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _key,
-      appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.orders,
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 24,
-            fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.popAndPushNamed(context, "/home");
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-      ),
-      body: const OrderPage(),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        elevation: 20,
-        selectedLabelStyle: const TextStyle(color: Colors.black),
-        unselectedLabelStyle: const TextStyle(color: Colors.black),
-        currentIndex: 2,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedItemColor: MyColors.primaryColor,
-        unselectedItemColor: Colors.black,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.popAndPushNamed(context, profile);
-              break;
-            case 1:
-              Navigator.popAndPushNamed(context, home);
-              break;
-            case 2:
-              break;
-            case 3:
-              Navigator.popAndPushNamed(context, requestingOrderPage);
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_shopping_cart),
-            label: "Orders",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: "Booking",
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class OrderPage extends StatefulWidget {
   const OrderPage({Key? key}) : super(key: key);
@@ -165,10 +13,10 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
 
-  Color rejectedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
-  Color acceptedBackgroundColor = Colors.white;
-  Color rejectedTextColor = Colors.white;
-  Color acceptedTextColor = const Color.fromRGBO(6, 68, 105, 1);
+  Color rejectedBackgroundColor = Colors.white;
+  Color acceptedBackgroundColor = MyColors.primaryColor;
+  Color rejectedTextColor = MyColors.primaryColor;
+  Color acceptedTextColor = Colors.white;
   bool isAr = true;
   List<Order> rejectedOrders = [];
   List<Order> acceptedOrders = [
@@ -255,10 +103,10 @@ class _OrderPageState extends State<OrderPage> {
                     MaterialStateProperty.all(rejectedBackgroundColor)),
                 onPressed: () {
                   setState(() {
-                    rejectedTextColor = const Color.fromRGBO(6, 68, 105, 1);
-                    rejectedBackgroundColor = Colors.white;
-                    acceptedTextColor = Colors.white;
-                    acceptedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
+                    rejectedTextColor = Colors.white;
+                    rejectedBackgroundColor = MyColors.primaryColor;
+                    acceptedTextColor = MyColors.primaryColor;
+                    acceptedBackgroundColor = Colors.white;
                     shownOrders = rejectedOrders;
                   });
                 },
@@ -287,10 +135,10 @@ class _OrderPageState extends State<OrderPage> {
                     MaterialStateProperty.all(acceptedBackgroundColor)),
                 onPressed: () {
                   setState(() {
-                    acceptedTextColor = const Color.fromRGBO(6, 68, 105, 1);
-                    acceptedBackgroundColor = Colors.white;
-                    rejectedTextColor = Colors.white;
-                    rejectedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
+                    acceptedTextColor = Colors.white;
+                    acceptedBackgroundColor = MyColors.primaryColor;
+                    rejectedTextColor = MyColors.primaryColor;
+                    rejectedBackgroundColor = Colors.white;
                     shownOrders = acceptedOrders;
                   });
                 },
@@ -303,40 +151,6 @@ class _OrderPageState extends State<OrderPage> {
                       color: acceptedTextColor),
                 ),
               ),
-              // const SizedBox(
-              //   width: 20,
-              // ),
-              // ElevatedButton(
-              //   style: ButtonStyle(
-              //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //         RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(20.0),
-              //         ),
-              //       ),
-              //       side: MaterialStateProperty.all(const BorderSide(
-              //           color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
-              //       backgroundColor:
-              //       MaterialStateProperty.all(waitingBackgroundColor)),
-              //   onPressed: () {
-              //     setState(() {
-              //       waitingTextColor = const Color.fromRGBO(6, 68, 105, 1);
-              //       waitingBackgroundColor = Colors.white;
-              //       acceptedTextColor = Colors.white;
-              //       acceptedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
-              //       rejectedTextColor = Colors.white;
-              //       rejectedBackgroundColor = const Color.fromRGBO(6, 68, 105, 1);
-              //       shownOrders = waitingOrders;
-              //     });
-              //   },
-              //   child: Text(
-              //     AppLocalizations.of(context)!.requested,
-              //     style: TextStyle(
-              //         fontFamily: 'Tajawal',
-              //         fontSize: 16,
-              //         fontWeight: FontWeight.w400,
-              //         color: waitingTextColor),
-              //   ),
-              // ),
             ],
           ),
           const SizedBox(
@@ -344,12 +158,12 @@ class _OrderPageState extends State<OrderPage> {
           ),
           Container(
             width: MediaQuery.of(context).size.width / 1.2,
-            height: MediaQuery.of(context).size.height / 1.65,
+            height: MediaQuery.of(context).size.height / 1.45,
             margin: const EdgeInsets.all(16),
             child: ListView(
               children: List.generate(shownOrders.length, (index) {
                 return OrdersListItem(
-                  order: shownOrders[index],
+                  order: shownOrders[index], delReqBool: false,
                 );
               }),
             ),
@@ -360,9 +174,24 @@ class _OrderPageState extends State<OrderPage> {
   }
 }
 
-class OrdersListItem extends StatelessWidget {
+class OrdersListItem extends StatefulWidget {
   Order order;
-  OrdersListItem({Key? key, required this.order}) : super(key: key);
+  bool delReqBool;
+  OrdersListItem({Key? key,required this.delReqBool,required this.order}) : super(key: key);
+
+  @override
+  State<OrdersListItem> createState() => _OrdersListItemState();
+}
+
+class _OrdersListItemState extends State<OrdersListItem> {
+
+  bool delReqBool = false;
+
+  @override
+  void didChangeDependencies() {
+    delReqBool = widget.delReqBool;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -375,270 +204,294 @@ class OrdersListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: [
-          Positioned(
-            top: 10,
-            left: 10,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(6, 68, 105, 1), shape: BoxShape.circle),
-              child: PopupMenuButton(
-                  color: Colors.white,
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        child: Text(AppLocalizations.of(context)!.delRequest),
-                        onTap: () {
-                          //TODO:API Call
+          delReqBool? Positioned(
+              top: 60,
+              left: 10,
+              child: InkWell(
+                  onTap: () {
+                    //TODO:API Call
 
-                          showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                content: Container(
-                                  width: 300,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          content: Container(
+                            width: 300,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.delOrderQuestion,
+                                  style: const TextStyle(
+                                      color:
+                                      Color.fromRGBO(6, 68, 105, 1),
+                                      fontFamily: 'Tajawal',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(
-                                        height: 15,
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10))),
+                                              backgroundColor: MaterialStateProperty.all(
+                                                  MyColors.primaryColor),
+                                              side: MaterialStateProperty.all(
+                                                  const BorderSide(
+                                                      color: Color.fromRGBO(
+                                                          6, 68, 105, 1),
+                                                      width: 1)),
+                                              padding: MaterialStateProperty.all(
+                                                  const EdgeInsets.fromLTRB(30, 10, 30, 10))),
+                                          onPressed: () {
+                                            //TODO: API Call
+
+                                            Navigator.pop(context);
+
+                                            showDialog<String>(
+                                                context: context,
+                                                builder: (BuildContext
+                                                context) =>
+                                                    AlertDialog(
+                                                      content: Container(
+                                                        width: 300,
+                                                        height: 200,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                              10),
+                                                          color:
+                                                          Colors.white,
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            const SizedBox(
+                                                              height: 15,
+                                                            ),
+                                                            Text(
+                                                              AppLocalizations.of(context)!.delOrderMessage,
+                                                              style: const TextStyle(
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                      6,
+                                                                      68,
+                                                                      105,
+                                                                      1),
+                                                                  fontFamily:
+                                                                  'Tajawal',
+                                                                  fontSize:
+                                                                  24,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w700),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 50,
+                                                            ),
+                                                            SizedBox(
+                                                              width: 86,
+                                                              height: 86,
+                                                              child: Image
+                                                                  .asset(
+                                                                "assets/images/delete_profile_confirmation.png",
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ));
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(context)!.confirm,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
+                                                fontFamily: 'Tajawal',
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                       ),
-                                      Text(
-                                        AppLocalizations.of(context)!.delOrderQuestion,
-                                        style: const TextStyle(
-                                            color:
-                                            Color.fromRGBO(6, 68, 105, 1),
-                                            fontFamily: 'Tajawal',
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w700),
-                                        textAlign: TextAlign.center,
-                                      ),
                                       const SizedBox(
-                                        height: 50,
+                                        width: 50,
                                       ),
                                       FittedBox(
                                         fit: BoxFit.fill,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                          children: [
-                                            FittedBox(
-                                              fit: BoxFit.fill,
-                                              child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                10))),
-                                                    backgroundColor: MaterialStateProperty.all(
-                                                        MyColors.primaryColor),
-                                                    side: MaterialStateProperty.all(
-                                                        const BorderSide(
-                                                            color: Color.fromRGBO(
-                                                                6, 68, 105, 1),
-                                                            width: 1)),
-                                                    padding: MaterialStateProperty.all(
-                                                        const EdgeInsets.fromLTRB(30, 10, 30, 10))),
-                                                onPressed: () {
-                                                  //TODO: API Call
-
-                                                  Navigator.pop(context);
-
-                                                  showDialog<String>(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                      context) =>
-                                                          AlertDialog(
-                                                            content: Container(
-                                                              width: 300,
-                                                              height: 200,
-                                                              decoration:
-                                                              BoxDecoration(
-                                                                borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                    10),
-                                                                color:
-                                                                Colors.white,
-                                                              ),
-                                                              child: Column(
-                                                                children: [
-                                                                  const SizedBox(
-                                                                    height: 15,
-                                                                  ),
-                                                                  Text(
-                                                                    AppLocalizations.of(context)!.delOrderMessage,
-                                                                    style: const TextStyle(
-                                                                        color: Color
-                                                                            .fromRGBO(
-                                                                            6,
-                                                                            68,
-                                                                            105,
-                                                                            1),
-                                                                        fontFamily:
-                                                                        'Tajawal',
-                                                                        fontSize:
-                                                                        24,
-                                                                        fontWeight:
-                                                                        FontWeight
-                                                                            .w700),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                    height: 50,
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 86,
-                                                                    height: 86,
-                                                                    child: Image
-                                                                        .asset(
-                                                                      "assets/images/delete_profile_confirmation.png",
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ),
-                                                          ));
-                                                },
-                                                child: Text(
-                                                  AppLocalizations.of(context)!.confirm,
-                                                  style: const TextStyle(
-                                                      fontWeight: FontWeight.w400,
-                                                      fontSize: 16,
-                                                      fontFamily: 'Tajawal',
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 50,
-                                            ),
-                                            FittedBox(
-                                              fit: BoxFit.fill,
-                                              child: ElevatedButton(
-                                                style: ButtonStyle(
-                                                    shape: MaterialStateProperty.all<
-                                                        RoundedRectangleBorder>(
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                            BorderRadius.circular(
-                                                                10))),
-                                                    backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.white),
-                                                    side:
-                                                    MaterialStateProperty.all(
-                                                        const BorderSide(
-                                                          color: Color.fromRGBO(
-                                                              6, 68, 105, 1),
-                                                          width: 1,
-                                                        )),
-                                                    padding: MaterialStateProperty.all(
-                                                        const EdgeInsets.fromLTRB(
-                                                            30, 10, 30, 10))),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(
-                                                  AppLocalizations.of(context)!.del,
-                                                  style: const TextStyle(
-                                                      fontWeight: FontWeight.w400,
-                                                      fontSize: 16,
-                                                      fontFamily: 'Tajawal',
-                                                      color: Color.fromRGBO(
-                                                          6, 68, 105, 1)),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                  RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10))),
+                                              backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.white),
+                                              side:
+                                              MaterialStateProperty.all(
+                                                  const BorderSide(
+                                                    color: Color.fromRGBO(
+                                                        6, 68, 105, 1),
+                                                    width: 1,
+                                                  )),
+                                              padding: MaterialStateProperty.all(
+                                                  const EdgeInsets.fromLTRB(
+                                                      30, 10, 30, 10))),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(context)!.del,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16,
+                                                fontFamily: 'Tajawal',
+                                                color: Color.fromRGBO(
+                                                    6, 68, 105, 1)),
+                                          ),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ));
+                                )
+                              ],
+                            ),
+                          ),
+                        ));
 
 
-                        },
+                  },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: MyColors.primaryColor,
+                          width: 1
                       )
-                    ];
-                  }),
+                  ),
+                  child: Text(AppLocalizations.of(context)!.delRequest),
+                ),
+              )
+          ):const SizedBox(),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(6, 68, 105, 1), shape: BoxShape.circle),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          delReqBool = !delReqBool;
+                        });
+                      },
+                      icon: const Icon(Icons.more_vert,color: Colors.white,),
+                    ),
+                  )
+                ),
+              ],
             ),
           ),
           Positioned(
               child: Container(
                 alignment: Alignment.centerRight,
-            margin: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Text(
-                  "\u2027 ${order.id}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      fontFamily: 'Tajawal',
-                      color: Color.fromRGBO(0, 0, 0, 1)),
-                  textAlign: TextAlign.right,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.servantName}",
-                    style: const TextStyle(
+                margin: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Text(
+                      "\u2027 ${widget.order.id}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          fontFamily: 'Tajawal',
+                          color: Color.fromRGBO(0, 0, 0, 1)),
+                      textAlign: TextAlign.right,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.servantName}",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          fontFamily: 'Tajawal',
+                          color: Color.fromRGBO(0, 0, 0, 1)),
+                      textAlign: TextAlign.right,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.activity}",style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
                         color: Color.fromRGBO(0, 0, 0, 1)),
-                  textAlign: TextAlign.right,
+                      textAlign: TextAlign.right,),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.serviceName}",style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontFamily: 'Tajawal',
+                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.date}",style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontFamily: 'Tajawal',
+                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.timeAccepted}",style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontFamily: 'Tajawal',
+                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text("\u2027 ${widget.order.buildingAccepted}/${widget.order.floorAccepted}/${widget.order.hallAccepted}",style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontFamily: 'Tajawal',
+                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                  ],
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.activity}",style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(0, 0, 0, 1)),
-                  textAlign: TextAlign.right,),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.serviceName}",style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.date}",style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.timeAccepted}",style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text("\u2027 ${order.buildingAccepted}/${order.floorAccepted}/${order.hallAccepted}",style: const TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                    fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
-              ],
-            ),
-          ))
+              ))
         ],
       ),
     );

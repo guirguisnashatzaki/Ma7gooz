@@ -89,13 +89,13 @@ class AppRouter {
             builder: (_) => BuildingDetailsPage(item: args,));
       case profile:
         return MaterialPageRoute(
-            builder: (_) => const ProfilePage());
+            builder: (_) => const profilePage());
       case editProfile:
         return MaterialPageRoute(
             builder: (_) => const EditProfilePage());
       case ordersPage:
         return MaterialPageRoute(
-            builder: (_) => const OredersPage());
+            builder: (_) => const OrderPage());
       case requestingOrderPage:
         return MaterialPageRoute(
             builder: (_) => const RequestingOrdersPage());

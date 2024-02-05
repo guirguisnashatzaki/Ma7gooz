@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
+import 'package:minamakram/Widgets/iconWidget.dart';
 import 'package:minamakram/models/order/orderObject.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../constants/colors.dart';
@@ -68,7 +69,7 @@ class _RequestingOrderHallFirstWidgetState
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.monitor_heart_outlined),
+                    IconWidget(path: "assets/images/img_2.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -78,7 +79,7 @@ class _RequestingOrderHallFirstWidgetState
                           color: Color.fromRGBO(7, 45, 68, 1),
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'Roboto'),
+                          fontFamily: 'Tajawal'),
                     ),
                   ],
                 ),
@@ -151,7 +152,7 @@ class _RequestingOrderHallFirstWidgetState
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.date_range),
+                    IconWidget(path: "assets/images/img_3.png"),
                     const SizedBox(
                       width: 10,
                     ),
@@ -161,7 +162,7 @@ class _RequestingOrderHallFirstWidgetState
                           color: Color.fromRGBO(7, 45, 68, 1),
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
-                          fontFamily: 'Roboto'),
+                          fontFamily: 'Tajawal'),
                     ),
                   ],
                 ),
@@ -199,7 +200,7 @@ class _RequestingOrderHallFirstWidgetState
                         child: Text(
                           date,
                           style: const TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
                               color: Color.fromRGBO(7, 45, 68, 1)),
@@ -224,8 +225,8 @@ class _RequestingOrderHallFirstWidgetState
         const SizedBox(
           height: 30,
         ),
-        Container(
-          // alignment: Alignment.centerRight,
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
           child: Text(
             AppLocalizations.of(context)!.pleaseEnterDetails,
             style: const TextStyle(
@@ -246,37 +247,42 @@ class _RequestingOrderHallFirstWidgetState
           },
           child: FittedBox(
             fit: BoxFit.fill,
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(10),
-              // margin: EdgeInsets.fromLTRB(
-              //     (MediaQuery.of(context).size.width / 2) + 30, 0, 0, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        building,
-                        style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () {
-                      // setState(() {
-                      //   buildingBool = !buildingBool;
-                      // });
-                    },
-                    child: const Icon(Icons.arrow_drop_down),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyColors.simpleBlue,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              building,
+                              style: const TextStyle(
+                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Tajawal'),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // setState(() {
+                                //   buildingBool = !buildingBool;
+                                // });
+                              },
+                              child: const Icon(Icons.arrow_drop_down),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -287,38 +293,42 @@ class _RequestingOrderHallFirstWidgetState
           height: 10,
         ),
         buildingBool
-            ? Container(
-                //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1, 1),
-                          blurRadius: 6)
-                    ]),
-                child: Column(
-                  children: List.generate(
-                      buildings.length,
-                      (index) => InkWell(
-                            onTap: () {
-                              setState(() {
-                                //TODO:ORDER Filling
-                                order.buildingAccepted = buildings[index];
-                                buildingBool = false;
-                                building = buildings[index];
-                              });
-                            },
-                            child: ListItem(
-                              text: buildings[index],
-                              ifFirst: index == 0 ? true : false,
-                              ifLast:
-                                  index == buildings.length - 1 ? true : false,
-                            ),
-                          )),
-                ),
-              )
+            ? Row(
+              children: [
+                Container(
+                    //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1, 1),
+                              blurRadius: 6)
+                        ]),
+                    child: Column(
+                      children: List.generate(
+                          buildings.length,
+                          (index) => InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    //TODO:ORDER Filling
+                                    order.buildingAccepted = buildings[index];
+                                    buildingBool = false;
+                                    building = buildings[index];
+                                  });
+                                },
+                                child: MyListItem(
+                                  text: buildings[index],
+                                  ifFirst: index == 0 ? true : false,
+                                  ifLast:
+                                      index == buildings.length - 1 ? true : false,
+                                ),
+                              )),
+                    ),
+                  ),
+              ],
+            )
             : const SizedBox(),
         const SizedBox(
           height: 20,
@@ -331,40 +341,44 @@ class _RequestingOrderHallFirstWidgetState
           },
           child: FittedBox(
             fit: BoxFit.fill,
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(10),
-              // margin: EdgeInsets.fromLTRB(
-              //     (MediaQuery.of(context).size.width / 2) + 30, 0, 0, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1),
-
-              ),
-              alignment: Alignment.centerRight,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        floor,
-                        style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () {
-                      // setState(() {
-                      //   floorBool = !floorBool;
-                      // });
-                    },
-                    child: const Icon(Icons.arrow_drop_down),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: MyColors.simpleBlue,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1),
+
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              floor,
+                              style: const TextStyle(
+                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                fontFamily: 'Tajawal',),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // setState(() {
+                                //   floorBool = !floorBool;
+                                // });
+                              },
+                              child: const Icon(Icons.arrow_drop_down),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -375,37 +389,41 @@ class _RequestingOrderHallFirstWidgetState
           height: 10,
         ),
         floorBool
-            ? Container(
-                //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1, 1),
-                          blurRadius: 6)
-                    ]),
-                child: Column(
-                  children: List.generate(
-                      buildings.length,
-                      (index) => InkWell(
-                            onTap: () {
-                              setState(() {
-                                //TODO:ORDER Filling
-                                order.floorAccepted = floors[index];
-                                floor = floors[index];
-                                floorBool = false;
-                              });
-                            },
-                            child: ListItem(
-                              text: floors[index],
-                              ifFirst: index == 0 ? true : false,
-                              ifLast: index == floors.length - 1 ? true : false,
-                            ),
-                          )),
-                ),
-              )
+            ? Row(
+              children: [
+                Container(
+                    //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1, 1),
+                              blurRadius: 6)
+                        ]),
+                    child: Column(
+                      children: List.generate(
+                          buildings.length,
+                          (index) => InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    //TODO:ORDER Filling
+                                    order.floorAccepted = floors[index];
+                                    floor = floors[index];
+                                    floorBool = false;
+                                  });
+                                },
+                                child: MyListItem(
+                                  text: floors[index],
+                                  ifFirst: index == 0 ? true : false,
+                                  ifLast: index == floors.length - 1 ? true : false,
+                                ),
+                              )),
+                    ),
+                  ),
+              ],
+            )
             : const SizedBox(),
         const SizedBox(
           height: 20,
@@ -418,38 +436,45 @@ class _RequestingOrderHallFirstWidgetState
           },
           child: FittedBox(
             fit: BoxFit.fill,
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.all(10),
-              // margin: EdgeInsets.fromLTRB(
-              //     (MediaQuery.of(context).size.width / 2) + 30, 0, 0, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
-              alignment: Alignment.centerRight,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        hall,
-                        style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      ),
-                    ],
-                  ),
-                  InkWell(
-                    onTap: () {
-                      // setState(() {
-                      //   hallBool = !hallBool;
-                      // });
-                    },
-                    child: const Icon(Icons.arrow_drop_down),
+                  Container(
+
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: MyColors.simpleBlue,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              hall,
+                              style: const TextStyle(
+                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Tajawal',),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // setState(() {
+                                //   hallBool = !hallBool;
+                                // });
+                              },
+                              child: const Icon(Icons.arrow_drop_down),
+                            ),
+                          ],
+                        ),
+
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -460,37 +485,40 @@ class _RequestingOrderHallFirstWidgetState
           height: 10,
         ),
         hallBool
-            ? Container(
-                //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1, 1),
-                          blurRadius: 6)
-                    ]),
-                child: Column(
-                  children: List.generate(
-                      halls.length,
-                      (index) => InkWell(
-                            onTap: () {
-                              setState(() {
-                                //TODO:ORDER Filling
-                                order.hallAccepted = halls[index];
-                                hall = halls[index];
-                                hallBool = false;
-                              });
-                            },
-                            child: ListItem(
-                              text: halls[index],
-                              ifFirst: index == 0 ? true : false,
-                              ifLast: index == halls.length - 1 ? true : false,
-                            ),
-                          )),
-                ),
-              )
+            ? Row(
+              children: [
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(1, 1),
+                              blurRadius: 6)
+                        ]),
+                    child: Column(
+                      children: List.generate(
+                          halls.length,
+                          (index) => InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    //TODO:ORDER Filling
+                                    order.hallAccepted = halls[index];
+                                    hall = halls[index];
+                                    hallBool = false;
+                                  });
+                                },
+                                child: MyListItem(
+                                  text: halls[index],
+                                  ifFirst: index == 0 ? true : false,
+                                  ifLast: index == halls.length - 1 ? true : false,
+                                ),
+                              )),
+                    ),
+                  ),
+              ],
+            )
             : const SizedBox(),
         const SizedBox(
           height: 50,
@@ -499,7 +527,7 @@ class _RequestingOrderHallFirstWidgetState
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                      borderRadius: BorderRadius.circular(10))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
                   color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
@@ -591,6 +619,33 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(
+            bottom: ifLast ? const Radius.circular(10) : Radius.zero,
+            top: ifFirst ? const Radius.circular(10) : Radius.zero),
+        color: Colors.white,
+      ),
+      padding: const EdgeInsets.all(10),
+      child: Text(text),
+    );
+  }
+}
+
+class MyListItem extends StatelessWidget {
+  String text;
+  MyListItem({
+    super.key,
+    required this.text,
+    required this.ifFirst,
+    required this.ifLast,
+  });
+
+  bool ifFirst;
+  bool ifLast;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(
             bottom: ifLast ? const Radius.circular(10) : Radius.zero,
