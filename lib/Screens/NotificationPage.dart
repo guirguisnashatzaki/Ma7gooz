@@ -42,7 +42,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         borderRadius: BorderRadius.circular(10))),
                 backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                 side: MaterialStateProperty.all(const BorderSide(
-                    color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                    color: MyColors.secondaryColor, width: 1)),
                 padding: MaterialStateProperty.all(
                     const EdgeInsets.fromLTRB(30, 10, 30, 10))),
             onPressed: (){
@@ -100,7 +100,7 @@ class _NotificationPageState extends State<NotificationPage> {
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         backgroundColor: Colors.white,
@@ -110,7 +110,7 @@ class _NotificationPageState extends State<NotificationPage> {
             fontWeight: FontWeight.w400,
             fontSize: 24,
             fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         centerTitle: true,
@@ -130,7 +130,7 @@ class NotificationItem extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(208, 215, 225, 1),
+          color: MyColors.simpleBlue,
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
@@ -146,7 +146,7 @@ class NotificationItem extends StatelessWidget {
                     fontFamily: 'Tajawal',
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Color.fromRGBO(7, 45, 68, 1)),
+                    color: MyColors.primaryColor),
               ),
             ],
           ),
@@ -163,7 +163,7 @@ class NotificationItem extends StatelessWidget {
                   fontFamily: 'Tajawal',
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
               textAlign: TextAlign.end,
             ),
           ),
@@ -180,7 +180,7 @@ class NotificationItem extends StatelessWidget {
                         fontFamily: 'Tajawal',
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                     textAlign: TextAlign.end,
                   ),
                 ),
@@ -195,7 +195,7 @@ class NotificationItem extends StatelessWidget {
                   fontFamily: 'Tajawal',
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
               textAlign: TextAlign.start,
             ),
           )

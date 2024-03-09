@@ -5,6 +5,8 @@ import 'package:minamakram/models/building/floorObject.dart';
 import 'package:minamakram/models/room/roomObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../constants/colors.dart';
+
 class BuildingPage extends StatefulWidget {
   const BuildingPage({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _BuildingPageState extends State<BuildingPage> {
           noOfFloors: 1,
           noOfHalls: 1,
           floors: [
-            Floor(floorNum: 2, rooms: [
+            Floor(floorName: "2", rooms: [
               Room(
                 name: "ka3a 1",
                 building: "El-batal",
@@ -43,7 +45,7 @@ class _BuildingPageState extends State<BuildingPage> {
           noOfFloors: 15,
           noOfHalls: 30,
           floors: [
-            Floor(floorNum: 2, rooms: [
+            Floor(floorName: "2", rooms: [
               Room(
                   name: "ka3a 1",
                   building: "El-batal",
@@ -83,7 +85,7 @@ class _BuildingPageState extends State<BuildingPage> {
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         backgroundColor: Colors.white,
@@ -93,7 +95,7 @@ class _BuildingPageState extends State<BuildingPage> {
             fontWeight: FontWeight.w400,
             fontSize: 24,
             fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         centerTitle: true,
@@ -118,7 +120,7 @@ class BuildingItem extends StatelessWidget {
         const SizedBox(width: 15,),
         InkWell(
           onTap: (){
-            Navigator.pushNamed(context, buildingDetails,arguments: item);
+            Navigator.pushNamed(context, buildingDetails,arguments: [item,true]);
           },
           child: Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -156,7 +158,7 @@ class BuildingItem extends StatelessWidget {
                 Text(
                   item.name,
                   style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
@@ -165,7 +167,7 @@ class BuildingItem extends StatelessWidget {
                 Text(
                   "عدد الادوار ${item.noOfFloors}",
                   style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
@@ -174,28 +176,12 @@ class BuildingItem extends StatelessWidget {
                 Text(
                   "عدد القاعات ${item.noOfHalls}",
                   style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
                   ),
                 ),
-                // ElevatedButton(
-                //   style: ButtonStyle(
-                //     backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(6, 68, 105, 1))
-                //   ),
-                //     onPressed: () {
-                //       Navigator.pushNamed(context, buildingDetails,arguments: item);
-                //     },
-                //     child: Text(
-                //       AppLocalizations.of(context)!.choose,
-                //       style: const TextStyle(
-                //         fontWeight: FontWeight.w400,
-                //         fontSize: 16,
-                //         fontFamily: 'Tajawal',
-                //         color: Colors.white,
-                //       ),
-                //     ))
               ],
             ),
           ),

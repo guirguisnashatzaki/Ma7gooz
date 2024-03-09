@@ -56,5 +56,9 @@
    "ordersPage":"صفحة الطلبات",
    "delOrderQuestion":"هل تريد حذف الطلب ؟",
    "delOrderMessage":"تم حذف الطلب",
-   "abuTalaat":"بيت ابو تلات"
+   "abuTalaat":"بيت ابو تلات",
+   "remBuilding":"حذف المبنى",
+   "addFloor":"اضافة دور",
+   "addHall":"اضافة قاعة",
+   "users":"المستخدمون"
 }

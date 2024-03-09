@@ -63,7 +63,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             width: MediaQuery.of(context).size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +77,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                     Text(
                       activity,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Roboto'),
@@ -145,7 +145,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             width: MediaQuery.of(context).size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +159,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                     Text(
                       date,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Roboto'),
@@ -203,13 +203,13 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   )),
               SfDateRangePicker(
                 showNavigationArrow: true,
                 showTodayButton: true,
-                selectionColor: const Color.fromRGBO(208, 215, 225, 1),
-                todayHighlightColor: const Color.fromRGBO(7, 45, 68, 1),
+                selectionColor: MyColors.simpleBlue,
+                todayHighlightColor: MyColors.primaryColor,
                 onSelectionChanged: (args){
                   order.date = args.value.toString().split(" ")[0];
                   setState(() {
@@ -230,7 +230,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
           child: Text(
             AppLocalizations.of(context)!.pleaseEnterDetails,
             style: const TextStyle(
-                color: Color.fromRGBO(7, 45, 68, 1),
+                color: MyColors.primaryColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Tajawal'),
@@ -250,7 +250,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             width: MediaQuery.of(context).size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -264,7 +264,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                     Text(
                       AppLocalizations.of(context)!.chooseTime,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Roboto'),
@@ -304,7 +304,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                 ifLast: index == timings.length - 1 ? true : false,
               ),
               leading:  Checkbox(
-                activeColor: const Color.fromRGBO(7, 45, 68, 1),
+                activeColor: MyColors.primaryColor,
                 value: timingsBool[index],
                 onChanged: (value){
                   setState(() {
@@ -331,7 +331,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                       borderRadius: BorderRadius.circular(20))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
-                  color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                  color: MyColors.secondaryColor, width: 1)),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.fromLTRB(30, 10, 30, 10))),
           onPressed: () {
@@ -376,7 +376,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                               fontSize: 24,
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Tajawal',
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         )),
                   ));
             }

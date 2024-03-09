@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:minamakram/Screens/HomePage.dart';
@@ -46,10 +47,15 @@ class _mainHomePageState extends State<mainHomePage> {
   late Widget firstWidget = Container();
   var warnings = ["ugukuj","jbkhbh"];
 
+  //TODO: temporarly
+  bool isAdmin = true;
+
 
   @override
   void didChangeDependencies() {
     setState(() {
+      // sharedPrefsHelper helper = sharedPrefsHelper();
+      // isAdmin = helper.isAdmin;
       orderAppBar = AppBar(
         title: Text(
           AppLocalizations.of(context)!.orders,
@@ -57,7 +63,7 @@ class _mainHomePageState extends State<mainHomePage> {
             fontWeight: FontWeight.w400,
             fontSize: 24,
             fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         centerTitle: true,
@@ -148,7 +154,7 @@ class _mainHomePageState extends State<mainHomePage> {
             fontWeight: FontWeight.w400,
             fontSize: 24,
             fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         centerTitle: true,
@@ -181,7 +187,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   fontFamily: 'Tajawal',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
             ),
           ),
           const SizedBox(
@@ -195,7 +201,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   fontFamily: 'Tajawal',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
             ),
           ),
           const SizedBox(
@@ -206,7 +212,7 @@ class _mainHomePageState extends State<mainHomePage> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             alignment: Alignment.centerRight,
             child: Row(
               children: [
@@ -217,7 +223,7 @@ class _mainHomePageState extends State<mainHomePage> {
                 Text(
                   AppLocalizations.of(context)!.orderWay,
                   style: const TextStyle(
-                      color: Color.fromRGBO(7, 45, 68, 1),
+                      color: MyColors.primaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       fontFamily: 'Roboto'),
@@ -233,7 +239,7 @@ class _mainHomePageState extends State<mainHomePage> {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                    backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -244,8 +250,8 @@ class _mainHomePageState extends State<mainHomePage> {
                 onPressed: () {
                   setState(() {
                     startWidget = const RequestingOrderHallFirstWidget();
-                    colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                    colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                    colors[2] = MyColors.secondaryColor;
+                    colors[3] = MyColors.secondaryColor;
                   });
                 },
                 child: Text(
@@ -254,7 +260,7 @@ class _mainHomePageState extends State<mainHomePage> {
                       fontFamily: 'Tajawal',
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
-                      color: Color.fromRGBO(255, 255, 255, 1)
+                      color: Colors.white
                   ),
                 ),
               ),
@@ -265,7 +271,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                             side: const BorderSide(
-                                color: Color.fromRGBO(7, 45, 68, 1),
+                                color: MyColors.primaryColor,
                                 width: 1
                             )
                         )
@@ -275,8 +281,8 @@ class _mainHomePageState extends State<mainHomePage> {
                 onPressed: () {
                   setState(() {
                     startWidget = const RequestingOrderTimeFirstWidget();
-                    colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                    colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                    colors[2] = MyColors.secondaryColor;
+                    colors[3] = MyColors.secondaryColor;
                   });
                 },
                 child: Text(
@@ -285,7 +291,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)
+                        color: MyColors.primaryColor
                     )),
               ),
             ],
@@ -299,12 +305,12 @@ class _mainHomePageState extends State<mainHomePage> {
 
   Order myOrder = Order();
   List<Color> colors=[
-    const Color.fromRGBO(6, 68, 105, 1),
-    const Color.fromRGBO(6, 68, 105, 1),
+    MyColors.secondaryColor,
+    MyColors.secondaryColor,
     Colors.white,
-    const Color.fromRGBO(208, 215, 225, 1),
+    MyColors.simpleBlue,
     Colors.white,
-    const Color.fromRGBO(208, 215, 225, 1),
+    MyColors.simpleBlue,
     Colors.white
   ];
 
@@ -322,8 +328,8 @@ class _mainHomePageState extends State<mainHomePage> {
   void goToThirdPart(){
     setState(() {
       startWidget = const RequestingOrderHallFirstWidget();
-      colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-      colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+      colors[4] = MyColors.secondaryColor;
+      colors[5] = MyColors.secondaryColor;
     });
   }
 
@@ -349,7 +355,7 @@ class _mainHomePageState extends State<mainHomePage> {
       }
     });
     setState(() {
-      body = homeWidget();
+      body = const homeWidget();
       isHome = true;
     });
     receiver.start();
@@ -369,8 +375,8 @@ class _mainHomePageState extends State<mainHomePage> {
             order.buildingAccepted = event.data?["building"];
             myOrder.buildingAccepted = event.data?["building"];
             startWidget = RequestingOrderHallSecondWidget(order: order,);
-            colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-            colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[4] = MyColors.secondaryColor;
+            colors[5] = MyColors.secondaryColor;
           });
           break;
         case "Fourth page":
@@ -389,7 +395,7 @@ class _mainHomePageState extends State<mainHomePage> {
               }
             }
             startWidget = RequestingOrderHallThirdWidget(order: order,);
-            colors[6] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[6] = MyColors.secondaryColor;
           });
           break;
         case "second time page":
@@ -405,8 +411,8 @@ class _mainHomePageState extends State<mainHomePage> {
               }
             }
             startWidget = RequestingOrderTimeSecondWidget(order: order,);
-            colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-            colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[4] = MyColors.secondaryColor;
+            colors[5] = MyColors.secondaryColor;
           });
           break;
         case "third time page":
@@ -433,7 +439,7 @@ class _mainHomePageState extends State<mainHomePage> {
               }
             }
             startWidget = RequestingOrderTimeThirdWidget(order: order,);
-            colors[6] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[6] = MyColors.secondaryColor;
           });
           break;
       }
@@ -449,7 +455,7 @@ class _mainHomePageState extends State<mainHomePage> {
           setState(() {
             startWidget = const RequestingOrderHallFirstWidget();
             colors[4] = Colors.white;
-            colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[5] = MyColors.simpleBlue;
           });
         }else if(startWidget is RequestingOrderHallThirdWidget){
           setState(() {
@@ -468,7 +474,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -482,7 +488,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -493,7 +499,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                          color: MyColors.simpleBlue, width: 1)),
                   alignment: Alignment.centerRight,
                   child: Row(
                     children: [
@@ -504,7 +510,7 @@ class _mainHomePageState extends State<mainHomePage> {
                       Text(
                         AppLocalizations.of(context)!.orderWay,
                         style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
+                            color: MyColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Roboto'),
@@ -520,7 +526,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -531,8 +537,8 @@ class _mainHomePageState extends State<mainHomePage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -541,7 +547,7 @@ class _mainHomePageState extends State<mainHomePage> {
                             fontFamily: 'Tajawal',
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
-                            color: Color.fromRGBO(255, 255, 255, 1)
+                            color: Colors.white
                         ),
                       ),
                     ),
@@ -552,7 +558,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                   side: const BorderSide(
-                                      color: Color.fromRGBO(7, 45, 68, 1),
+                                      color: MyColors.primaryColor,
                                       width: 1
                                   )
                               )
@@ -562,8 +568,8 @@ class _mainHomePageState extends State<mainHomePage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -572,21 +578,21 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)
+                              color: MyColors.primaryColor
                           )),
                     ),
                   ],
                 )
               ],
             );
-            colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
         }else if(startWidget is RequestingOrderTimeSecondWidget){
           setState(() {
             startWidget = const RequestingOrderTimeFirstWidget();
             colors[4] = Colors.white;
-            colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[5] = MyColors.simpleBlue;
           });
         }else if(startWidget is RequestingOrderTimeFirstWidget){
           setState(() {
@@ -600,7 +606,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -614,7 +620,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -625,7 +631,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                          color: MyColors.simpleBlue, width: 1)),
                   alignment: Alignment.centerRight,
                   child: Row(
                     children: [
@@ -636,7 +642,7 @@ class _mainHomePageState extends State<mainHomePage> {
                       Text(
                         AppLocalizations.of(context)!.orderWay,
                         style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
+                            color: MyColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Roboto'),
@@ -652,7 +658,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -663,8 +669,8 @@ class _mainHomePageState extends State<mainHomePage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -673,7 +679,7 @@ class _mainHomePageState extends State<mainHomePage> {
                             fontFamily: 'Tajawal',
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
-                            color: Color.fromRGBO(255, 255, 255, 1)
+                            color: Colors.white
                         ),
                       ),
                     ),
@@ -684,7 +690,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                   side: const BorderSide(
-                                      color: Color.fromRGBO(7, 45, 68, 1),
+                                      color: MyColors.primaryColor,
                                       width: 1
                                   )
                               )
@@ -694,8 +700,8 @@ class _mainHomePageState extends State<mainHomePage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -704,14 +710,14 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)
+                              color: MyColors.primaryColor
                           )),
                     ),
                   ],
                 )
               ],
             );
-            colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
         }else if(startWidget is RequestingOrderTimeThirdWidget){
@@ -741,7 +747,7 @@ class _mainHomePageState extends State<mainHomePage> {
               fontWeight: FontWeight.w400,
               fontSize: 24,
               fontFamily: 'Tajawal',
-              color: Color.fromRGBO(6, 68, 105, 1),
+              color: MyColors.secondaryColor,
             ),
           ),
           centerTitle: true,
@@ -752,7 +758,7 @@ class _mainHomePageState extends State<mainHomePage> {
                 setState(() {
                   startWidget = const RequestingOrderHallFirstWidget();
                   colors[4] = Colors.white;
-                  colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+                  colors[5] = MyColors.simpleBlue;
                 });
               }else if(startWidget is RequestingOrderHallThirdWidget){
                 setState(() {
@@ -771,7 +777,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         ),
                       ),
                       const SizedBox(
@@ -785,7 +791,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         ),
                       ),
                       const SizedBox(
@@ -796,7 +802,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                color: MyColors.simpleBlue, width: 1)),
                         alignment: Alignment.centerRight,
                         child: Row(
                           children: [
@@ -807,7 +813,7 @@ class _mainHomePageState extends State<mainHomePage> {
                             Text(
                               AppLocalizations.of(context)!.orderWay,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  color: MyColors.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Roboto'),
@@ -823,7 +829,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         children: [
                           ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                                backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20.0),
@@ -834,8 +840,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             onPressed: () {
                               setState(() {
                                 startWidget = const RequestingOrderHallFirstWidget();
-                                colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                                colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                                colors[2] = MyColors.secondaryColor;
+                                colors[3] = MyColors.secondaryColor;
                               });
                             },
                             child: Text(
@@ -844,7 +850,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   fontFamily: 'Tajawal',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,
-                                  color: Color.fromRGBO(255, 255, 255, 1)
+                                  color: Colors.white
                               ),
                             ),
                           ),
@@ -855,7 +861,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20.0),
                                         side: const BorderSide(
-                                            color: Color.fromRGBO(7, 45, 68, 1),
+                                            color: MyColors.primaryColor,
                                             width: 1
                                         )
                                     )
@@ -865,8 +871,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             onPressed: () {
                               setState(() {
                                 startWidget = const RequestingOrderTimeFirstWidget();
-                                colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                                colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                                colors[2] = MyColors.secondaryColor;
+                                colors[3] = MyColors.secondaryColor;
                               });
                             },
                             child: Text(
@@ -875,21 +881,21 @@ class _mainHomePageState extends State<mainHomePage> {
                                     fontFamily: 'Tajawal',
                                     fontWeight: FontWeight.w400,
                                     fontSize: 16,
-                                    color: Color.fromRGBO(7, 45, 68, 1)
+                                    color: MyColors.primaryColor
                                 )),
                           ),
                         ],
                       )
                     ],
                   );
-                  colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+                  colors[3] = MyColors.simpleBlue;
                   colors[2] = Colors.white;
                 });
               }else if(startWidget is RequestingOrderTimeSecondWidget){
                 setState(() {
                   startWidget = const RequestingOrderTimeFirstWidget();
                   colors[4] = Colors.white;
-                  colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+                  colors[5] = MyColors.simpleBlue;
                 });
               }else if(startWidget is RequestingOrderTimeFirstWidget){
                 setState(() {
@@ -903,7 +909,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         ),
                       ),
                       const SizedBox(
@@ -917,7 +923,7 @@ class _mainHomePageState extends State<mainHomePage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         ),
                       ),
                       const SizedBox(
@@ -928,7 +934,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                                color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                color: MyColors.simpleBlue, width: 1)),
                         alignment: Alignment.centerRight,
                         child: Row(
                           children: [
@@ -939,7 +945,7 @@ class _mainHomePageState extends State<mainHomePage> {
                             Text(
                               AppLocalizations.of(context)!.orderWay,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  color: MyColors.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Roboto'),
@@ -955,7 +961,7 @@ class _mainHomePageState extends State<mainHomePage> {
                         children: [
                           ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                                backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20.0),
@@ -966,8 +972,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             onPressed: () {
                               setState(() {
                                 startWidget = const RequestingOrderHallFirstWidget();
-                                colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                                colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                                colors[2] = MyColors.secondaryColor;
+                                colors[3] = MyColors.secondaryColor;
                               });
                             },
                             child: Text(
@@ -976,7 +982,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   fontFamily: 'Tajawal',
                                   fontWeight: FontWeight.w400,
                                   fontSize: 16,
-                                  color: Color.fromRGBO(255, 255, 255, 1)
+                                  color: Colors.white
                               ),
                             ),
                           ),
@@ -987,7 +993,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20.0),
                                         side: const BorderSide(
-                                            color: Color.fromRGBO(7, 45, 68, 1),
+                                            color: MyColors.primaryColor,
                                             width: 1
                                         )
                                     )
@@ -997,8 +1003,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             onPressed: () {
                               setState(() {
                                 startWidget = const RequestingOrderTimeFirstWidget();
-                                colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                                colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                                colors[2] = MyColors.secondaryColor;
+                                colors[3] = MyColors.secondaryColor;
                               });
                             },
                             child: Text(
@@ -1007,14 +1013,14 @@ class _mainHomePageState extends State<mainHomePage> {
                                     fontFamily: 'Tajawal',
                                     fontWeight: FontWeight.w400,
                                     fontSize: 16,
-                                    color: Color.fromRGBO(7, 45, 68, 1)
+                                    color: MyColors.primaryColor
                                 )),
                           ),
                         ],
                       )
                     ],
                   );
-                  colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+                  colors[3] = MyColors.simpleBlue;
                   colors[2] = Colors.white;
                 });
               }else if(startWidget is RequestingOrderTimeThirdWidget){
@@ -1066,7 +1072,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   shape: BoxShape.circle,
                                   color: colors[0],
                                   border: Border.all(
-                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                      color: MyColors.simpleBlue, width: 1)),
                             ),
                             Container(
                               width: 66,
@@ -1082,7 +1088,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   shape: BoxShape.circle,
                                   color: colors[2],
                                   border: Border.all(
-                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                      color: MyColors.simpleBlue, width: 1)),
                             ),
                             Container(
                               width: 66,
@@ -1098,7 +1104,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   shape: BoxShape.circle,
                                   color: colors[4],
                                   border: Border.all(
-                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                      color: MyColors.simpleBlue, width: 1)),
                             ),
                             Container(
                               width: 66,
@@ -1114,7 +1120,7 @@ class _mainHomePageState extends State<mainHomePage> {
                                   shape: BoxShape.circle,
                                   color: colors[6],
                                   border: Border.all(
-                                      color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                                      color: MyColors.simpleBlue, width: 1)),
                             )
                           ],
                         ),
@@ -1268,7 +1274,11 @@ class _mainHomePageState extends State<mainHomePage> {
     ):WillPopScope(
       onWillPop: (){
         if(isHome){
-          exit(0);
+          if (Platform.isAndroid) {
+            SystemNavigator.pop();
+          } else if (Platform.isIOS) {
+            exit(0);
+          }
         }else{
           setState(() {
             isHome = true;
@@ -1309,7 +1319,7 @@ class _mainHomePageState extends State<mainHomePage> {
                           "اسم الخادم",
                           style: TextStyle(
                               fontWeight: FontWeight.w400,
-                              color: Color.fromRGBO(7, 45, 68, 1),
+                              color: MyColors.primaryColor,
                               fontFamily: 'Tajawal'),
                         )
                       ],
@@ -1333,14 +1343,14 @@ class _mainHomePageState extends State<mainHomePage> {
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.language,color: Color.fromRGBO(7, 45, 68, 1)),
+                              const Icon(Icons.language,color: MyColors.primaryColor),
                               const SizedBox(
                                 width: 15,
                               ),
                               Text(
                                 AppLocalizations.of(context)!.chooseLan,
                                 style: const TextStyle(
-                                    color: Color.fromRGBO(7, 45, 68, 1),
+                                    color: MyColors.primaryColor,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                     decoration: TextDecoration.none,
@@ -1350,103 +1360,144 @@ class _mainHomePageState extends State<mainHomePage> {
                           ),
                           Icon(
                             langShown ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                            color: const Color.fromRGBO(7, 45, 68, 1),
+                            color: MyColors.primaryColor,
                           ),
                         ],
                       ),
                     ),
                   ),
                   langShown
-                      ? Material(
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () async {
-                        setState(() {
-                          isAr = true;
-                        });
-                        Locale local = await setLocale("ar");
-                        MyApp.setLocale(context, local);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: isAr
-                              ? const Color.fromRGBO(208, 215, 225, 1)
-                              : Colors.white,
-                        ),
-                        margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
-                        padding: const EdgeInsets.all(15),
-                        alignment: Alignment.centerRight,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: Flag.fromString("EG")),
-                            SizedBox(
-                              width: 10,
+                      ? SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Material(
+                          color: Colors.white,
+                          child: InkWell(
+                            onTap: () async {
+                              setState(() {
+                                isAr = true;
+                              });
+                              Locale local = await setLocale("ar");
+                              MyApp.setLocale(context, local);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isAr
+                                    ? MyColors.simpleBlue
+                                    : Colors.white,
+                              ),
+                              margin: const EdgeInsets.symmetric(horizontal: 15),
+                              padding: const EdgeInsets.all(5),
+                              alignment: Alignment.centerRight,
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: Flag.fromString("EG")),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "العربية",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        decoration: TextDecoration.none,
+                                        fontFamily: 'Tajawal'),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              "العربية",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  decoration: TextDecoration.none,
-                                  fontFamily: 'Tajawal'),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   )
                       : const SizedBox(),
+                  const SizedBox(height: 5,),
                   langShown
-                      ? Material(
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () async {
-                        setState(() {
-                          isAr = false;
-                        });
-                        Locale local0 = await setLocale("en");
-                        MyApp.setLocale(context, local0);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: isAr
-                              ? Colors.white
-                              : const Color.fromRGBO(208, 215, 225, 1),
-                        ),
-                        margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
-                        padding: const EdgeInsets.all(15),
-                        alignment: Alignment.centerRight,
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: Flag.fromString("US")),
-                            SizedBox(
-                              width: 10,
+                      ? SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        Material(
+                          color: Colors.white,
+                          child: InkWell(
+                            onTap: () async {
+                              setState(() {
+                                isAr = false;
+                              });
+                              Locale local0 = await setLocale("en");
+                              MyApp.setLocale(context, local0);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: isAr
+                                    ? Colors.white
+                                    : MyColors.simpleBlue,
+                              ),
+                              margin: const EdgeInsets.symmetric(horizontal: 15),
+                              padding: const EdgeInsets.all(5),
+                              alignment: Alignment.centerRight,
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: Flag.fromString("US")),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    "English",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 16,
+                                        decoration: TextDecoration.none,
+                                        fontFamily: 'Tajawal'),
+                                  )
+                                ],
+                              ),
                             ),
-                            Text(
-                              "English",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  decoration: TextDecoration.none,
-                                  fontFamily: 'Tajawal'),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   )
                       : const SizedBox(),
+                  const SizedBox(height: 20,),
+                  isAdmin?
+                      Material(
+                        color: Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          width: MediaQuery.of(context).size.width,
+                          child: InkWell(
+                            onTap: (){
+                              //TODO:GO TO USERS
+                              Navigator.of(context).pushNamed(usersPage);
+                            },
+                            child: Text(
+                              AppLocalizations.of(context)!.users,
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Tajawal',
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                      :const SizedBox.shrink()
                 ],
               ),
 
@@ -1477,11 +1528,11 @@ class _mainHomePageState extends State<mainHomePage> {
                                     shape: BoxShape.circle,
                                     color: Colors.transparent,
                                     border: Border.all(
-                                        color: const Color.fromRGBO(7, 45, 68, 1),
+                                        color: MyColors.primaryColor,
                                         width: 2.5
                                     )
                                 ),
-                                child: const Icon(size: 10,Icons.clear_rounded,color: Color.fromRGBO(7, 45, 68, 1))
+                                child: const Icon(size: 10,Icons.clear_rounded,color: MyColors.primaryColor)
                             ),
                             const SizedBox(
                               width: 15,

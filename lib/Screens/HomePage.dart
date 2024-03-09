@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   noOfFloors: 1,
   noOfHalls: 1,
   floors: [
-  Floor(floorNum: 2, rooms: [
+  Floor(floorName: "2", rooms: [
   Room(
   name: "ka3a 1",
   building: "El-batal",
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   noOfFloors: 15,
   noOfHalls: 30,
   floors: [
-  Floor(floorNum: 2, rooms: [
+  Floor(floorName: "2", rooms: [
   Room(
   name: "ka3a 1",
   building: "El-batal",
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: isAr
-                              ? const Color.fromRGBO(208, 215, 225, 1)
+                              ? MyColors.simpleBlue
                               : Colors.white,
                         ),
                         margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
@@ -221,7 +221,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(10),
                           color: isAr
                               ? Colors.white
-                              : const Color.fromRGBO(208, 215, 225, 1),
+                              : MyColors.simpleBlue,
                         ),
                         margin: const EdgeInsets.fromLTRB(180, 0, 0, 0),
                         padding: const EdgeInsets.all(15),
@@ -420,7 +420,25 @@ class _homeWidgetState extends State<homeWidget> {
         noOfFloors: 1,
         noOfHalls: 1,
         floors: [
-          Floor(floorNum: 2, rooms: [
+          Floor(floorName: "Second floor", rooms: [
+            Room(
+                name: "ka3a 1",
+                building: "El-batal",
+                capacity: 50,
+                hasAirConditioner: false,
+                hasTv: true,
+                id: 1
+            ),
+            Room(
+                name: "ka3a 1",
+                building: "El-batal",
+                capacity: 50,
+                hasAirConditioner: false,
+                hasTv: true,
+                id: 1
+            ),
+          ]),
+          Floor(floorName: "Second Floor", rooms: [
             Room(
                 name: "ka3a 1",
                 building: "El-batal",
@@ -438,7 +456,25 @@ class _homeWidgetState extends State<homeWidget> {
         noOfFloors: 15,
         noOfHalls: 30,
         floors: [
-          Floor(floorNum: 2, rooms: [
+          Floor(floorName: "Second Floor", rooms: [
+            Room(
+                name: "ka3a 1",
+                building: "El-batal",
+                capacity: 50,
+                hasAirConditioner: false,
+                hasTv: true,
+                id: 1
+            ),
+            Room(
+                name: "ka3a 1",
+                building: "El-batal",
+                capacity: 50,
+                hasAirConditioner: false,
+                hasTv: true,
+                id: 1
+            ),
+          ]),
+          Floor(floorName: "Second Floor", rooms: [
             Room(
                 name: "ka3a 1",
                 building: "El-batal",
@@ -479,7 +515,7 @@ class _homeWidgetState extends State<homeWidget> {
             child: Text(
               "${AppLocalizations.of(context)!.hello} $name",
               style: const TextStyle(
-                color: Color.fromRGBO(6, 68, 105, 1),
+                color: MyColors.secondaryColor,
                 fontFamily: 'Tajawal',
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
@@ -493,7 +529,7 @@ class _homeWidgetState extends State<homeWidget> {
             child: Text(
               AppLocalizations.of(context)!.homeMessage,
               style: const TextStyle(
-                color: Color.fromRGBO(6, 68, 105, 1),
+                color: MyColors.secondaryColor,
                 fontFamily: 'Tajawal',
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
@@ -518,7 +554,7 @@ class _homeWidgetState extends State<homeWidget> {
             child: Text(
               AppLocalizations.of(context)!.abuTalaat,
               style: const TextStyle(
-                color: Color.fromRGBO(6, 68, 105, 1),
+                color: MyColors.secondaryColor,
                 fontFamily: 'Tajawal',
                 fontWeight: FontWeight.bold,
                 fontSize: 24,

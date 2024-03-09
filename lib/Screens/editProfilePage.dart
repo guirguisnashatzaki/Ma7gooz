@@ -115,21 +115,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: nameBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: nameBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: nameBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
@@ -151,21 +151,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: serBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: serBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: serBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: serBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: serBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: serBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
@@ -188,21 +188,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: mobBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: mobBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool?const Color.fromRGBO(6, 68, 105, 1):Colors.red,
+                              color: mobBool? MyColors.secondaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
@@ -274,7 +274,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                             AppLocalizations.of(context)!.editAccQuestion,
                                             style: const TextStyle(
                                                 color:
-                                                Color.fromRGBO(6, 68, 105, 1),
+                                                MyColors.secondaryColor,
                                                 fontFamily: 'Tajawal',
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w700),
@@ -298,9 +298,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                   backgroundColor: MaterialStateProperty.all(
                                                       MyColors.primaryColor),
                                                   side: MaterialStateProperty.all(
-                                                      const BorderSide(
-                                                          color: Color.fromRGBO(
-                                                              6, 68, 105, 1),
+                                                      BorderSide(
+                                                          color: MyColors.secondaryColor,
                                                           width: 1)),
                                                   padding: MaterialStateProperty.all(
                                                       const EdgeInsets.fromLTRB(30, 10, 30, 10))),
@@ -391,9 +390,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                       Colors.white),
                                                   side:
                                                   MaterialStateProperty.all(
-                                                      const BorderSide(
-                                                        color: Color.fromRGBO(
-                                                            6, 68, 105, 1),
+                                                      BorderSide(
+                                                        color: MyColors.secondaryColor,
                                                         width: 1,
                                                       )),
                                                   padding: MaterialStateProperty.all(
@@ -404,12 +402,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               },
                                               child: Text(
                                                 AppLocalizations.of(context)!.del,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 16,
                                                     fontFamily: 'Tajawal',
-                                                    color: Color.fromRGBO(
-                                                        6, 68, 105, 1)),
+                                                    color: MyColors.secondaryColor),
                                               ),
                                             ),
                                           ],
@@ -428,7 +425,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             fontFamily: 'Tajawal',
-                            color: Color.fromRGBO(6, 68, 105, 1)),
+                            color: MyColors.secondaryColor),
                       ),
                     )
                   ],

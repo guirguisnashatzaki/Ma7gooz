@@ -5,6 +5,7 @@ import 'package:minamakram/Screens/buildingPage.dart';
 import 'package:minamakram/Screens/editProfilePage.dart';
 import 'package:minamakram/Screens/profilePage.dart';
 import 'package:minamakram/Screens/requestingOrdersPage.dart';
+import 'package:minamakram/Screens/usersPage.dart';
 import 'package:minamakram/constants/Language.dart';
 import 'Screens/LoginPage.dart';
 import 'Screens/mainHomePage.dart';
@@ -12,7 +13,6 @@ import 'Screens/ordersPage.dart';
 import 'constants/strings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'models/building/buildingObject.dart';
 
 void main() {
   runApp(MyApp(
@@ -84,9 +84,9 @@ class AppRouter {
         return MaterialPageRoute(
             builder: (_) => const BuildingPage());
       case buildingDetails:
-        var args = settings.arguments as Building;
+        var args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (_) => BuildingDetailsPage(item: args,));
+            builder: (_) => BuildingDetailsPage(item: args[0],isAdmin: args[1],));
       case profile:
         return MaterialPageRoute(
             builder: (_) => const profilePage());
@@ -99,6 +99,9 @@ class AppRouter {
       case requestingOrderPage:
         return MaterialPageRoute(
             builder: (_) => const RequestingOrdersPage());
+      case usersPage:
+        return MaterialPageRoute(
+            builder: (_) => const UsersPage());
     }
     return null;
   }

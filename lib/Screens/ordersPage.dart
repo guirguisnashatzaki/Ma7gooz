@@ -98,7 +98,7 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ),
                     side: MaterialStateProperty.all(const BorderSide(
-                        color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                        color: MyColors.secondaryColor, width: 1)),
                     backgroundColor:
                     MaterialStateProperty.all(rejectedBackgroundColor)),
                 onPressed: () {
@@ -130,7 +130,7 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ),
                     side: MaterialStateProperty.all(const BorderSide(
-                        color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                        color: MyColors.secondaryColor, width: 1)),
                     backgroundColor:
                     MaterialStateProperty.all(acceptedBackgroundColor)),
                 onPressed: () {
@@ -200,7 +200,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
       height: MediaQuery.of(context).size.height / 2.9,
       margin: const EdgeInsets.fromLTRB(0,0,0, 20),
       decoration: BoxDecoration(
-          color: const Color.fromRGBO(208, 215, 225, 1),
+          color: MyColors.simpleBlue,
           borderRadius: BorderRadius.circular(20)),
       child: Stack(
         children: [
@@ -230,7 +230,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                   AppLocalizations.of(context)!.delOrderQuestion,
                                   style: const TextStyle(
                                       color:
-                                      Color.fromRGBO(6, 68, 105, 1),
+                                      MyColors.secondaryColor,
                                       fontFamily: 'Tajawal',
                                       fontSize: 24,
                                       fontWeight: FontWeight.w700),
@@ -257,9 +257,8 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                               backgroundColor: MaterialStateProperty.all(
                                                   MyColors.primaryColor),
                                               side: MaterialStateProperty.all(
-                                                  const BorderSide(
-                                                      color: Color.fromRGBO(
-                                                          6, 68, 105, 1),
+                                                  BorderSide(
+                                                      color: MyColors.secondaryColor,
                                                       width: 1)),
                                               padding: MaterialStateProperty.all(
                                                   const EdgeInsets.fromLTRB(30, 10, 30, 10))),
@@ -351,9 +350,8 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                   Colors.white),
                                               side:
                                               MaterialStateProperty.all(
-                                                  const BorderSide(
-                                                    color: Color.fromRGBO(
-                                                        6, 68, 105, 1),
+                                                  BorderSide(
+                                                    color: MyColors.secondaryColor,
                                                     width: 1,
                                                   )),
                                               padding: MaterialStateProperty.all(
@@ -368,8 +366,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
                                                 fontFamily: 'Tajawal',
-                                                color: Color.fromRGBO(
-                                                    6, 68, 105, 1)),
+                                                color: MyColors.secondaryColor),
                                           ),
                                         ),
                                       ),
@@ -406,7 +403,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                   width: 40,
                   height: 40,
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(6, 68, 105, 1), shape: BoxShape.circle),
+                      color: MyColors.secondaryColor, shape: BoxShape.circle),
                   child: Material(
                     color: Colors.transparent,
                     child: IconButton(
@@ -434,7 +431,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
                           fontFamily: 'Tajawal',
-                          color: Color.fromRGBO(0, 0, 0, 1)),
+                          color: Colors.black),
                       textAlign: TextAlign.right,
                     ),
                     const SizedBox(
@@ -445,7 +442,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
                           fontFamily: 'Tajawal',
-                          color: Color.fromRGBO(0, 0, 0, 1)),
+                          color: Colors.black),
                       textAlign: TextAlign.right,
                     ),
                     const SizedBox(
@@ -455,7 +452,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(0, 0, 0, 1)),
+                        color: Colors.black),
                       textAlign: TextAlign.right,),
                     const SizedBox(
                       height: 5,
@@ -464,7 +461,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                        color: Colors.black),textAlign: TextAlign.right,),
                     const SizedBox(
                       height: 5,
                     ),
@@ -472,7 +469,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                        color: Colors.black),textAlign: TextAlign.right,),
                     const SizedBox(
                       height: 5,
                     ),
@@ -480,7 +477,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                        color: Colors.black),textAlign: TextAlign.right,),
                     const SizedBox(
                       height: 5,
                     ),
@@ -488,7 +485,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(0, 0, 0, 1)),textAlign: TextAlign.right,),
+                        color: Colors.black),textAlign: TextAlign.right,),
                   ],
                 ),
               ))

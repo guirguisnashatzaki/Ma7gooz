@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../constants/colors.dart';
 import '../constants/strings.dart';
 import '../models/order/orderObject.dart';
 
@@ -24,14 +25,14 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
             fontFamily: 'Tajawal',
             fontWeight: FontWeight.w500,
             fontSize: 24,
-            color: Color.fromRGBO(7, 45, 68, 1)
+            color: MyColors.primaryColor
           ),),
         ),
         const SizedBox(height: 24,),
         Container(
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(208, 215, 225, 1),
+            color: MyColors.simpleBlue,
             borderRadius: BorderRadius.circular(10),
 
           ),
@@ -45,7 +46,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     fontFamily: 'Tajawal',
-                    color: Color.fromRGBO(7, 45, 68, 1)
+                    color: MyColors.primaryColor
                   ),
                 ),
               ),
@@ -58,7 +59,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       fontFamily: 'Tajawal',
-                      color: Color.fromRGBO(7, 45, 68, 1)
+                      color: MyColors.primaryColor
                   ),
                 ),
               ),
@@ -72,7 +73,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Tajawal',
-                        color: Color.fromRGBO(7, 45, 68, 1)
+                        color: MyColors.primaryColor
                     ),
                     children: [
                       TextSpan(
@@ -81,7 +82,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Tajawal',
-                            color: Color.fromRGBO(7, 45, 68, 1)
+                            color: MyColors.primaryColor
                         )
                       )
                     ]
@@ -98,7 +99,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Tajawal',
-                            color: Color.fromRGBO(7, 45, 68, 1)
+                            color: MyColors.primaryColor
                         ),
                         children: [
                           TextSpan(
@@ -107,7 +108,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Tajawal',
-                                  color: Color.fromRGBO(7, 45, 68, 1)
+                                  color: MyColors.primaryColor
                               )
                           )
                         ]
@@ -124,7 +125,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Tajawal',
-                            color: Color.fromRGBO(7, 45, 68, 1)
+                            color: MyColors.primaryColor
                         )
                     ),
 
@@ -142,7 +143,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 fontFamily: 'Tajawal',
-                                color: Color.fromRGBO(7, 45, 68, 1)
+                                color: MyColors.primaryColor
                             ),
                             children: [
                               TextSpan(
@@ -151,7 +152,7 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                       fontFamily: 'Tajawal',
-                                      color: Color.fromRGBO(7, 45, 68, 1)
+                                      color: MyColors.primaryColor
                                   )
                               )
                             ]
@@ -172,9 +173,9 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(6, 68, 105, 1)),
+                    backgroundColor: MaterialStateProperty.all(MyColors.secondaryColor),
                     side: MaterialStateProperty.all(const BorderSide(
-                        color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                        color: MyColors.secondaryColor, width: 1)),
                     padding: MaterialStateProperty.all(
                         const EdgeInsets.fromLTRB(30, 10, 30, 10))),
                 onPressed: (){
@@ -248,13 +249,13 @@ class _RequestingOrderHallThirdWidgetState extends State<RequestingOrderHallThir
                             borderRadius: BorderRadius.circular(10))),
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                     side: MaterialStateProperty.all(const BorderSide(
-                        color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                        color: MyColors.secondaryColor, width: 1)),
                     padding: MaterialStateProperty.all(
                         const EdgeInsets.fromLTRB(30, 10, 30, 10))),
                 onPressed: (){
                   Navigator.pushNamed(context, home);
                 },
-                child: Text(AppLocalizations.of(context)!.del,style: const TextStyle(color: Color.fromRGBO(6, 68, 105, 1),fontFamily: "Tajawal",fontWeight: FontWeight.w400,fontSize: 16),)
+                child: Text(AppLocalizations.of(context)!.del,style: const TextStyle(color: MyColors.secondaryColor,fontFamily: "Tajawal",fontWeight: FontWeight.w400,fontSize: 16),)
             )
           ],
         )

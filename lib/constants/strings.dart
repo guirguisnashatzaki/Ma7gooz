@@ -8,3 +8,4 @@ const profile = "/profile";
 const editProfile = "/editprofile";
 const ordersPage = "/ordersPage";
 const requestingOrderPage = "/requestingOrderPage";
+const usersPage = "/usersPage";

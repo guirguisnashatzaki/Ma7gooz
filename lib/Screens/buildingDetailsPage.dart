@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:minamakram/Screens/editBuildingScreen.dart';
 import 'package:minamakram/Screens/mainHomePage.dart';
+import '../constants/Language.dart';
 import '../constants/colors.dart';
 import '../constants/strings.dart';
 import '../models/building/buildingObject.dart';
@@ -8,17 +10,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BuildingDetailsPage extends StatefulWidget {
   Building item;
-  BuildingDetailsPage({Key? key, required this.item}) : super(key: key);
+  bool isAdmin;
+  BuildingDetailsPage({Key? key, required this.item,required this.isAdmin}) : super(key: key);
 
   @override
   State<BuildingDetailsPage> createState() => _BuildingDetailsPageState();
 }
 
 class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
+  bool menuOpened = false;
   int _current = 0;
   final CarouselController _controller = CarouselController();
   bool showDetails = false;
   List<bool>? showFloorDetails = List.generate(100, (index) => false);
+  bool isAr = true;
 
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -30,17 +35,48 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
   ];
 
   @override
+  void initState() {
+    getLocale().then((value) {
+      if (value.languageCode == "ar") {
+        setState(() {
+          isAr = true;
+        });
+      } else {
+        setState(() {
+          isAr = false;
+        });
+      }
+    });
+    setState(() {
+      menuOpened = false;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        actions: widget.isAdmin?[
+          IconButton(
+              onPressed: (){
+                setState(() {
+                  menuOpened = !menuOpened;
+                });
+              },
+              icon: const Icon(Icons.more_vert,color: Colors.black,)
+          )
+        ]:[
+
+        ],
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         backgroundColor: Colors.white,
@@ -50,222 +86,283 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
             fontWeight: FontWeight.w400,
             fontSize: 24,
             fontFamily: 'Tajawal',
-            color: Color.fromRGBO(6, 68, 105, 1),
+            color: MyColors.secondaryColor,
           ),
         ),
         centerTitle: true,
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                opacity: 0.1,
-                image: AssetImage(
-                  "assets/images/knissa.png",
-                ),
-                fit: BoxFit.contain
-            )
-        ),
-        child: Column(
-          children: [
-            CarouselSlider(
-              options: CarouselOptions(
-                  height: 333,
-                  autoPlay: false,
-                  enlargeCenterPage: true,
-                  aspectRatio: 2.0,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _current = index;
-                    });
-                  }),
-              items: imgList
-                  .map((item) => Container(
-                        margin: const EdgeInsets.all(5.0),
-                        child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(5.0)),
-                            child: Stack(
-                              children: <Widget>[
-                                Image.network(item,
-                                    fit: BoxFit.cover, width: 1000.0),
-                                Positioned(
-                                  bottom: 0.0,
-                                  left: 0.0,
-                                  right: 0.0,
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromARGB(200, 0, 0, 0),
-                                          Color.fromARGB(0, 0, 0, 0)
-                                        ],
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 20.0),
-                                    child: Text(
-                                      'No. ${imgList.indexOf(item)} image',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                      ))
-                  .toList(),
+      body: Stack(
+        children: [
+
+          Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    opacity: 0.1,
+                    image: AssetImage(
+                      "assets/images/knissa.png",
+                    ),
+                    fit: BoxFit.contain
+                )
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imgList.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _controller.animateToPage(entry.key),
+            child: Column(
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                      height: 333,
+                      autoPlay: false,
+                      enlargeCenterPage: true,
+                      aspectRatio: 2.0,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _current = index;
+                        });
+                      }),
+                  items: imgList
+                      .map((item) => Container(
+                            margin: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(5.0)),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.network(item,
+                                        fit: BoxFit.cover, width: 1000.0),
+                                    Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(200, 0, 0, 0),
+                                              Color.fromARGB(0, 0, 0, 0)
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 20.0),
+                                        child: Text(
+                                          'No. ${imgList.indexOf(item)} image',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ))
+                      .toList(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: imgList.asMap().entries.map((entry) {
+                    return GestureDetector(
+                      onTap: () => _controller.animateToPage(entry.key),
+                      child: Container(
+                        width: 12.0,
+                        height: 12.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: (Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black)
+                                .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                SingleChildScrollView(
                   child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
+                    alignment: Alignment.centerRight,
+                    margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: (Theme.of(context).brightness == Brightness.dark
-                                ? Colors.white
-                                : Colors.black)
-                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            SingleChildScrollView(
-              child: Container(
-                alignment: Alignment.centerRight,
-                margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1),
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: MyColors.simpleBlue,
+                        width: 1,
+                      ),
+                    ),
+                    child: Column(
                       children: [
-                        Text(
-                          widget.item.name,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                        Row(
+                          children: [
+                            Text(
+                              widget.item.name,
+                              style: const TextStyle(
+                                  fontFamily: 'Tajawal',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                  color: MyColors.primaryColor),
+                            ),
+                            IconButton(
+                                icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                onPressed: () {
+                                    setState(() {
+                                      showDetails = !showDetails;
+                                    });
+                                }),
+                          ],
                         ),
-                        IconButton(
-                            icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                            onPressed: () {
-                                setState(() {
-                                  showDetails = !showDetails;
-                                });
-                            }),
+                        showDetails? Column(
+                          children: List.generate(widget.item.floors.length, (index) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.item.floors[index].floorName.toString(),
+                                      style: const TextStyle(
+                                          fontFamily: 'Tajawal',
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: MyColors.primaryColor),
+                                    ),
+                                    IconButton(
+                                        icon:
+                                        showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                        onPressed: () {
+                                          setState(() {
+                                            showFloorDetails![index] = !showFloorDetails![index];
+                                          });
+
+                                        }),
+                                  ],
+                                ),
+                                showFloorDetails![index]? Container(
+                                  margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                  child: Column(
+                                    children: List.generate(
+                                        widget.item.floors[index].rooms.length,
+                                        (numOfFloor) {
+                                      return Row(
+                                        children: [
+                                          const Text(
+                                            "\u2022 ",
+                                            style: TextStyle(
+                                                fontFamily: 'Tajawal',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: MyColors.primaryColor),
+                                          ),
+                                          Text(
+                                            "${widget.item.floors[index].rooms[numOfFloor]
+                                                    .name} (${widget.item.floors[index]
+                                                    .rooms[numOfFloor].capacity})",
+                                            style: const TextStyle(
+                                                fontFamily: 'Tajawal',
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: MyColors.primaryColor),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                  ),
+                                ):const SizedBox()
+                              ],
+                            );
+                          }),
+                        ):const SizedBox(),
+
                       ],
                     ),
-                    showDetails? Column(
-                      children: List.generate(widget.item.floors.length, (index) {
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  widget.item.floors[index].floorNum.toString(),
-                                  style: const TextStyle(
-                                      fontFamily: 'Tajawal',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromRGBO(7, 45, 68, 1)),
-                                ),
-                                IconButton(
-                                    icon:
-                                    showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                                    onPressed: () {
-                                      setState(() {
-                                        showFloorDetails![index] = !showFloorDetails![index];
-                                      });
-
-                                    }),
-                              ],
-                            ),
-                            showFloorDetails![index]? Container(
-                              margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                              child: Column(
-                                children: List.generate(
-                                    widget.item.floors[index].rooms.length,
-                                    (numOfFloor) {
-                                  return Row(
-                                    children: [
-                                      const Text(
-                                        "\u2022 ",
-                                        style: TextStyle(
-                                            fontFamily: 'Tajawal',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color.fromRGBO(7, 45, 68, 1)),
-                                      ),
-                                      Text(
-                                        "${widget.item.floors[index].rooms[numOfFloor]
-                                                .name} (${widget.item.floors[index]
-                                                .rooms[numOfFloor].capacity})",
-                                        style: const TextStyle(
-                                            fontFamily: 'Tajawal',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color.fromRGBO(7, 45, 68, 1)),
-                                      ),
-                                    ],
-                                  );
-                                }),
-                              ),
-                            ):const SizedBox()
-                          ],
-                        );
-                      }),
-                    ):const SizedBox(),
-
-                  ],
+                  ),
                 ),
+                const SizedBox(height: 60,),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+                      side: MaterialStateProperty.all(const BorderSide(
+                          color: MyColors.secondaryColor, width: 1)),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.fromLTRB(60, 14, 60, 14))),
+                  onPressed: (){
+                    Navigator.popAndPushNamed(context, home,arguments: true);
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.book,
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Tajawal',
+                        color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          ),
+          menuOpened ? Positioned(
+            top: 0,
+            left: isAr ? 0 : MediaQuery.of(context).size.width-MediaQuery.of(context).size.width/3.15,
+            child:Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: MyColors.primaryColor,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (builder) => EditBuilding(isAdmin: widget.isAdmin, item: widget.item)));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 45),
+                      color: MyColors.primaryColor,
+                      child: Text(
+                          AppLocalizations.of(context)!.edit,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Tajawal'
+                          ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 0),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                            AppLocalizations.of(context)!.remBuilding,
+                          style: const TextStyle(
+                              color: MyColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Tajawal'
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-            const SizedBox(height: 60,),
-            ElevatedButton(
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                  side: MaterialStateProperty.all(const BorderSide(
-                      color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
-                  padding: MaterialStateProperty.all(
-                      const EdgeInsets.fromLTRB(60, 14, 60, 14))),
-              onPressed: (){
-                Navigator.popAndPushNamed(context, home,arguments: true);
-              },
-              child: Text(
-                AppLocalizations.of(context)!.book,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'Tajawal',
-                    color: Colors.white),
-              ),
-            )
-          ],
-        ),
+          ):const SizedBox(),
+        ],
       ),
     );
   }

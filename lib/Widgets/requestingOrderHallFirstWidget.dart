@@ -62,7 +62,7 @@ class _RequestingOrderHallFirstWidgetState
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             // alignment: Alignment.centerRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,7 +76,7 @@ class _RequestingOrderHallFirstWidgetState
                     Text(
                       activity,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Tajawal'),
@@ -145,7 +145,7 @@ class _RequestingOrderHallFirstWidgetState
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             // alignment: Alignment.centerRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -159,7 +159,7 @@ class _RequestingOrderHallFirstWidgetState
                     Text(
                       date,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Tajawal'),
@@ -203,18 +203,18 @@ class _RequestingOrderHallFirstWidgetState
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)),
+                              color: MyColors.primaryColor),
                         )),
                     SfDateRangePicker(
                       showNavigationArrow: true,
                       showTodayButton: true,
-                      selectionColor: const Color.fromRGBO(208, 215, 225, 1),
-                      todayHighlightColor: const Color.fromRGBO(7, 45, 68, 1),
+                      selectionColor: MyColors.simpleBlue,
+                      todayHighlightColor: MyColors.primaryColor,
                       onSelectionChanged: (args){
                         order.date = args.value.toString().split(" ")[0];
                         setState(() {
-                          date = args.value.toString().split(" ")[0];
-                          dateBool = false;
+                            date = args.value.toString().split(" ")[0];
+                            dateBool = false;
                         });
                       },
                     ),
@@ -230,7 +230,7 @@ class _RequestingOrderHallFirstWidgetState
           child: Text(
             AppLocalizations.of(context)!.pleaseEnterDetails,
             style: const TextStyle(
-                color: Color.fromRGBO(7, 45, 68, 1),
+                color: MyColors.primaryColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
                 fontFamily: 'Tajawal'),
@@ -257,7 +257,7 @@ class _RequestingOrderHallFirstWidgetState
                       color: MyColors.simpleBlue,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            color: MyColors.simpleBlue, width: 1)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -266,7 +266,7 @@ class _RequestingOrderHallFirstWidgetState
                             Text(
                               building,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  color: MyColors.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Tajawal'),
@@ -351,7 +351,7 @@ class _RequestingOrderHallFirstWidgetState
                       color: MyColors.simpleBlue,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1),
+                            color: MyColors.simpleBlue, width: 1),
 
                     ),
                     child: Row(
@@ -362,7 +362,7 @@ class _RequestingOrderHallFirstWidgetState
                             Text(
                               floor,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  color: MyColors.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                 fontFamily: 'Tajawal',),
@@ -447,7 +447,7 @@ class _RequestingOrderHallFirstWidgetState
                         color: MyColors.simpleBlue,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                            color: MyColors.simpleBlue, width: 1)),
                     alignment: Alignment.centerRight,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -457,7 +457,7 @@ class _RequestingOrderHallFirstWidgetState
                             Text(
                               hall,
                               style: const TextStyle(
-                                  color: Color.fromRGBO(7, 45, 68, 1),
+                                  color: MyColors.primaryColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   fontFamily: 'Tajawal',),
@@ -530,7 +530,7 @@ class _RequestingOrderHallFirstWidgetState
                       borderRadius: BorderRadius.circular(10))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
-                  color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                  color: MyColors.secondaryColor, width: 1)),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.fromLTRB(30, 10, 30, 10))),
           onPressed: () {
@@ -584,7 +584,7 @@ class _RequestingOrderHallFirstWidgetState
                                   fontSize: 24,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: 'Tajawal',
-                                  color: Color.fromRGBO(7, 45, 68, 1)),
+                                  color: MyColors.primaryColor),
                             )),
                       ));
             }

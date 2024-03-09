@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minamakram/constants/Language.dart';
 import 'package:minamakram/constants/colors.dart';
 import 'package:minamakram/constants/strings.dart';
@@ -53,7 +54,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: (){
-        exit(0);
+        if (Platform.isAndroid) {
+          SystemNavigator.pop();
+        } else if (Platform.isIOS) {
+          exit(0);
+        }
+        return Future(() => false);
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -77,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontFamily: 'Tajawal',
                       fontWeight: FontWeight.w400,
                       fontSize: 32,
-                      color: Color.fromRGBO(0, 0, 0, 1),
+                      color: Colors.black,
                       decoration: TextDecoration.none,
                     ),
                   ),
@@ -102,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Tajawal',
-                              color: Color.fromRGBO(0, 0, 0, 1),
+                              color: Colors.black,
                               decoration: TextDecoration.none,
                             ),
                           ),
@@ -150,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Tajawal',
-                              color: Color.fromRGBO(0, 0, 0, 1),
+                              color: Colors.black,
                               decoration: TextDecoration.none,
                             ),
                           ),
@@ -198,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                               if (validName && validPass) {
                                 //TODO:API Call
 
-                                Navigator.pushNamed(context, home,arguments: false);
+                                Navigator.pushReplacementNamed(context, home,arguments: false);
                               }
                             },
                             validator: (value) {
@@ -260,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   fontFamily: 'inter',
-                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  color: Colors.black,
                                   decoration: TextDecoration.none,
                                 ),
                               ),
@@ -325,7 +331,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Text(
                       AppLocalizations.of(context)!.enter,
                       style: const TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 1),
+                        color: Colors.white,
                         fontFamily: 'Tajawal',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -358,7 +364,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Text(
                                     AppLocalizations.of(context)!.chooseLan,
                                     style: const TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 1),
+                                        color: Colors.white,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16,
                                         decoration: TextDecoration.none,
@@ -371,7 +377,7 @@ class _LoginPageState extends State<LoginPage> {
                                         languagesShown
                                             ? Icons.keyboard_arrow_up_sharp
                                             : Icons.keyboard_arrow_down_sharp,
-                                        color: const Color.fromRGBO(255, 255, 255, 1),
+                                        color: Colors.white,
                                       ),
                                   ),
                                 ],
@@ -401,7 +407,7 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: isAr
-                                    ? const Color.fromRGBO(208, 215, 225, 1)
+                                    ? MyColors.simpleBlue
                                     : Colors.white,
                               ),
                               margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -456,7 +462,7 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(10),
                                 color: isAr
                                     ? Colors.white
-                                    : const Color.fromRGBO(208, 215, 225, 1),
+                                    : MyColors.simpleBlue,
                               ),
                               margin: const EdgeInsets.symmetric(horizontal: 15),
                               padding: const EdgeInsets.all(5),
@@ -489,7 +495,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       )
                       : const SizedBox(),
-
                 ],
               ),
             ),

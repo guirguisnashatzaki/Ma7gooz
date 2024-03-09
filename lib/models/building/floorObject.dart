@@ -1,8 +1,8 @@
 import '../room/roomObject.dart';
 
 class Floor{
-  int floorNum;
+  String floorName;
   List<Room> rooms;
 
-  Floor({required this.floorNum,required this.rooms});
+  Floor({required this.floorName,required this.rooms});
 }

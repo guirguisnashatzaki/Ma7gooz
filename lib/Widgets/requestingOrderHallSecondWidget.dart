@@ -40,12 +40,12 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                  color: MyColors.simpleBlue, width: 1)),
           child: RichText(
                     text: TextSpan(
                       text: AppLocalizations.of(context)!.activityRes,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           fontFamily: 'Roboto'),
@@ -53,7 +53,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                         TextSpan(
                           text: widget.order.activity,
                           style: const TextStyle(
-                              color: Color.fromRGBO(7, 45, 68, 1),
+                              color: MyColors.primaryColor,
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Roboto'),
@@ -69,13 +69,13 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                  color: MyColors.simpleBlue, width: 1)),
 
           child: RichText(
             text: TextSpan(
                 text: AppLocalizations.of(context)!.dateRes,
                 style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Roboto'),
@@ -83,7 +83,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                   TextSpan(
                     text: widget.order.date,
                     style: const TextStyle(
-                        color: Color.fromRGBO(7, 45, 68, 1),
+                        color: MyColors.primaryColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Roboto'),
@@ -98,13 +98,13 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                  color: MyColors.simpleBlue, width: 1)),
           width: MediaQuery.of(context).size.width,
           child: RichText(
             text: TextSpan(
                 text: widget.order.buildingAccepted,
                 style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Roboto'),
@@ -117,13 +117,13 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                  color: MyColors.simpleBlue, width: 1)),
           width: MediaQuery.of(context).size.width,
           child: RichText(
             text: TextSpan(
                 text: widget.order.floorAccepted,
                 style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Roboto'),
@@ -136,13 +136,13 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                  color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                  color: MyColors.simpleBlue, width: 1)),
           width: MediaQuery.of(context).size.width,
           child: RichText(
             text: TextSpan(
                 text: widget.order.hallAccepted,
                 style: const TextStyle(
-                    color: Color.fromRGBO(7, 45, 68, 1),
+                    color: MyColors.primaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Roboto'),
@@ -161,7 +161,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             width: MediaQuery.of(context).size.width,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,7 +175,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                     Text(
                       AppLocalizations.of(context)!.availableTimes,
                       style: const TextStyle(
-                          color: Color.fromRGBO(7, 45, 68, 1),
+                          color: MyColors.primaryColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'Roboto'),
@@ -215,7 +215,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                     ifLast: index == timings.length - 1 ? true : false,
                   ),
                       leading:  Checkbox(
-                        activeColor: const Color.fromRGBO(7, 45, 68, 1),
+                        activeColor: MyColors.primaryColor,
                           value: timingsBool[index],
                           onChanged: (value){
                             setState(() {
@@ -238,7 +238,7 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                       borderRadius: BorderRadius.circular(20))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
-                  color: Color.fromRGBO(6, 68, 105, 1), width: 1)),
+                  color: MyColors.secondaryColor, width: 1)),
               padding: MaterialStateProperty.all(
                   const EdgeInsets.fromLTRB(30, 10, 30, 10))),
           onPressed: () {

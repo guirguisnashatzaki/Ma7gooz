@@ -26,12 +26,12 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
   Order myOrder = Order();
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   List<Color> colors=[
-    const Color.fromRGBO(6, 68, 105, 1),
-    const Color.fromRGBO(6, 68, 105, 1),
+    MyColors.secondaryColor,
+    MyColors.secondaryColor,
     Colors.white,
-    const Color.fromRGBO(208, 215, 225, 1),
+    MyColors.simpleBlue,
     Colors.white,
-    const Color.fromRGBO(208, 215, 225, 1),
+    MyColors.simpleBlue,
     Colors.white
   ];
 
@@ -49,8 +49,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
   void goToThirdPart(){
     setState(() {
       startWidget = const RequestingOrderHallFirstWidget();
-      colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-      colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+      colors[4] = MyColors.secondaryColor;
+      colors[5] = MyColors.secondaryColor;
     });
   }
 
@@ -75,7 +75,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   fontFamily: 'Tajawal',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
             ),
           ),
           const SizedBox(
@@ -89,7 +89,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   fontFamily: 'Tajawal',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
-                  color: Color.fromRGBO(7, 45, 68, 1)),
+                  color: MyColors.primaryColor),
             ),
           ),
           const SizedBox(
@@ -100,7 +100,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                    color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                    color: MyColors.simpleBlue, width: 1)),
             alignment: Alignment.centerRight,
             child: Row(
               children: [
@@ -111,7 +111,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                 Text(
                   AppLocalizations.of(context)!.orderWay,
                   style: const TextStyle(
-                      color: Color.fromRGBO(7, 45, 68, 1),
+                      color: MyColors.primaryColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       fontFamily: 'Roboto'),
@@ -127,7 +127,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                    backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
@@ -138,8 +138,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                 onPressed: () {
                   setState(() {
                     startWidget = const RequestingOrderHallFirstWidget();
-                    colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                    colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                    colors[2] = MyColors.secondaryColor;
+                    colors[3] = MyColors.secondaryColor;
                   });
                 },
                 child: Text(
@@ -148,7 +148,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       fontFamily: 'Tajawal',
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
-                      color: Color.fromRGBO(255, 255, 255, 1)
+                      color: Colors.white
                   ),
                 ),
               ),
@@ -159,7 +159,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                             side: const BorderSide(
-                                color: Color.fromRGBO(7, 45, 68, 1),
+                                color: MyColors.primaryColor,
                                 width: 1
                             )
                         )
@@ -169,8 +169,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                 onPressed: () {
                   setState(() {
                     startWidget = const RequestingOrderTimeFirstWidget();
-                    colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                    colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                    colors[2] = MyColors.secondaryColor;
+                    colors[3] = MyColors.secondaryColor;
                   });
                 },
                 child: Text(
@@ -179,7 +179,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)
+                        color: MyColors.primaryColor
                     )),
               ),
             ],
@@ -209,8 +209,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
               order.buildingAccepted = event.data?["building"];
               myOrder.buildingAccepted = event.data?["building"];
               startWidget = RequestingOrderHallSecondWidget(order: order,);
-              colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-              colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+              colors[4] = MyColors.secondaryColor;
+              colors[5] = MyColors.secondaryColor;
           });
           break;
         case "Fourth page":
@@ -229,7 +229,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
               }
             }
             startWidget = RequestingOrderHallThirdWidget(order: order,);
-            colors[6] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[6] = MyColors.secondaryColor;
           });
           break;
         case "second time page":
@@ -245,8 +245,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
               }
             }
             startWidget = RequestingOrderTimeSecondWidget(order: order,);
-            colors[4] = const Color.fromRGBO(6, 68, 105, 1);
-            colors[5] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[4] = MyColors.secondaryColor;
+            colors[5] = MyColors.secondaryColor;
           });
           break;
         case "third time page":
@@ -273,7 +273,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
               }
             }
             startWidget = RequestingOrderTimeThirdWidget(order: order,);
-            colors[6] = const Color.fromRGBO(6, 68, 105, 1);
+            colors[6] = MyColors.secondaryColor;
           });
           break;
       }
@@ -300,7 +300,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
           setState(() {
             startWidget = const RequestingOrderHallFirstWidget();
             colors[4] = Colors.white;
-            colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[5] = MyColors.simpleBlue;
           });
         }else if(startWidget is RequestingOrderHallThirdWidget){
           setState(() {
@@ -319,7 +319,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -333,7 +333,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -344,7 +344,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                          color: MyColors.simpleBlue, width: 1)),
                   alignment: Alignment.centerRight,
                   child: Row(
                     children: [
@@ -355,7 +355,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       Text(
                         AppLocalizations.of(context)!.orderWay,
                         style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
+                            color: MyColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Roboto'),
@@ -371,7 +371,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -382,8 +382,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -392,7 +392,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                             fontFamily: 'Tajawal',
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
-                            color: Color.fromRGBO(255, 255, 255, 1)
+                            color: Colors.white
                         ),
                       ),
                     ),
@@ -403,7 +403,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                   side: const BorderSide(
-                                      color: Color.fromRGBO(7, 45, 68, 1),
+                                      color: MyColors.primaryColor,
                                       width: 1
                                   )
                               )
@@ -413,8 +413,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -423,21 +423,21 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)
+                              color: MyColors.primaryColor
                           )),
                     ),
                   ],
                 )
               ],
             );
-            colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
         }else if(startWidget is RequestingOrderTimeSecondWidget){
           setState(() {
             startWidget = const RequestingOrderTimeFirstWidget();
             colors[4] = Colors.white;
-            colors[5] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[5] = MyColors.simpleBlue;
           });
         }else if(startWidget is RequestingOrderTimeFirstWidget){
           setState(() {
@@ -451,7 +451,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -465,7 +465,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: Color.fromRGBO(7, 45, 68, 1)),
+                        color: MyColors.primaryColor),
                   ),
                 ),
                 const SizedBox(
@@ -476,7 +476,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                          color: MyColors.simpleBlue, width: 1)),
                   alignment: Alignment.centerRight,
                   child: Row(
                     children: [
@@ -487,7 +487,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       Text(
                         AppLocalizations.of(context)!.orderWay,
                         style: const TextStyle(
-                            color: Color.fromRGBO(7, 45, 68, 1),
+                            color: MyColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Roboto'),
@@ -503,7 +503,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(7, 45, 68, 1)),
+                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -514,8 +514,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -524,7 +524,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                             fontFamily: 'Tajawal',
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
-                            color: Color.fromRGBO(255, 255, 255, 1)
+                            color: Colors.white
                         ),
                       ),
                     ),
@@ -535,7 +535,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                   side: const BorderSide(
-                                      color: Color.fromRGBO(7, 45, 68, 1),
+                                      color: MyColors.primaryColor,
                                       width: 1
                                   )
                               )
@@ -545,8 +545,8 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                       onPressed: () {
                         setState(() {
                           startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = const Color.fromRGBO(6, 68, 105, 1);
-                          colors[3] = const Color.fromRGBO(6, 68, 105, 1);
+                          colors[2] = MyColors.secondaryColor;
+                          colors[3] = MyColors.secondaryColor;
                         });
                       },
                       child: Text(
@@ -555,14 +555,14 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                               fontFamily: 'Tajawal',
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
-                              color: Color.fromRGBO(7, 45, 68, 1)
+                              color: MyColors.primaryColor
                           )),
                     ),
                   ],
                 )
               ],
             );
-            colors[3] = const Color.fromRGBO(208, 215, 225, 1);
+            colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
         }else if(startWidget is RequestingOrderTimeThirdWidget){
@@ -586,7 +586,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
               fontWeight: FontWeight.w400,
               fontSize: 24,
               fontFamily: 'Tajawal',
-              color: Color.fromRGBO(6, 68, 105, 1),
+              color: MyColors.secondaryColor,
             ),
           ),
           centerTitle: true,
@@ -615,7 +615,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                           shape: BoxShape.circle,
                           color: colors[0],
                           border: Border.all(
-                              color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                              color: MyColors.simpleBlue, width: 1)),
                     ),
                     Container(
                       width: 66,
@@ -631,7 +631,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                           shape: BoxShape.circle,
                           color: colors[2],
                           border: Border.all(
-                              color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                              color: MyColors.simpleBlue, width: 1)),
                     ),
                     Container(
                       width: 66,
@@ -647,7 +647,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                           shape: BoxShape.circle,
                           color: colors[4],
                           border: Border.all(
-                              color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                              color: MyColors.simpleBlue, width: 1)),
                     ),
                     Container(
                       width: 66,
@@ -663,7 +663,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                           shape: BoxShape.circle,
                           color: colors[6],
                           border: Border.all(
-                              color: const Color.fromRGBO(208, 215, 225, 1), width: 1)),
+                              color: MyColors.simpleBlue, width: 1)),
                     )
                   ],
                 ),
