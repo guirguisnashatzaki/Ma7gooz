@@ -10,6 +10,7 @@ class Order {
   String? hallAccepted;
   List<String>? times;
   List<String>? buildings;
+  String? rejectionReason;
 
 
   Order(
@@ -23,7 +24,8 @@ class Order {
         this.floorAccepted,
         this.hallAccepted,
         this.buildings,
-        this.times
+        this.times,
+        this.rejectionReason
       });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -38,6 +40,7 @@ class Order {
     hallAccepted = json['hallAccepted'];
     buildings = json['buildings'];
     times = json['times'];
+    rejectionReason = json['rejectionReason'];
   }
 
   Map<String, dynamic> toJson() {
@@ -53,6 +56,7 @@ class Order {
     data['hallAccepted'] = hallAccepted;
     data['buildings'] = buildings;
     data['times'] = times;
+    data['rejectionReason'];
     return data;
   }
 }

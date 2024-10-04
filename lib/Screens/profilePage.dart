@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:minamakram/constants/strings.dart';
 import '../constants/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class profilePage extends StatefulWidget {
-  const profilePage({Key? key}) : super(key: key);
+  bool isAr;
+  profilePage({Key? key,required this.isAr}) : super(key: key);
 
   @override
   State<profilePage> createState() => _profilePageState();
 }
 
 class _profilePageState extends State<profilePage> {
+
+  @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    super.initState();
+  }
 
   bool menuOpened = false;
 
@@ -39,7 +50,8 @@ class _profilePageState extends State<profilePage> {
           )),
       Positioned(
           top: 30,
-          left: 0,
+          left: widget.isAr?0:null,
+          right: widget.isAr?null:0,
           child: IconButton(
             icon: const Icon(Icons.more_vert,color: Colors.white,),
             onPressed: (){
@@ -51,8 +63,10 @@ class _profilePageState extends State<profilePage> {
       ),
       menuOpened ? Positioned(
           top: 70,
-          left: 0,
+          left: widget.isAr?0:null,
+          right: widget.isAr?null:0,
           child: Container(
+            alignment: Alignment.center,
             margin: const EdgeInsets.only(left: 15),
             padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 40),
             decoration: BoxDecoration(
@@ -64,7 +78,8 @@ class _profilePageState extends State<profilePage> {
                 setState(() {
                   menuOpened = false;
                 });
-                Navigator.pushNamed(context, editProfile);
+
+                sendBroadcast(BroadcastMessage(name: "edit profile"));
               },
               child: Text(
                 AppLocalizations.of(context)!.edit,
@@ -80,10 +95,11 @@ class _profilePageState extends State<profilePage> {
       ):const SizedBox(),
       Positioned(
           top: 30,
-          right: 0,
+          right: widget.isAr?0:null,
+          left: widget.isAr? null:0,
           child: IconButton(
             onPressed: () {
-              Navigator.popAndPushNamed(context, home,arguments: false);
+              sendBroadcast(BroadcastMessage(name: "profile error"));
             },
             icon: const Icon(
               Icons.arrow_back,

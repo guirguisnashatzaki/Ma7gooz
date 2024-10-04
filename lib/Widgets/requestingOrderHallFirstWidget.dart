@@ -85,11 +85,11 @@ class _RequestingOrderHallFirstWidgetState
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   activityBool = !activityBool;
-                    // });
+                    setState(() {
+                      activityBool = !activityBool;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: activityBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -168,11 +168,11 @@ class _RequestingOrderHallFirstWidgetState
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   dateBool = !dateBool;
-                    // });
+                    setState(() {
+                      dateBool = !dateBool;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: dateBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -252,6 +252,7 @@ class _RequestingOrderHallFirstWidgetState
               child: Row(
                 children: [
                   Container(
+                    width: MediaQuery.of(context).size.width/2.3,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: MyColors.simpleBlue,
@@ -273,11 +274,11 @@ class _RequestingOrderHallFirstWidgetState
                             ),
                             InkWell(
                               onTap: () {
-                                // setState(() {
-                                //   buildingBool = !buildingBool;
-                                // });
+                                setState(() {
+                                  buildingBool = !buildingBool;
+                                });
                               },
-                              child: const Icon(Icons.arrow_drop_down),
+                              child: buildingBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                             ),
                           ],
                         ),
@@ -296,7 +297,6 @@ class _RequestingOrderHallFirstWidgetState
             ? Row(
               children: [
                 Container(
-                    //margin: const EdgeInsets.fromLTRB(230, 0, 0, 0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
@@ -346,6 +346,7 @@ class _RequestingOrderHallFirstWidgetState
               child: Row(
                 children: [
                   Container(
+                    width: MediaQuery.of(context).size.width/2.3,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: MyColors.simpleBlue,
@@ -369,11 +370,11 @@ class _RequestingOrderHallFirstWidgetState
                             ),
                             InkWell(
                               onTap: () {
-                                // setState(() {
-                                //   floorBool = !floorBool;
-                                // });
+                                setState(() {
+                                  floorBool = !floorBool;
+                                });
                               },
-                              child: const Icon(Icons.arrow_drop_down),
+                              child: floorBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                             ),
                           ],
                         ),
@@ -441,7 +442,7 @@ class _RequestingOrderHallFirstWidgetState
               child: Row(
                 children: [
                   Container(
-
+                    width: MediaQuery.of(context).size.width/2.3,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: MyColors.simpleBlue,
@@ -464,11 +465,11 @@ class _RequestingOrderHallFirstWidgetState
                             ),
                             InkWell(
                               onTap: () {
-                                // setState(() {
-                                //   hallBool = !hallBool;
-                                // });
+                                setState(() {
+                                  hallBool = !hallBool;
+                                });
                               },
-                              child: const Icon(Icons.arrow_drop_down),
+                              child: hallBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                             ),
                           ],
                         ),
@@ -597,6 +598,9 @@ class _RequestingOrderHallFirstWidgetState
                 fontFamily: 'Tajawal',
                 color: Colors.white),
           ),
+        ),
+        const SizedBox(
+          height: 100,
         )
       ],
     );
@@ -653,7 +657,13 @@ class MyListItem extends StatelessWidget {
         color: Colors.white,
       ),
       padding: const EdgeInsets.all(10),
-      child: Text(text),
+      child: Text(text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 16,
+          color: MyColors.primaryColor
+        ),
+      ),
     );
   }
 }

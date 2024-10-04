@@ -90,7 +90,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                     //   activityBool = !activityBool;
                     // });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: activityBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -168,11 +168,11 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   dateBool = !dateBool;
-                    // });
+                    setState(() {
+                      dateBool = !dateBool;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: dateBool? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -273,11 +273,11 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   timingShown = !timingShown;
-                    // });
+                    setState(() {
+                      timingShown = !timingShown;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: timingShown? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -328,7 +328,7 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                      borderRadius: BorderRadius.circular(10))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
                   color: MyColors.secondaryColor, width: 1)),
@@ -389,6 +389,9 @@ class _RequestingOrderTimeFirstWidgetState extends State<RequestingOrderTimeFirs
                 fontFamily: 'Tajawal',
                 color: Colors.white),
           ),
+        ),
+        const SizedBox(
+          height: 100,
         )
       ],
     );

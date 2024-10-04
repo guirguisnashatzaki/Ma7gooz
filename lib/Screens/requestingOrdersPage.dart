@@ -127,11 +127,15 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
             children: [
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          side: const BorderSide(
+                              color: MyColors.primaryColor,
+                              width: 1
+                          )
+                      ),
                     ),
                     padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
                 ),
@@ -157,7 +161,7 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(10.0),
                             side: const BorderSide(
                                 color: MyColors.primaryColor,
                                 width: 1
@@ -371,11 +375,15 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
+                            RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
-                              )
+                                side: const BorderSide(
+                                    color: MyColors.primaryColor,
+                                    width: 1
+                                )
+                            ),
                           ),
                           padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
                       ),
@@ -503,11 +511,15 @@ class _RequestingOrdersPageState extends State<RequestingOrdersPage> {
                   children: [
                     ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
+                            RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
-                              )
+                                side: const BorderSide(
+                                    color: MyColors.primaryColor,
+                                    width: 1
+                                )
+                            ),
                           ),
                           padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
                       ),

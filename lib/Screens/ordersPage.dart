@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:minamakram/models/order/orderObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../constants/Language.dart';
@@ -18,38 +19,41 @@ class _OrderPageState extends State<OrderPage> {
   Color rejectedTextColor = MyColors.primaryColor;
   Color acceptedTextColor = Colors.white;
   bool isAr = true;
-  List<Order> rejectedOrders = [];
+  List<Order> rejectedOrders = [
+    Order(
+        id: 1,
+        buildingAccepted: "المبنى",
+        activity: "النشاط",
+        date: "التاريخ",
+        floorAccepted: "الدور",
+        hallAccepted: "القاعة",
+        servantName: "اسم الخادم",
+        serviceName: "الخدمة",
+        timeAccepted: "التوقيت",
+        rejectionReason: "سبب الرفض"
+    ),
+  ];
   List<Order> acceptedOrders = [
     Order(
         id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
+        buildingAccepted: "المبنى",
+        activity: "النشاط",
+        date: "التاريخ",
+        floorAccepted: "الدور",
+        hallAccepted: "القاعة",
+        servantName: "اسم الخادم",
+        serviceName: "الخدمة",
+        timeAccepted: "التوقيت"),
     Order(
         id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
-    Order(
-        id: 1,
-        buildingAccepted: "g",
-        activity: "kj",
-        date: "lk",
-        floorAccepted: "2",
-        hallAccepted: "2",
-        servantName: "k",
-        serviceName: "l",
-        timeAccepted: "k"),
+        buildingAccepted: "المبنى",
+        activity: "النشاط",
+        date: "التاريخ",
+        floorAccepted: "الدور",
+        hallAccepted: "القاعة",
+        servantName: "اسم الخادم",
+        serviceName: "الخدمة",
+        timeAccepted: "التوقيت"),
   ];
   List<Order> shownOrders = [];
 
@@ -66,6 +70,11 @@ class _OrderPageState extends State<OrderPage> {
         });
       }
     });
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     setState(() {
       shownOrders = acceptedOrders;
     });
@@ -91,39 +100,41 @@ class _OrderPageState extends State<OrderPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 25,vertical: 14)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
-                    ),
-                    side: MaterialStateProperty.all(const BorderSide(
-                        color: MyColors.secondaryColor, width: 1)),
-                    backgroundColor:
-                    MaterialStateProperty.all(rejectedBackgroundColor)),
-                onPressed: () {
-                  setState(() {
-                    rejectedTextColor = Colors.white;
-                    rejectedBackgroundColor = MyColors.primaryColor;
-                    acceptedTextColor = MyColors.primaryColor;
-                    acceptedBackgroundColor = Colors.white;
-                    shownOrders = rejectedOrders;
-                  });
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.rejected,
-                  style: TextStyle(
-                      fontFamily: 'Tajawal',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: rejectedTextColor),
+                      side: MaterialStateProperty.all(const BorderSide(
+                          color: MyColors.secondaryColor, width: 1)),
+                      backgroundColor:
+                      MaterialStateProperty.all(rejectedBackgroundColor)),
+                  onPressed: () {
+                    setState(() {
+                      rejectedTextColor = Colors.white;
+                      rejectedBackgroundColor = MyColors.primaryColor;
+                      acceptedTextColor = MyColors.primaryColor;
+                      acceptedBackgroundColor = Colors.white;
+                      shownOrders = rejectedOrders;
+                    });
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.rejected,
+                    style: TextStyle(
+                        fontFamily: 'Tajawal',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: rejectedTextColor),
+                  ),
                 ),
-              ),
               const SizedBox(
                 width: 20,
               ),
               ElevatedButton(
                 style: ButtonStyle(
+                    padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 25,vertical: 14)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
@@ -164,6 +175,7 @@ class _OrderPageState extends State<OrderPage> {
               children: List.generate(shownOrders.length, (index) {
                 return OrdersListItem(
                   order: shownOrders[index], delReqBool: false,
+                  isAr: isAr,
                 );
               }),
             ),
@@ -177,7 +189,8 @@ class _OrderPageState extends State<OrderPage> {
 class OrdersListItem extends StatefulWidget {
   Order order;
   bool delReqBool;
-  OrdersListItem({Key? key,required this.delReqBool,required this.order}) : super(key: key);
+  bool isAr;
+  OrdersListItem({Key? key,required this.delReqBool,required this.order,required this.isAr}) : super(key: key);
 
   @override
   State<OrdersListItem> createState() => _OrdersListItemState();
@@ -206,9 +219,10 @@ class _OrdersListItemState extends State<OrdersListItem> {
         children: [
           delReqBool? Positioned(
               top: 60,
-              left: 10,
+              left: widget.isAr?10:null,
+              right: widget.isAr?null:10,
               child: InkWell(
-                  onTap: () {
+                onTap: () {
                     //TODO:API Call
 
                     showDialog<String>(
@@ -273,6 +287,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                 context) =>
                                                     AlertDialog(
                                                       content: Container(
+                                                        alignment: Alignment.center,
                                                         width: 300,
                                                         height: 200,
                                                         decoration:
@@ -287,28 +302,22 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                         child: Column(
                                                           children: [
                                                             const SizedBox(
-                                                              height: 15,
+                                                              height: 20,
                                                             ),
                                                             Text(
                                                               AppLocalizations.of(context)!.delOrderMessage,
                                                               style: const TextStyle(
-                                                                  color: Color
-                                                                      .fromRGBO(
-                                                                      6,
-                                                                      68,
-                                                                      105,
-                                                                      1),
+                                                                  color: MyColors.primaryColor,
                                                                   fontFamily:
                                                                   'Tajawal',
                                                                   fontSize:
                                                                   24,
                                                                   fontWeight:
                                                                   FontWeight
-                                                                      .w700),
+                                                                      .w500),
+                                                              textAlign: TextAlign.center,
                                                             ),
-                                                            const SizedBox(
-                                                              height: 50,
-                                                            ),
+
                                                             SizedBox(
                                                               width: 86,
                                                               height: 86,
@@ -323,7 +332,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                     ));
                                           },
                                           child: Text(
-                                            AppLocalizations.of(context)!.confirm,
+                                            AppLocalizations.of(context)!.yes,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
@@ -350,7 +359,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                                   Colors.white),
                                               side:
                                               MaterialStateProperty.all(
-                                                  BorderSide(
+                                                  const BorderSide(
                                                     color: MyColors.secondaryColor,
                                                     width: 1,
                                                   )),
@@ -361,7 +370,7 @@ class _OrdersListItemState extends State<OrdersListItem> {
                                             Navigator.pop(context);
                                           },
                                           child: Text(
-                                            AppLocalizations.of(context)!.del,
+                                            AppLocalizations.of(context)!.no,
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 16,
@@ -386,17 +395,26 @@ class _OrdersListItemState extends State<OrdersListItem> {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color: MyColors.primaryColor,
+                          color: MyColors.secondaryColor,
                           width: 1
                       )
                   ),
-                  child: Text(AppLocalizations.of(context)!.delRequest),
+                  child: Text(
+                      AppLocalizations.of(context)!.delRequest,
+                      style: const TextStyle(
+                        color: MyColors.secondaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Tajawal'
+                      ),
+                  ),
                 ),
               )
           ):const SizedBox(),
           Positioned(
             top: 10,
-            left: 10,
+            left: widget.isAr?10:null,
+            right: widget.isAr?null:10,
             child: Column(
               children: [
                 Container(
@@ -421,71 +439,111 @@ class _OrdersListItemState extends State<OrdersListItem> {
           ),
           Positioned(
               child: Container(
-                alignment: Alignment.centerRight,
                 margin: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text(
-                      "\u2027 ${widget.order.id}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          fontFamily: 'Tajawal',
-                          color: Colors.black),
-                      textAlign: TextAlign.right,
+                    Row(
+                      children: [
+                        Text(
+                          //"\u2027 ${widget.order.id}"
+                              "\u2027 رقم الطلب",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              fontFamily: 'Tajawal',
+                              color: Colors.black),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.servantName}",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16,
-                          fontFamily: 'Tajawal',
-                          color: Colors.black),
-                      textAlign: TextAlign.right,
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.servantName}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                              fontFamily: 'Tajawal',
+                              color: Colors.black),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.activity}",style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        fontFamily: 'Tajawal',
-                        color: Colors.black),
-                      textAlign: TextAlign.right,),
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.activity}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),
+                          textAlign: TextAlign.right,),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.serviceName}",style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        fontFamily: 'Tajawal',
-                        color: Colors.black),textAlign: TextAlign.right,),
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.serviceName}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),textAlign: TextAlign.right,),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.date}",style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        fontFamily: 'Tajawal',
-                        color: Colors.black),textAlign: TextAlign.right,),
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.date}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),textAlign: TextAlign.right,),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.timeAccepted}",style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        fontFamily: 'Tajawal',
-                        color: Colors.black),textAlign: TextAlign.right,),
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.timeAccepted}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),textAlign: TextAlign.right,),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("\u2027 ${widget.order.buildingAccepted}/${widget.order.floorAccepted}/${widget.order.hallAccepted}",style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        fontFamily: 'Tajawal',
-                        color: Colors.black),textAlign: TextAlign.right,),
+                    Row(
+                      children: [
+                        Text("\u2027 ${widget.order.buildingAccepted}/${widget.order.floorAccepted}/${widget.order.hallAccepted}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),textAlign: TextAlign.right,),
+                      ],
+                    ),
+                    widget.order.rejectionReason != null ?const SizedBox(
+                      height: 5,
+                    ):const SizedBox.shrink(),
+                    widget.order.rejectionReason != null ?Row(
+                      children: [
+                        Text("\u2027 ${widget.order.rejectionReason}",style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            fontFamily: 'Tajawal',
+                            color: Colors.black),textAlign: TextAlign.right,),
+                      ],
+                    ):const SizedBox.shrink(),
                   ],
                 ),
               ))

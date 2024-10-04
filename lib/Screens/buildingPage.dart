@@ -115,16 +115,13 @@ class BuildingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const SizedBox(width: 15,),
-        InkWell(
+    return InkWell(
           onTap: (){
             Navigator.pushNamed(context, buildingDetails,arguments: [item,true]);
           },
           child: Container(
             margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-            height: 500,
+            height: 300,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -138,19 +135,20 @@ class BuildingItem extends StatelessWidget {
             ),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 5,
-                ),
+                
                 Container(
-                  margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  width: 180,
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  width: MediaQuery.of(context).size.width,
                   height: 120,
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                    // image: const DecorationImage(
+                    //   image: AssetImage("assets/images/img.png"),
+                    //   fit: BoxFit.fill
+                    // ),
+                      color: Colors.grey,
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                       border: Border.all(
                           width: 1, color: const Color.fromRGBO(207, 198, 198, 1))),
-                  child: Image.asset("assets/images/img.png"),
                 ),
                 const SizedBox(
                   height: 10,
@@ -159,7 +157,7 @@ class BuildingItem extends StatelessWidget {
                   item.name,
                   style: const TextStyle(
                     color: MyColors.primaryColor,
-                    fontSize: 12,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
                   ),
@@ -168,7 +166,7 @@ class BuildingItem extends StatelessWidget {
                   "عدد الادوار ${item.noOfFloors}",
                   style: const TextStyle(
                     color: MyColors.primaryColor,
-                    fontSize: 12,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
                   ),
@@ -177,7 +175,7 @@ class BuildingItem extends StatelessWidget {
                   "عدد القاعات ${item.noOfHalls}",
                   style: const TextStyle(
                     color: MyColors.primaryColor,
-                    fontSize: 12,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                     fontFamily: 'Tajawal',
                   ),
@@ -185,9 +183,6 @@ class BuildingItem extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        const SizedBox(width: 20,)
-      ],
-    );
+        );
   }
 }

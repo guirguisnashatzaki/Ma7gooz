@@ -41,18 +41,16 @@ class _NotificationPageState extends State<NotificationPage> {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
                 backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                side: MaterialStateProperty.all(const BorderSide(
-                    color: MyColors.secondaryColor, width: 1)),
                 padding: MaterialStateProperty.all(
-                    const EdgeInsets.fromLTRB(30, 10, 30, 10))),
+                    const EdgeInsets.fromLTRB(30, 15, 30, 15))),
             onPressed: (){
-              Navigator.pop(context);
+              Navigator.pop(context,false);
             },
             child: Text(
               AppLocalizations.of(context)!.ordersPage,
               style: const TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w400,
                   fontFamily: 'Tajawal',
                   color: Colors.white),
             ),
@@ -96,7 +94,7 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: (){
-            Navigator.pop(context);
+            Navigator.pop(context,true);
           },
           icon: const Icon(
             Icons.arrow_back,

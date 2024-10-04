@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:minamakram/Screens/editBuildingScreen.dart';
-import 'package:minamakram/Screens/mainHomePage.dart';
 import '../constants/Language.dart';
 import '../constants/colors.dart';
 import '../constants/strings.dart';
@@ -24,6 +24,7 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
   bool showDetails = false;
   List<bool>? showFloorDetails = List.generate(100, (index) => false);
   bool isAr = true;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -56,6 +57,7 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         actions: widget.isAdmin?[
@@ -93,7 +95,6 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
       ),
       body: Stack(
         children: [
-
           Container(
             decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -196,49 +197,63 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
                     ),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              widget.item.name,
-                              style: const TextStyle(
-                                  fontFamily: 'Tajawal',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w500,
-                                  color: MyColors.primaryColor),
-                            ),
-                            IconButton(
-                                icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                                onPressed: () {
+                        InkWell(
+                          onTap: (){
+                            setState(() {
+                              showDetails = !showDetails;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                widget.item.name,
+                                style: const TextStyle(
+                                    fontFamily: 'Tajawal',
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w500,
+                                    color: MyColors.primaryColor),
+                              ),
+                              IconButton(
+                                  icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                  onPressed: () {
                                     setState(() {
                                       showDetails = !showDetails;
                                     });
-                                }),
-                          ],
+                                  }),
+                            ],
+                          ),
                         ),
                         showDetails? Column(
                           children: List.generate(widget.item.floors.length, (index) {
                             return Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      widget.item.floors[index].floorName.toString(),
-                                      style: const TextStyle(
-                                          fontFamily: 'Tajawal',
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: MyColors.primaryColor),
-                                    ),
-                                    IconButton(
-                                        icon:
-                                        showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                                        onPressed: () {
-                                          setState(() {
-                                            showFloorDetails![index] = !showFloorDetails![index];
-                                          });
+                                InkWell(
+                                  onTap: (){
+                                    setState(() {
+                                      showFloorDetails![index] = !showFloorDetails![index];
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        widget.item.floors[index].floorName.toString(),
+                                        style: const TextStyle(
+                                            fontFamily: 'Tajawal',
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            color: MyColors.primaryColor),
+                                      ),
+                                      IconButton(
+                                          icon:
+                                          showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                          onPressed: () {
+                                            setState(() {
+                                              showFloorDetails![index] = !showFloorDetails![index];
+                                            });
 
-                                        }),
-                                  ],
+                                          }),
+                                    ],
+                                  ),
                                 ),
                                 showFloorDetails![index]? Container(
                                   margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -259,7 +274,7 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
                                           Text(
                                             "${widget.item.floors[index].rooms[numOfFloor]
                                                     .name} (${widget.item.floors[index]
-                                                    .rooms[numOfFloor].capacity})",
+                                                    .rooms[numOfFloor].capacity} ${AppLocalizations.of(context)!.person})",
                                             style: const TextStyle(
                                                 fontFamily: 'Tajawal',
                                                 fontSize: 12,
@@ -326,11 +341,10 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 45),
-                      color: MyColors.primaryColor,
                       child: Text(
                           AppLocalizations.of(context)!.edit,
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: MyColors.primaryColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                             fontFamily: 'Tajawal'
@@ -338,8 +352,179 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
                       ),
                     ),
                   ),
+                  Container(
+                    color: MyColors.primaryColor,
+                    height: 1,
+                    width: 130,
+                  ),
                   InkWell(
-                    onTap: (){
+                    onTap: ()async{
+
+                      await showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            content: Container(
+                              alignment: Alignment.center,
+                              width: 300,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      AppLocalizations.of(context)!.delBuildingQuestion,
+                                      style: const TextStyle(
+                                          color:
+                                          MyColors.secondaryColor,
+                                          fontFamily: 'Tajawal',
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w700),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        10))),
+                                            backgroundColor: MaterialStateProperty.all(
+                                                MyColors.primaryColor),
+                                            side: MaterialStateProperty.all(
+                                                const BorderSide(
+                                                    color: MyColors.secondaryColor,
+                                                    width: 1)),
+                                            padding: MaterialStateProperty.all(
+                                                const EdgeInsets.fromLTRB(30, 10, 30, 10))),
+                                        onPressed: () async {
+                                          //TODO: API Call
+
+                                          Navigator.pop(context);
+
+                                          await showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext
+                                              context) =>
+                                                  AlertDialog(
+                                                    content: Container(
+                                                      width: 300,
+                                                      height: 200,
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            10),
+                                                        color:
+                                                        Colors.white,
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 15,
+                                                          ),
+                                                          Text(
+                                                            AppLocalizations.of(context)!.delBuildingMessage,
+                                                            style: const TextStyle(
+                                                                color: Color
+                                                                    .fromRGBO(
+                                                                    6,
+                                                                    68,
+                                                                    105,
+                                                                    1),
+                                                                fontFamily:
+                                                                'Tajawal',
+                                                                fontSize:
+                                                                24,
+                                                                fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 50,
+                                                          ),
+                                                          SizedBox(
+                                                            width: 86,
+                                                            height: 86,
+                                                            child: Image
+                                                                .asset(
+                                                              "assets/images/delete_profile_confirmation.png",
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ));
+
+                                          Future.delayed(
+                                            const Duration(seconds: 0),
+                                                () => Navigator.pop(_scaffoldKey.currentContext!),
+                                          );
+                                        },
+                                        child: Text(
+                                          AppLocalizations.of(context)!.yes,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              fontFamily: 'Tajawal',
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 50,
+                                      ),
+                                      ElevatedButton(
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        10))),
+                                            backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.white),
+                                            side:
+                                            MaterialStateProperty.all(
+                                                const BorderSide(
+                                                  color: MyColors.secondaryColor,
+                                                  width: 1,
+                                                )),
+                                            padding: MaterialStateProperty.all(
+                                                const EdgeInsets.fromLTRB(
+                                                    30, 10, 30, 10))),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          AppLocalizations.of(context)!.no,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              fontFamily: 'Tajawal',
+                                              color: MyColors.secondaryColor),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ));
 
                     },
                     child: Container(
@@ -348,6 +533,32 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
                         fit: BoxFit.contain,
                         child: Text(
                             AppLocalizations.of(context)!.remBuilding,
+                          style: const TextStyle(
+                              color: MyColors.primaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Tajawal'
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: MyColors.primaryColor,
+                    height: 1,
+                    width: 130,
+                  ),
+                  InkWell(
+                    onTap: (){
+                      sendBroadcast(BroadcastMessage(name: "close building"));
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 0),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          AppLocalizations.of(context)!.closeBuilding,
                           style: const TextStyle(
                               color: MyColors.primaryColor,
                               fontSize: 16,

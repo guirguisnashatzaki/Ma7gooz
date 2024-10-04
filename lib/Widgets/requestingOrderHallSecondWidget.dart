@@ -184,11 +184,11 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   timingShown = !timingShown;
-                    // });
+                    setState(() {
+                      timingShown = !timingShown;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: timingShown? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -259,6 +259,27 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                     "time":widget.order.times?.asMap()
                   })
               );
+            }else {
+              showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    content: Container(
+                        alignment: Alignment.center,
+                        width: 300,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.orderValidationMessage,
+                          style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Tajawal',
+                              color: MyColors.primaryColor),
+                        )),
+                  ));
             }
 
           },
@@ -270,6 +291,10 @@ class _RequestingOrderHallSecondWidgetState extends State<RequestingOrderHallSec
                 fontFamily: 'Tajawal',
                 color: Colors.white),
           ),
+        ),
+
+        const SizedBox(
+          height: 100,
         )
       ],
     );
@@ -312,7 +337,7 @@ class _ListItemState extends State<ListItem> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(width: MediaQuery.of(context).size.width/6,),
-          Text(widget.text),
+          Text(widget.text,textDirection: TextDirection.ltr,),
         ],
       ),
     );

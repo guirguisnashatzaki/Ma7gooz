@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         if (Platform.isAndroid) {
           SystemNavigator.pop();
         } else if (Platform.isIOS) {
@@ -62,20 +62,20 @@ class _LoginPageState extends State<LoginPage> {
         return Future(() => false);
       },
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            alignment: Alignment.center,
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            color: Colors.white,
+          ),
+          child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 60,
+                    height: 100,
                   ),
                   Text(
                     AppLocalizations.of(context)!.welcome,
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             controller: userController,
                             decoration:
-                            const InputDecoration(border: InputBorder.none),
+                                const InputDecoration(border: InputBorder.none),
                           ),
                         )
                       ],
@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         Container(
-                          width:MediaQuery.of(context).size.width,
+                          width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.fromLTRB(19, 0, 19, 0),
                           child: Text(
                             AppLocalizations.of(context)!.pass,
@@ -204,7 +204,8 @@ class _LoginPageState extends State<LoginPage> {
                               if (validName && validPass) {
                                 //TODO:API Call
 
-                                Navigator.pushReplacementNamed(context, home,arguments: false);
+                                Navigator.pushReplacementNamed(context, home,
+                                    arguments: false);
                               }
                             },
                             validator: (value) {
@@ -212,18 +213,17 @@ class _LoginPageState extends State<LoginPage> {
                               return null;
                             },
                             controller: passController,
-                            decoration:
-                            InputDecoration(
+                            decoration: InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: IconButton(
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         obsecureText = !obsecureText;
                                       });
                                     },
-                                    icon: obsecureText ? const Icon(Icons.visibility_off):const Icon(Icons.visibility)
-                                )
-                            ),
+                                    icon: obsecureText
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.visibility))),
                           ),
                         )
                       ],
@@ -233,75 +233,103 @@ class _LoginPageState extends State<LoginPage> {
                     height: 10,
                   ),
                   (validPass && validName)
-                      ?const SizedBox():const SizedBox(height: 20,),
+                      ? const SizedBox()
+                      : const SizedBox(
+                          height: 20,
+                        ),
                   (validPass && validName)
                       ? Material(
-                    color: Colors.transparent,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        content: Text(
-                                            AppLocalizations.of(context)!.forgetPassMessage,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontFamily: 'Tajawal',
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            textAlign: TextAlign.center),
-                                      ));
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(19, 0, 19, 0),
-                              child: Text(
-                                AppLocalizations.of(context)!.forgetPass,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'inter',
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none,
+                          color: Colors.transparent,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              content: Container(
+                                                alignment: Alignment.center,
+                                                width: 300,
+                                                height: 200,
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  width: 300,
+                                                  height: 200,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: Colors.black,
+                                                          width: 1),
+                                                      color: Colors.white),
+                                                  child: Text(
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .forgetPassMessage,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontFamily: 'Tajawal',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.black),
+                                                      textAlign:
+                                                          TextAlign.center),
+                                                ),
+                                              ),
+                                            ));
+                                  },
+                                  child: Container(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(19, 0, 19, 0),
+                                    child: Text(
+                                      AppLocalizations.of(context)!.forgetPass,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'inter',
+                                        color: Colors.black,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )
+                        )
                       : Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppLocalizations.of(context)!.invalidMessageLogin,
-                      style: const TextStyle(
-                          decoration: TextDecoration.none,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "Tajawal",
-                        color: Colors.red
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
+                          alignment: Alignment.center,
+                          child: Text(
+                            AppLocalizations.of(context)!.invalidMessageLogin,
+                            style: const TextStyle(
+                                decoration: TextDecoration.none,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "Tajawal",
+                                color: Colors.red),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                   const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(MyColors.primaryColor),
-                      padding: MaterialStateProperty.all(
-                        const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                      ),
-                    ),
+                        backgroundColor:
+                            MaterialStateProperty.all(MyColors.primaryColor),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ))),
                     onPressed: () {
                       if (userController.text.isEmpty) {
                         setState(() {
@@ -325,7 +353,8 @@ class _LoginPageState extends State<LoginPage> {
 
                       if (validName && validPass) {
                         //TODO:API Call
-                        Navigator.pushReplacementNamed(context, home,arguments: false);
+                        Navigator.pushReplacementNamed(context, home,
+                            arguments: false);
                       }
                     },
                     child: Text(
@@ -338,12 +367,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.only(left: 15,right: 15),
+                    margin: const EdgeInsets.only(left: 15, right: 15),
                     child: InkWell(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           languagesShown = !languagesShown;
                         });
@@ -351,149 +382,164 @@ class _LoginPageState extends State<LoginPage> {
                       child: Row(
                         children: [
                           Container(
+                            height: 48,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: MyColors.primaryColor,
                             ),
-                            //margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width/1.6, 10, 20, 0),
-                            padding: const EdgeInsets.fromLTRB(10, 15, 10, 20),
+                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
 
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    AppLocalizations.of(context)!.chooseLan,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.none,
-                                        fontFamily: 'Tajawal'),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.chooseLan,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      decoration: TextDecoration.none,
+                                      fontFamily: 'Tajawal'),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Material(
+                                  color: Colors.transparent,
+                                  child: Icon(
+                                    languagesShown
+                                        ? Icons.arrow_drop_up:Icons.arrow_drop_down,
+                                    color: Colors.white,
                                   ),
-                                  const SizedBox(width: 5,),
-                                  Material(
-                                    color: Colors.transparent,
-                                    child: Icon(
-                                        languagesShown
-                                            ? Icons.keyboard_arrow_up_sharp
-                                            : Icons.keyboard_arrow_down_sharp,
-                                        color: Colors.white,
-                                      ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 6,
+                  ),
                   languagesShown
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: Row(
                             children: [
                               Material(
-                    color: Colors.white,
-                    child: InkWell(
-                        onTap: () async {
-                              setState(() {
-                                isAr = true;
-                              });
-                              Locale local = await setLocale("ar");
-                              MyApp.setLocale(context, local);
-                        },
-                        child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isAr
-                                    ? MyColors.simpleBlue
-                                    : Colors.white,
-                              ),
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              padding: const EdgeInsets.all(5),
-                              alignment: Alignment.centerRight,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: Flag.fromString("EG")),
-                                  SizedBox(
-                                    width: 10,
+                                color: Colors.white,
+                                child: InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      isAr = true;
+                                    });
+                                    Locale local = await setLocale("ar");
+                                    MyApp.setLocale(context, local);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: isAr
+                                            ? MyColors.simpleBlue
+                                            : Colors.white,
+                                        border: Border.all(
+                                            color: isAr
+                                                ? Colors.white
+                                                : MyColors.simpleBlue,
+                                            width: 1)),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    padding: const EdgeInsets.all(7),
+                                    alignment: Alignment.centerRight,
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "العربية",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Tajawal'),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: Flag.fromString("EG")),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    "العربية",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.none,
-                                        fontFamily: 'Tajawal'),
-                                  )
-                                ],
+                                ),
                               ),
-                        ),
-                    ),
-                  ),
                             ],
                           ),
-                      )
+                        )
                       : const SizedBox(),
-                  const SizedBox(height: 5,),
+                  const SizedBox(
+                    height: 8,
+                  ),
                   languagesShown
                       ? SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Material(
-                    color: Colors.white,
-                    child: InkWell(
-                            onTap: () async {
-                              setState(() {
-                                isAr = false;
-                              });
-                              Locale local0 = await setLocale("en");
-                              MyApp.setLocale(context, local0);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isAr
-                                    ? Colors.white
-                                    : MyColors.simpleBlue,
-                              ),
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              padding: const EdgeInsets.all(5),
-                              alignment: Alignment.centerRight,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: Flag.fromString("US")),
-                                  SizedBox(
-                                    width: 10,
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Material(
+                                color: Colors.white,
+                                child: InkWell(
+                                  onTap: () async {
+                                    setState(() {
+                                      isAr = false;
+                                    });
+                                    Locale local0 = await setLocale("en");
+                                    MyApp.setLocale(context, local0);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: isAr
+                                            ? Colors.white
+                                            : MyColors.simpleBlue,
+                                        border: Border.all(
+                                            color: isAr
+                                                ? MyColors.simpleBlue
+                                                : Colors.white,
+                                            width: 1)),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    padding: const EdgeInsets.all(7),
+                                    alignment: Alignment.centerRight,
+                                    child: const Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "English",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Tajawal'),
+                                        ),
+                                        SizedBox(
+                                          width: 20,
+                                        ),
+                                        SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: Flag.fromString("US")),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    "English",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.none,
-                                        fontFamily: 'Tajawal'),
-                                  )
-                                ],
+                                ),
                               ),
-                            ),
-                    ),
-                  ),
-                          ],
-                        ),
-                      )
+                            ],
+                          ),
+                        )
                       : const SizedBox(),
                 ],
               ),

@@ -190,9 +190,9 @@ class _RequestingOrderTimeThirdWidgetState extends State<RequestingOrderTimeThir
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    backgroundColor: MaterialStateProperty.all(MyColors.secondaryColor),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
                     side: MaterialStateProperty.all(const BorderSide(
-                        color: MyColors.secondaryColor, width: 1)),
+                        color: MyColors.primaryColor, width: 1)),
                     padding: MaterialStateProperty.all(
                         const EdgeInsets.fromLTRB(30, 10, 30, 10))),
                 onPressed: (){
@@ -240,7 +240,7 @@ class _RequestingOrderTimeThirdWidgetState extends State<RequestingOrderTimeThir
                                   ),
                                   InkWell(
                                     onTap: (){
-                                      Navigator.popAndPushNamed(context,home,arguments: false);
+                                      Navigator.popAndPushNamed(context,home,arguments: true);
                                     },
                                     child: SizedBox(
                                       width: 86,
@@ -258,7 +258,7 @@ class _RequestingOrderTimeThirdWidgetState extends State<RequestingOrderTimeThir
                       barrierDismissible: false
                   );
                 },
-                child: Text(AppLocalizations.of(context)!.confirm,style: const TextStyle(color: Colors.white,fontFamily: "Tajawal",fontWeight: FontWeight.w400,fontSize: 16),)
+                child: Text(AppLocalizations.of(context)!.confirm,style: const TextStyle(color: MyColors.primaryColor,fontFamily: "Tajawal",fontWeight: FontWeight.w400,fontSize: 16),)
             ),
             ElevatedButton(
                 style: ButtonStyle(
@@ -271,11 +271,14 @@ class _RequestingOrderTimeThirdWidgetState extends State<RequestingOrderTimeThir
                     padding: MaterialStateProperty.all(
                         const EdgeInsets.fromLTRB(30, 10, 30, 10))),
                 onPressed: (){
-                  Navigator.pushNamed(context, home);
+                  Navigator.pushNamed(context, home,arguments: true);
                 },
                 child: Text(AppLocalizations.of(context)!.del,style: const TextStyle(color: MyColors.secondaryColor,fontFamily: "Tajawal",fontWeight: FontWeight.w400,fontSize: 16),)
             )
           ],
+        ),
+        const SizedBox(
+          height: 100,
         )
       ],
     );

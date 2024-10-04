@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../Widgets/requestingOrderHallFirstWidget.dart';
 import '../constants/Language.dart';
 import '../constants/colors.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  bool isAr;
+  EditProfilePage({Key? key,required this.isAr}) : super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -17,7 +21,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool isAr = true;
   bool langShown = false;
   String name = "";
+  bool mobileMessage = false;
   final GlobalKey<ScaffoldState> _key = GlobalKey();
+
+  List services = [
+    "خدمة ثانوي",
+    "خدمة اعدادي",
+    "خدمة ابتدائي",
+    "خدمة شباب",
+  ];
+
 
   TextEditingController nameController = TextEditingController();
   TextEditingController serviceController = TextEditingController();
@@ -26,6 +39,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   bool mobBool = true;
   bool nameBool = true;
   bool serBool = true;
+  bool servicesBool = false;
 
   @override
   void initState() {
@@ -40,8 +54,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
         });
       }
     });
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +83,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         )),
         Positioned(
             top: 30,
-            right: 0,
+            right: widget.isAr?0:null,
+            left: widget.isAr?null:0,
             child: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                sendBroadcast(BroadcastMessage(name: "go to profile"));
               },
               icon: const Icon(
                 Icons.arrow_back,
@@ -108,70 +128,118 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           suffixIcon: nameBool? const SizedBox():const Icon(Icons.warning_outlined,color: Colors.red,),
                           hintText: AppLocalizations.of(context)!.name,
                           hintStyle: TextStyle(
-                              color: nameBool?Colors.black:Colors.red,
+                              color: nameBool?MyColors.textColor:Colors.red,
                               fontFamily: 'Tajawal',
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool? MyColors.secondaryColor:Colors.red,
+                              color: nameBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool? MyColors.secondaryColor:Colors.red,
+                              color: nameBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: nameBool? MyColors.secondaryColor:Colors.red,
+                              color: nameBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                         ),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(15),
-                      child: TextFormField(
-                        controller: serviceController,
-                        decoration: InputDecoration(
-                          suffixIcon: serBool? const SizedBox():const Icon(Icons.warning_outlined,color: Colors.red,),
-                          hintText: AppLocalizations.of(context)!.service,
-                          hintStyle: TextStyle(
-                              color: serBool?Colors.black:Colors.red,
-                              fontFamily: 'Tajawal',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: serBool? MyColors.secondaryColor:Colors.red,
-                              width: 2.0,
+                    InkWell(
+                      onTap: (){
+                        setState(() {
+                          servicesBool = !servicesBool;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        child: TextFormField(
+                          enabled: false,
+                          controller: serviceController,
+                          decoration: InputDecoration(
+                            suffixIcon: serBool?
+                            Icon(
+                              servicesBool?Icons.arrow_drop_up:Icons.arrow_drop_down,
+                              color: MyColors.primaryColor,):
+                            Icon(
+                              servicesBool?Icons.arrow_drop_up:Icons.arrow_drop_down,
+                              color: Colors.red,),
+                            hintText: AppLocalizations.of(context)!.service,
+                            hintStyle: TextStyle(
+                                color: serBool?MyColors.textColor:Colors.red,
+                                fontFamily: 'Tajawal',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: serBool? MyColors.primaryColor:Colors.red,
+                                width: 2.0,
+                              ),
                             ),
-                          ),
-                          disabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: serBool? MyColors.secondaryColor:Colors.red,
-                              width: 2.0,
+                            disabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: serBool? MyColors.primaryColor:Colors.red,
+                                width: 2.0,
+                              ),
                             ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide(
-                              color: serBool? MyColors.secondaryColor:Colors.red,
-                              width: 2.0,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                color: serBool? MyColors.primaryColor:Colors.red,
+                                width: 2.0,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                    servicesBool?Container(
+                      margin: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          border: Border.all(
+                            color: MyColors.primaryColor,
+                            width: 2.0,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1, 1),
+                                blurRadius: 6)
+                          ]),
+                      child: Column(
+                        children: List.generate(
+                            services.length,
+                                (index) => InkWell(
+                              onTap: () {
+                                setState(() {
+                                  serviceController.text = services[index];
+                                  servicesBool = false;
+                                });
+                              },
+                              child: ListItem(
+                                text: services[index],
+                                ifFirst: index == 0 ? true : false,
+                                ifLast:
+                                index == services.length - 1 ? true : false,
+                              ),
+                            )),
+                      ),
+                    ):const SizedBox.shrink(),
                     Container(
                       padding: const EdgeInsets.all(15),
                       child: TextFormField(
@@ -181,54 +249,90 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           suffixIcon: mobBool? const SizedBox():const Icon(Icons.warning_outlined,color: Colors.red,),
                           hintText: AppLocalizations.of(context)!.mobNum,
                           hintStyle: TextStyle(
-                              color: mobBool?Colors.black:Colors.red,
+                              color: mobBool?MyColors.textColor:Colors.red,
                               fontFamily: 'Tajawal',
                               fontSize: 16,
                               fontWeight: FontWeight.w400),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool? MyColors.secondaryColor:Colors.red,
+                              color: mobBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool? MyColors.secondaryColor:Colors.red,
+                              color: mobBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: BorderSide(
-                              color: mobBool? MyColors.secondaryColor:Colors.red,
+                              color: mobBool? MyColors.primaryColor:Colors.red,
                               width: 2.0,
                             ),
                           ),
                         ),
                       ),
                     ),
+                    mobileMessage?Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                            right: 16,
+                            left: 16,
+                            top: 10
+                          ),
+                          child: Text(
+                              AppLocalizations.of(context)!.mobileValidationError,
+                              style: const TextStyle(
+                                decoration: TextDecoration.none,
+                                color: Colors.red,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'Tajawal'
+                              ),
+                          ),
+                        )
+                      ],
+                    ):const SizedBox.shrink(),
+                    const SizedBox(height: 35),
                     ElevatedButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(239, 237, 237, 1)),
+                        backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                             )
                         ),
-                        padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(30,15,30,15))
+                        padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(35,15,35,15))
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                           if(mobileController.text.isEmpty){
                             setState(() {
                               mobBool = false;
+                              mobileMessage = false;
                             });
                           }else{
                             setState(() {
                               mobBool = true;
                             });
+
+                            if(mobileController.text.length != 11){
+                              setState(() {
+                                mobBool = false;
+                                mobileMessage = true;
+                              });
+                            }else{
+                              setState(() {
+                                mobBool = true;
+                                mobileMessage = false;
+                              });
+                            }
                           }
+
 
                           if(serviceController.text.isEmpty){
                             setState(() {
@@ -253,7 +357,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           if(mobBool && nameBool && serBool){
                               //TODO:API call
 
-                            showDialog<String>(
+                            await showDialog<String>(
                                 context: context,
                                 builder: (BuildContext context) => AlertDialog(
                                   content: Container(
@@ -298,17 +402,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                   backgroundColor: MaterialStateProperty.all(
                                                       MyColors.primaryColor),
                                                   side: MaterialStateProperty.all(
-                                                      BorderSide(
+                                                      const BorderSide(
                                                           color: MyColors.secondaryColor,
                                                           width: 1)),
                                                   padding: MaterialStateProperty.all(
                                                       const EdgeInsets.fromLTRB(30, 10, 30, 10))),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 //TODO: API Call
 
                                                 Navigator.pop(context);
 
-                                                showDialog<String>(
+                                                await showDialog<String>(
                                                     context: context,
                                                     builder: (BuildContext
                                                     context) =>
@@ -363,10 +467,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                           ),
                                                         ));
 
+                                                Future.delayed(
+                                                  const Duration(seconds: 0),
+                                                      () => Navigator.pop(_key.currentContext!),
+                                                );
+
                                                 //Navigator.popAndPushNamed(context, "/login");
                                               },
                                               child: Text(
-                                                AppLocalizations.of(context)!.confirm,
+                                                AppLocalizations.of(context)!.yes,
                                                 style: const TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 16,
@@ -390,7 +499,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                       Colors.white),
                                                   side:
                                                   MaterialStateProperty.all(
-                                                      BorderSide(
+                                                      const BorderSide(
                                                         color: MyColors.secondaryColor,
                                                         width: 1,
                                                       )),
@@ -401,8 +510,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                 Navigator.pop(context);
                                               },
                                               child: Text(
-                                                AppLocalizations.of(context)!.del,
-                                                style: TextStyle(
+                                                AppLocalizations.of(context)!.no,
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 16,
                                                     fontFamily: 'Tajawal',
@@ -415,9 +524,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     ),
                                   ),
                                 ));
+
                           }
-
-
                       },
                       child: Text(
                         AppLocalizations.of(context)!.save,
@@ -425,9 +533,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                             fontFamily: 'Tajawal',
-                            color: MyColors.secondaryColor),
+                            color: Colors.white),
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 70),
                   ],
                 ),
               ),
@@ -460,44 +569,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
             )),
       ]),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        elevation: 20,
-        selectedLabelStyle: const TextStyle(color: Colors.black),
-        unselectedLabelStyle: const TextStyle(color: Colors.black),
-        currentIndex: 0,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        selectedItemColor: MyColors.primaryColor,
-        unselectedItemColor: Colors.black,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              Navigator.popAndPushNamed(context, "/home");
-              break;
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.person),
-            label: AppLocalizations.of(context)!.profile,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: AppLocalizations.of(context)!.home,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.add_shopping_cart),
-            label: AppLocalizations.of(context)!.orders,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.shopping_bag_outlined),
-            label: AppLocalizations.of(context)!.booking,
-          ),
-        ],
-      ),
     );
   }
 }

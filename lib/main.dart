@@ -5,6 +5,7 @@ import 'package:minamakram/Screens/buildingPage.dart';
 import 'package:minamakram/Screens/editProfilePage.dart';
 import 'package:minamakram/Screens/profilePage.dart';
 import 'package:minamakram/Screens/requestingOrdersPage.dart';
+import 'package:minamakram/Screens/userProfilePage.dart';
 import 'package:minamakram/Screens/usersPage.dart';
 import 'package:minamakram/constants/Language.dart';
 import 'Screens/LoginPage.dart';
@@ -89,10 +90,11 @@ class AppRouter {
             builder: (_) => BuildingDetailsPage(item: args[0],isAdmin: args[1],));
       case profile:
         return MaterialPageRoute(
-            builder: (_) => const profilePage());
+            builder: (_) => profilePage(isAr: true,));
       case editProfile:
+        bool isAr = settings.arguments as bool;
         return MaterialPageRoute(
-            builder: (_) => const EditProfilePage());
+            builder: (_) => EditProfilePage(isAr: isAr,));
       case ordersPage:
         return MaterialPageRoute(
             builder: (_) => const OrderPage());
@@ -102,6 +104,10 @@ class AppRouter {
       case usersPage:
         return MaterialPageRoute(
             builder: (_) => const UsersPage());
+      case userProfile:
+        String user = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => UserProfile(user: user));
     }
     return null;
   }

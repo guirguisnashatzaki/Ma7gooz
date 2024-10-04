@@ -158,11 +158,11 @@ class _RequestingOrderTimeSecondWidgetState extends State<RequestingOrderTimeSec
                 ),
                 InkWell(
                   onTap: () {
-                    // setState(() {
-                    //   hallShown = !hallShown;
-                    // });
+                    setState(() {
+                      hallShown = !hallShown;
+                    });
                   },
-                  child: const Icon(Icons.arrow_drop_down),
+                  child: hallShown? const Icon(Icons.arrow_drop_up):const Icon(Icons.arrow_drop_down),
                 ),
               ],
             ),
@@ -213,7 +213,7 @@ class _RequestingOrderTimeSecondWidgetState extends State<RequestingOrderTimeSec
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20))),
+                      borderRadius: BorderRadius.circular(10))),
               backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
               side: MaterialStateProperty.all(const BorderSide(
                   color: MyColors.secondaryColor, width: 1)),
@@ -265,6 +265,9 @@ class _RequestingOrderTimeSecondWidgetState extends State<RequestingOrderTimeSec
                 fontFamily: 'Tajawal',
                 color: Colors.white),
           ),
+        ),
+        const SizedBox(
+          height: 100,
         )
       ],
     );

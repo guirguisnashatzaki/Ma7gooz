@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:minamakram/Screens/HomePage.dart';
+import 'package:minamakram/Screens/closeBuildingPage.dart';
+import 'package:minamakram/Screens/editProfilePage.dart';
 import 'package:minamakram/Screens/profilePage.dart';
 import 'package:minamakram/Widgets/iconWidget.dart';
 import '../Widgets/requestingOrderHallFirstWidget.dart';
@@ -33,6 +35,7 @@ class _mainHomePageState extends State<mainHomePage> {
 
   bool isAr = true;
   bool langShown = false;
+  bool isClose = false;
   String name = "اسم الخادم";
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   bool isHome = true;
@@ -44,15 +47,236 @@ class _mainHomePageState extends State<mainHomePage> {
   bool isProfile = false;
   bool isOrders = false;
   bool isRequesting = true;
+  bool isEdit = false;
   late Widget firstWidget = Container();
   var warnings = ["ugukuj","jbkhbh"];
 
-  //TODO: temporarly
+  //TODO: temporarily
   bool isAdmin = true;
-
 
   @override
   void didChangeDependencies() {
+
+    getLocale().then((value) {
+      if (value.languageCode == "ar") {
+        setState(() {
+          isAr = true;
+        });
+      } else {
+        setState(() {
+          isAr = false;
+        });
+      }
+    });
+
+    if(isEdit){
+      setState(() {
+        body = EditProfilePage(isAr: isAr);
+        isEdit = true;
+        isProfile = false;
+      });
+    }
+
+    if(isRequesting){
+      setState(() {
+        mainAppBar = bookingAppbar;
+        isHome = false;
+        isRequesting = true;
+        isProfile = false;
+        isOrders = false;
+        isEdit = false;
+        isClose = false;
+      });
+    }
+
+    if(isHome){
+      setState(() {
+        isHome = true;
+        mainAppBar = homeAppBar;
+        body = const homeWidget();
+        isProfile = false;
+        isOrders = false;
+        isRequesting = false;
+        isEdit = false;
+        isClose = false;
+      });
+    }
+
+    if(isProfile){
+      setState(() {
+        isHome = false;
+        mainAppBar = null;
+        body = profilePage(isAr: isAr,);
+        isProfile = true;
+        isOrders = false;
+        isRequesting = false;
+        isEdit = false;
+        isClose = false;
+      });
+    }
+
+    if(isOrders){
+      setState(() {
+        mainAppBar = orderAppBar;
+        body = const OrderPage();
+        isHome = false;
+        isProfile = false;
+        isOrders = true;
+        isRequesting = false;
+        isEdit = false;
+        isClose = false;
+      });
+    }
+
+    if(!receiver.isListening) {
+      receiver.start();
+      receiver.messages.listen((event) {
+        switch (event.name){
+          case "Third page":
+            setState(() {
+              Order order=Order();
+              order.date = event.data?["date"];
+              myOrder.date = event.data?["date"];
+              order.activity = event.data?["activity"];
+              myOrder.activity = event.data?["activity"];
+              order.hallAccepted = event.data?["hall"];
+              myOrder.hallAccepted = event.data?["hall"];
+              order.floorAccepted = event.data?["floor"];
+              myOrder.floorAccepted = event.data?["floor"];
+              order.buildingAccepted = event.data?["building"];
+              myOrder.buildingAccepted = event.data?["building"];
+              startWidget = RequestingOrderHallSecondWidget(order: order,);
+              colors[4] = MyColors.secondaryColor;
+              colors[5] = MyColors.secondaryColor;
+            });
+            break;
+          case "Fourth page":
+            setState(() {
+              Order order=Order();
+              order.date = event.data?["date"];
+              order.activity = event.data?["activity"];
+              order.hallAccepted = event.data?["hall"];
+              order.floorAccepted = event.data?["floor"];
+              order.buildingAccepted = event.data?["building"];
+              var map = event.data?["time"] as Map;
+              order.times = [];
+              for (var element in map.values) {
+                if(element != null){
+                  order.times?.add(element.toString());
+                }
+              }
+              startWidget = RequestingOrderHallThirdWidget(order: order,);
+              colors[6] = MyColors.secondaryColor;
+            });
+            break;
+          case "second time page":
+            setState(() {
+              Order order=Order();
+              order.date = event.data?["date"];
+              order.activity = event.data?["activity"];
+              var map = event.data?["times"] as Map;
+              order.times = [];
+              for (var element in map.values) {
+                if(element != null){
+                  order.times?.add(element.toString());
+                }
+              }
+              startWidget = RequestingOrderTimeSecondWidget(order: order,);
+              colors[4] = MyColors.secondaryColor;
+              colors[5] = MyColors.secondaryColor;
+            });
+            break;
+          case "third time page":
+            setState(() {
+              Order order=Order();
+              order.date = event.data?["date"];
+              myOrder.date = event.data?["date"];
+              order.activity = event.data?["activity"];
+              myOrder.activity = event.data?["activity"];
+              var map = event.data?["times"] as Map;
+              order.times = [];
+              myOrder.times = [];
+              for (var element in map.values) {
+                if(element != null){
+                  order.times?.add(element.toString());
+                  myOrder.times?.add(element.toString());
+                }
+              }
+              var mapBuilding = event.data?["buildings"] as Map;
+              order.buildings = [];
+              for (var element in mapBuilding.values) {
+                if(element != null){
+                  order.buildings?.add(element.toString());
+                }
+              }
+              startWidget = RequestingOrderTimeThirdWidget(order: order,);
+              colors[6] = MyColors.secondaryColor;
+            });
+            break;
+          case "profile error":
+            setState(() {
+              isHome = true;
+              mainAppBar = homeAppBar;
+              body = const homeWidget();
+              isProfile = false;
+              isOrders = false;
+              isRequesting = false;
+              isEdit = false;
+              isClose = false;
+            });
+            break;
+          case "edit profile":
+            setState(() {
+              body = EditProfilePage(isAr: isAr);
+              isEdit = true;
+              isProfile = false;
+              isHome = false;
+              mainAppBar = null;
+              isOrders = false;
+              isRequesting = false;
+              isClose = false;
+            });
+            break;
+          case "go to profile":
+            setState(() {
+              isHome = false;
+              mainAppBar = null;
+              body = profilePage(isAr: isAr,);
+              isProfile = true;
+              isOrders = false;
+              isRequesting = false;
+              isEdit = false;
+              isClose = false;
+            });
+            break;
+          case "close building":
+            setState(() {
+              isClose = true;
+              mainAppBar = getCloseBuildingBar(context);
+              body = const closeBuildingPage();
+              isEdit = false;
+              isProfile = false;
+              isHome = false;
+              isOrders = false;
+              isRequesting = false;
+            });
+            break;
+          case "home":
+            setState(() {
+              isHome = true;
+              mainAppBar = homeAppBar;
+              body = const homeWidget();
+              isProfile = false;
+              isOrders = false;
+              isRequesting = false;
+              isEdit = false;
+              isClose = false;
+            });
+            break;
+        }
+      });
+    }
+
     setState(() {
       // sharedPrefsHelper helper = sharedPrefsHelper();
       // isAdmin = helper.isAdmin;
@@ -69,7 +293,16 @@ class _mainHomePageState extends State<mainHomePage> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.popAndPushNamed(context, home,arguments: false);
+            setState(() {
+              isHome = true;
+              mainAppBar = homeAppBar;
+              body = const homeWidget();
+              isProfile = false;
+              isOrders = false;
+              isRequesting = false;
+              isEdit = false;
+              isClose = false;
+            });
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -81,15 +314,20 @@ class _mainHomePageState extends State<mainHomePage> {
       homeAppBar = AppBar(
         automaticallyImplyLeading: false,
         actions:[
-          IconButton(
-          onPressed: () {
-            _key.currentState!.openEndDrawer();
-          },
-          icon: const Icon(
-            Icons.person,
-            color: Colors.black,
+
+          InkWell(
+            onTap: (){
+              _key.currentState!.openEndDrawer();
+            },
+            child: const CircleAvatar(
+              radius: 20.0,
+              backgroundColor: Color(0xFF778899),
+              // backgroundImage:
+              //     NetworkImage("Your Photo Url"), // for Network image
+            ),
           ),
-        )],
+          const SizedBox(width: 20,),
+        ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -99,49 +337,51 @@ class _mainHomePageState extends State<mainHomePage> {
                 color: Colors.black,
               ),
               onPressed: () async{
-                await Navigator.pushNamed(context, notification);
+                bool res = await Navigator.pushNamed(context, notification) as bool;
                 setState(() {
-                  mainAppBar = orderAppBar;
-                  body = const OrderPage();
-                  isHome = false;
+                  mainAppBar = res? homeAppBar: orderAppBar;
+                  body = res? const homeWidget(): const OrderPage();
+                  isHome = res;
                   isProfile = false;
-                  isOrders = true;
+                  isOrders = !res;
                   isRequesting = false;
+                  isEdit = false;
+                  isClose = false;
                 });
               },
             ),
-            IconButton(
-                onPressed: (){
-                  showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          AlertDialog(
-                              content: Container(
-                                alignment: Alignment.center,
-                                width: 200,
-                                height: 300,
-                                child: ListView(
-                                  children: List.generate(warnings.length, (index) =>
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: ListTile(
-                                          leading: Text(
-                                            warnings[index],
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      )
-                                  ),
-                                ),
-                              )
-                          )
-                  );
-                },
-                icon: Icon(
-                  Icons.error,
-                  color: warnings.isNotEmpty? Colors.red:Colors.grey,
-                )
-            )
+            // IconButton(
+            //     onPressed: (){
+            //       showDialog<String>(
+            //           context: context,
+            //           builder: (BuildContext context) =>
+            //               AlertDialog(
+            //                   content: Container(
+            //                     alignment: Alignment.center,
+            //                     width: 200,
+            //                     height: 300,
+            //                     child: ListView(
+            //                       children: List.generate(warnings.length, (index) =>
+            //                           Padding(
+            //                             padding: const EdgeInsets.all(8.0),
+            //                             child: ListTile(
+            //                               leading: Text(
+            //                                 warnings[index],
+            //                                 textAlign: TextAlign.center,
+            //                               ),
+            //                             ),
+            //                           )
+            //                       ),
+            //                     ),
+            //                   )
+            //               )
+            //       );
+            //     },
+            //     icon: Icon(
+            //       Icons.error,
+            //       color: warnings.isNotEmpty? Colors.red:Colors.grey,
+            //     )
+            // )
           ],
         ),
         leading: null,
@@ -169,138 +409,149 @@ class _mainHomePageState extends State<mainHomePage> {
         ),
         backgroundColor: Colors.white,
       );
-      mainAppBar = homeAppBar;
-      isRequesting = widget.isRequesting;
-      if(isRequesting){
-        isHome = false;
-      }
     });
 
     setState(() {
       firstWidget = Column(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              AppLocalizations.of(context)!.homeMessage,
-              style: const TextStyle(
-                  fontFamily: 'Tajawal',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: MyColors.primaryColor),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              AppLocalizations.of(context)!.pleaseEnterDetails,
-              style: const TextStyle(
-                  fontFamily: 'Tajawal',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                  color: MyColors.primaryColor),
-            ),
-          ),
-          const SizedBox(
-            height: 32,
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                    color: MyColors.simpleBlue, width: 1)),
-            alignment: Alignment.centerRight,
-            child: Row(
-              children: [
-                IconWidget(path: "assets/images/img_1.png"),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  AppLocalizations.of(context)!.orderWay,
-                  style: const TextStyle(
-                      color: MyColors.primaryColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Roboto'),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        )
-                    ),
-                    padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                ),
-                onPressed: () {
-                  setState(() {
-                    startWidget = const RequestingOrderHallFirstWidget();
-                    colors[2] = MyColors.secondaryColor;
-                    colors[3] = MyColors.secondaryColor;
-                  });
-                },
-                child: Text(
-                  AppLocalizations.of(context)!.chooseHall,
-                  style: const TextStyle(
-                      fontFamily: 'Tajawal',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Colors.white
-                  ),
-                ),
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                AppLocalizations.of(context)!.homeMessage,
+                style: const TextStyle(
+                    fontFamily: 'Tajawal',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: MyColors.primaryColor),
               ),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                AppLocalizations.of(context)!.pleaseEnterDetails,
+                style: const TextStyle(
+                    fontFamily: 'Tajawal',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    color: MyColors.primaryColor),
+              ),
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                      color: MyColors.simpleBlue, width: 1)),
+              alignment: Alignment.centerRight,
+              child: Row(
+                children: [
+                  IconWidget(path: "assets/images/img_1.png"),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.orderWay,
+                    style: const TextStyle(
+                        color: MyColors.primaryColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Roboto'),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                             side: const BorderSide(
                                 color: MyColors.primaryColor,
                                 width: 1
                             )
-                        )
-                    ),
-                    padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                ),
-                onPressed: () {
-                  setState(() {
-                    startWidget = const RequestingOrderTimeFirstWidget();
-                    colors[2] = MyColors.secondaryColor;
-                    colors[3] = MyColors.secondaryColor;
-                  });
-                },
-                child: Text(
-                    AppLocalizations.of(context)!.chooseTime,
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      startWidget = const RequestingOrderHallFirstWidget();
+                      colors[2] = MyColors.secondaryColor;
+                      colors[3] = MyColors.secondaryColor;
+                    });
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.chooseHall,
                     style: const TextStyle(
                         fontFamily: 'Tajawal',
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
-                        color: MyColors.primaryColor
-                    )),
-              ),
-            ],
-          )
-        ],
-      );
-      startWidget = firstWidget;
+                        color: MyColors.primaryColor,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: const BorderSide(
+                                  color: MyColors.primaryColor,
+                                  width: 1
+                              )
+                          )
+                      ),
+                      padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      startWidget = const RequestingOrderTimeFirstWidget();
+                      colors[2] = MyColors.secondaryColor;
+                      colors[3] = MyColors.secondaryColor;
+                    });
+                  },
+                  child: Text(
+                      AppLocalizations.of(context)!.chooseTime,
+                      style: const TextStyle(
+                          fontFamily: 'Tajawal',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16,
+                          color: MyColors.primaryColor
+                      )),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 100,
+            )
+          ],
+        );
+      if(colors[2] == Colors.white) {
+        startWidget = firstWidget;
+      }
     });
+
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    isRequesting = widget.isRequesting;
+    super.initState();
   }
 
   Order myOrder = Order();
@@ -321,7 +572,12 @@ class _mainHomePageState extends State<mainHomePage> {
       "Third page",
       "Fourth page",
       "second time page",
-      "third time page"
+      "third time page",
+      "profile error",
+      "edit profile",
+      "go to profile",
+      "close building",
+      "home"
     ],
   );
 
@@ -341,111 +597,7 @@ class _mainHomePageState extends State<mainHomePage> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    getLocale().then((value) {
-      if (value.languageCode == "ar") {
-        setState(() {
-          isAr = true;
-        });
-      } else {
-        setState(() {
-          isAr = false;
-        });
-      }
-    });
-    setState(() {
-      body = const homeWidget();
-      isHome = true;
-    });
-    receiver.start();
-    receiver.messages.listen((event) {
-      switch (event.name){
-        case "Third page":
-          setState(() {
-            Order order=Order();
-            order.date = event.data?["date"];
-            myOrder.date = event.data?["date"];
-            order.activity = event.data?["activity"];
-            myOrder.activity = event.data?["activity"];
-            order.hallAccepted = event.data?["hall"];
-            myOrder.hallAccepted = event.data?["hall"];
-            order.floorAccepted = event.data?["floor"];
-            myOrder.floorAccepted = event.data?["floor"];
-            order.buildingAccepted = event.data?["building"];
-            myOrder.buildingAccepted = event.data?["building"];
-            startWidget = RequestingOrderHallSecondWidget(order: order,);
-            colors[4] = MyColors.secondaryColor;
-            colors[5] = MyColors.secondaryColor;
-          });
-          break;
-        case "Fourth page":
-          setState(() {
-            Order order=Order();
-            order.date = event.data?["date"];
-            order.activity = event.data?["activity"];
-            order.hallAccepted = event.data?["hall"];
-            order.floorAccepted = event.data?["floor"];
-            order.buildingAccepted = event.data?["building"];
-            var map = event.data?["time"] as Map;
-            order.times = [];
-            for (var element in map.values) {
-              if(element != null){
-                order.times?.add(element.toString());
-              }
-            }
-            startWidget = RequestingOrderHallThirdWidget(order: order,);
-            colors[6] = MyColors.secondaryColor;
-          });
-          break;
-        case "second time page":
-          setState(() {
-            Order order=Order();
-            order.date = event.data?["date"];
-            order.activity = event.data?["activity"];
-            var map = event.data?["times"] as Map;
-            order.times = [];
-            for (var element in map.values) {
-              if(element != null){
-                order.times?.add(element.toString());
-              }
-            }
-            startWidget = RequestingOrderTimeSecondWidget(order: order,);
-            colors[4] = MyColors.secondaryColor;
-            colors[5] = MyColors.secondaryColor;
-          });
-          break;
-        case "third time page":
-          setState(() {
-            Order order=Order();
-            order.date = event.data?["date"];
-            myOrder.date = event.data?["date"];
-            order.activity = event.data?["activity"];
-            myOrder.activity = event.data?["activity"];
-            var map = event.data?["times"] as Map;
-            order.times = [];
-            myOrder.times = [];
-            for (var element in map.values) {
-              if(element != null){
-                order.times?.add(element.toString());
-                myOrder.times?.add(element.toString());
-              }
-            }
-            var mapBuilding = event.data?["buildings"] as Map;
-            order.buildings = [];
-            for (var element in mapBuilding.values) {
-              if(element != null){
-                order.buildings?.add(element.toString());
-              }
-            }
-            startWidget = RequestingOrderTimeThirdWidget(order: order,);
-            colors[6] = MyColors.secondaryColor;
-          });
-          break;
-      }
-    });
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -464,127 +616,7 @@ class _mainHomePageState extends State<mainHomePage> {
           });
         }else if(startWidget is RequestingOrderHallFirstWidget){
           setState(() {
-            startWidget = Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    AppLocalizations.of(context)!.homeMessage,
-                    style: const TextStyle(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: MyColors.primaryColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    AppLocalizations.of(context)!.pleaseEnterDetails,
-                    style: const TextStyle(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: MyColors.primaryColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: MyColors.simpleBlue, width: 1)),
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.card_travel),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.orderWay,
-                        style: const TextStyle(
-                            color: MyColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              )
-                          ),
-                          padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = MyColors.secondaryColor;
-                          colors[3] = MyColors.secondaryColor;
-                        });
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.chooseHall,
-                        style: const TextStyle(
-                            fontFamily: 'Tajawal',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: const BorderSide(
-                                      color: MyColors.primaryColor,
-                                      width: 1
-                                  )
-                              )
-                          ),
-                          padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = MyColors.secondaryColor;
-                          colors[3] = MyColors.secondaryColor;
-                        });
-                      },
-                      child: Text(
-                          AppLocalizations.of(context)!.chooseTime,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor
-                          )),
-                    ),
-                  ],
-                )
-              ],
-            );
+            startWidget = firstWidget;
             colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
@@ -596,127 +628,7 @@ class _mainHomePageState extends State<mainHomePage> {
           });
         }else if(startWidget is RequestingOrderTimeFirstWidget){
           setState(() {
-            startWidget = Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    AppLocalizations.of(context)!.homeMessage,
-                    style: const TextStyle(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: MyColors.primaryColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    AppLocalizations.of(context)!.pleaseEnterDetails,
-                    style: const TextStyle(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                        color: MyColors.primaryColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: MyColors.simpleBlue, width: 1)),
-                  alignment: Alignment.centerRight,
-                  child: Row(
-                    children: [
-                      const Icon(Icons.card_travel),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.orderWay,
-                        style: const TextStyle(
-                            color: MyColors.primaryColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Roboto'),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              )
-                          ),
-                          padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          startWidget = const RequestingOrderHallFirstWidget();
-                          colors[2] = MyColors.secondaryColor;
-                          colors[3] = MyColors.secondaryColor;
-                        });
-                      },
-                      child: Text(
-                        AppLocalizations.of(context)!.chooseHall,
-                        style: const TextStyle(
-                            fontFamily: 'Tajawal',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Colors.white),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: const BorderSide(
-                                      color: MyColors.primaryColor,
-                                      width: 1
-                                  )
-                              )
-                          ),
-                          padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          startWidget = const RequestingOrderTimeFirstWidget();
-                          colors[2] = MyColors.secondaryColor;
-                          colors[3] = MyColors.secondaryColor;
-                        });
-                      },
-                      child: Text(
-                          AppLocalizations.of(context)!.chooseTime,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor
-                          )),
-                    ),
-                  ],
-                )
-              ],
-            );
+            startWidget = firstWidget;
             colors[3] = MyColors.simpleBlue;
             colors[2] = Colors.white;
           });
@@ -733,6 +645,8 @@ class _mainHomePageState extends State<mainHomePage> {
             isProfile = false;
             isOrders = false;
             isRequesting = false;
+            isEdit = false;
+            isClose = false;
           });
         }
         return Future(() => false);
@@ -767,127 +681,7 @@ class _mainHomePageState extends State<mainHomePage> {
                 });
               }else if(startWidget is RequestingOrderHallFirstWidget){
                 setState(() {
-                  startWidget = startWidget = Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          AppLocalizations.of(context)!.homeMessage,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          AppLocalizations.of(context)!.pleaseEnterDetails,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: MyColors.simpleBlue, width: 1)),
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.card_travel),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.orderWay,
-                              style: const TextStyle(
-                                  color: MyColors.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Roboto'),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    )
-                                ),
-                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                startWidget = const RequestingOrderHallFirstWidget();
-                                colors[2] = MyColors.secondaryColor;
-                                colors[3] = MyColors.secondaryColor;
-                              });
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.chooseHall,
-                              style: const TextStyle(
-                                  fontFamily: 'Tajawal',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Colors.white
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.white),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        side: const BorderSide(
-                                            color: MyColors.primaryColor,
-                                            width: 1
-                                        )
-                                    )
-                                ),
-                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                startWidget = const RequestingOrderTimeFirstWidget();
-                                colors[2] = MyColors.secondaryColor;
-                                colors[3] = MyColors.secondaryColor;
-                              });
-                            },
-                            child: Text(
-                                AppLocalizations.of(context)!.chooseTime,
-                                style: const TextStyle(
-                                    fontFamily: 'Tajawal',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: MyColors.primaryColor
-                                )),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
+                  startWidget = firstWidget;
                   colors[3] = MyColors.simpleBlue;
                   colors[2] = Colors.white;
                 });
@@ -899,127 +693,7 @@ class _mainHomePageState extends State<mainHomePage> {
                 });
               }else if(startWidget is RequestingOrderTimeFirstWidget){
                 setState(() {
-                  startWidget = startWidget = Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          AppLocalizations.of(context)!.homeMessage,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          AppLocalizations.of(context)!.pleaseEnterDetails,
-                          style: const TextStyle(
-                              fontFamily: 'Tajawal',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: MyColors.primaryColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                                color: MyColors.simpleBlue, width: 1)),
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.card_travel),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.orderWay,
-                              style: const TextStyle(
-                                  color: MyColors.primaryColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: 'Roboto'),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    )
-                                ),
-                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                startWidget = const RequestingOrderHallFirstWidget();
-                                colors[2] = MyColors.secondaryColor;
-                                colors[3] = MyColors.secondaryColor;
-                              });
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.chooseHall,
-                              style: const TextStyle(
-                                  fontFamily: 'Tajawal',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Colors.white
-                              ),
-                            ),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.white),
-                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                        side: const BorderSide(
-                                            color: MyColors.primaryColor,
-                                            width: 1
-                                        )
-                                    )
-                                ),
-                                padding: MaterialStateProperty.all(const EdgeInsets.fromLTRB(15, 20, 15, 20))
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                startWidget = const RequestingOrderTimeFirstWidget();
-                                colors[2] = MyColors.secondaryColor;
-                                colors[3] = MyColors.secondaryColor;
-                              });
-                            },
-                            child: Text(
-                                AppLocalizations.of(context)!.chooseTime,
-                                style: const TextStyle(
-                                    fontFamily: 'Tajawal',
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 16,
-                                    color: MyColors.primaryColor
-                                )),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
+                  startWidget = firstWidget;
                   colors[3] = MyColors.simpleBlue;
                   colors[2] = Colors.white;
                 });
@@ -1034,6 +708,7 @@ class _mainHomePageState extends State<mainHomePage> {
                   mainAppBar = homeAppBar;
                   body = const homeWidget();
                   isRequesting = false;
+                  isClose = false;
                 });
               }
             },
@@ -1047,8 +722,11 @@ class _mainHomePageState extends State<mainHomePage> {
         body: Stack(
           children: [
             Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height-(MediaQuery.of(context).size.height/11.5),
                 decoration: const BoxDecoration(
                     image: DecorationImage(
                         opacity: 0.1,
@@ -1058,80 +736,81 @@ class _mainHomePageState extends State<mainHomePage> {
                         fit: BoxFit.contain
                     )
                 ),
-                child: SingleChildScrollView(
-                  child: Container(
+                child: Container(
                     margin: const EdgeInsets.all(21),
-                    child: Column(
-                      children: [
-                        Row(
+                    child: SingleChildScrollView(
+                      child: Column(
                           children: [
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors[0],
-                                  border: Border.all(
-                                      color: MyColors.simpleBlue, width: 1)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: colors[0],
+                                      border: Border.all(
+                                          color: MyColors.simpleBlue, width: 1)),
+                                ),
+                                Container(
+                                  width: 66,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    color: colors[1],
+                                  ),
+                                ),
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: colors[2],
+                                      border: Border.all(
+                                          color: MyColors.simpleBlue, width: 1)),
+                                ),
+                                Container(
+                                  width: 66,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    color: colors[3],
+                                  ),
+                                ),
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: colors[4],
+                                      border: Border.all(
+                                          color: MyColors.simpleBlue, width: 1)),
+                                ),
+                                Container(
+                                  width: 66,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    color: colors[5],
+                                  ),
+                                ),
+                                Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: colors[6],
+                                      border: Border.all(
+                                          color: MyColors.simpleBlue, width: 1)),
+                                )
+                              ],
                             ),
-                            Container(
-                              width: 66,
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: colors[1],
-                              ),
+                            const SizedBox(
+                              height: 32,
                             ),
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors[2],
-                                  border: Border.all(
-                                      color: MyColors.simpleBlue, width: 1)),
-                            ),
-                            Container(
-                              width: 66,
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: colors[3],
-                              ),
-                            ),
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors[4],
-                                  border: Border.all(
-                                      color: MyColors.simpleBlue, width: 1)),
-                            ),
-                            Container(
-                              width: 66,
-                              height: 2,
-                              decoration: BoxDecoration(
-                                color: colors[5],
-                              ),
-                            ),
-                            Container(
-                              width: 35,
-                              height: 35,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: colors[6],
-                                  border: Border.all(
-                                      color: MyColors.simpleBlue, width: 1)),
-                            )
+                            startWidget
                           ],
                         ),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        startWidget
-                      ],
                     ),
                   ),
-                ),
               ),
             ),
             Positioned(
@@ -1158,10 +837,12 @@ class _mainHomePageState extends State<mainHomePage> {
                           setState(() {
                             isHome = false;
                             mainAppBar = null;
-                            body = const profilePage();
+                            body = profilePage(isAr: isAr,);
                             isProfile = true;
                             isOrders = false;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1171,9 +852,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.person,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.profile,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isProfile?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_13.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_14.png')),
+                                  Text(AppLocalizations.of(context)!.profile,style: TextStyle(fontSize: 12,color: isProfile?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isProfile? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1190,6 +878,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             isProfile = false;
                             isOrders = false;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1199,9 +889,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.home,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.home,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isHome?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_7.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_8.png')),
+                                  Text(AppLocalizations.of(context)!.home,style: TextStyle(fontSize: 12,color: isHome?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isHome? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1218,6 +915,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             isProfile = false;
                             isOrders = true;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1227,9 +926,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.add_shopping_cart,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.orders,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isOrders?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_10.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_9.png')),
+                                  Text(AppLocalizations.of(context)!.orders,style: TextStyle(fontSize: 12,color: isOrders?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isOrders? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1245,6 +951,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             isRequesting = true;
                             isProfile = false;
                             isOrders = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1254,9 +962,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  Icon(Icons.shopping_bag_outlined,color: isRequesting? MyColors.primaryColor:Colors.black,),
-                                  Text(AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isRequesting? MyColors.primaryColor:Colors.black),),
+                                  const SizedBox(height: 2,),
+                                  isRequesting?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_12.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_11.png')),
+                                  Text(AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isRequesting? MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isRequesting? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1287,6 +1002,8 @@ class _mainHomePageState extends State<mainHomePage> {
             isProfile = false;
             isOrders = false;
             isRequesting = false;
+            isEdit = false;
+            isClose = false;
           });
         }
         return Future(() => false);
@@ -1294,268 +1011,273 @@ class _mainHomePageState extends State<mainHomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _key,
-        endDrawer: isHome? Drawer(
-          backgroundColor: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.centerRight,
-                    child: const Column(
-                      children: [
-                        CircleAvatar(
-                          radius: 30.0,
-                          backgroundColor: Color(0xFF778899),
-                          // backgroundImage:
-                          //     NetworkImage("Your Photo Url"), // for Network image
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "اسم الخادم",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: MyColors.primaryColor,
-                              fontFamily: 'Tajawal'),
-                        )
-                      ],
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 2,
-                    color: Color.fromRGBO(237, 228, 228, 1),
-                  ),
-                  InkWell(
-                    onTap: (){
-                      setState(() {
-                        langShown = !langShown;
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
+        endDrawer: isHome? SizedBox(
+          width: MediaQuery.of(context).size.width/1.8,
+          child: Drawer(
+            backgroundColor: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
                       alignment: Alignment.centerRight,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: const Column(
                         children: [
-                          Row(
+                          CircleAvatar(
+                            radius: 30.0,
+                            backgroundColor: Color(0xFF778899),
+                            // backgroundImage:
+                            //     NetworkImage("Your Photo Url"), // for Network image
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "اسم الخادم",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: MyColors.primaryColor,
+                                fontFamily: 'Tajawal'),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(
+                      thickness: 2,
+                      color: Color.fromRGBO(237, 228, 228, 1),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        setState(() {
+                          langShown = !langShown;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.language,color: MyColors.primaryColor),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)!.chooseLan,
+                                  style: const TextStyle(
+                                      color: MyColors.primaryColor,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      decoration: TextDecoration.none,
+                                      fontFamily: 'Tajawal'),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              langShown ? Icons.arrow_drop_up:Icons.arrow_drop_down,
+                              color: MyColors.primaryColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    langShown
+                        ? SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              onTap: () async {
+                                setState(() {
+                                  isAr = true;
+                                });
+                                Locale local = await setLocale("ar");
+                                MyApp.setLocale(context, local);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isAr
+                                      ? MyColors.simpleBlue
+                                      : Colors.white,
+                                    border: Border.all(
+                                        color: isAr
+                                            ? Colors.white
+                                            : MyColors.simpleBlue,
+                                        width: 1)
+
+                                ),
+                                margin: const EdgeInsets.symmetric(horizontal: 15),
+                                padding: const EdgeInsets.all(7),
+                                alignment: Alignment.centerRight,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Flag.fromString("EG")),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "العربية",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          decoration: TextDecoration.none,
+                                          fontFamily: 'Tajawal'),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : const SizedBox(),
+                    const SizedBox(height: 5,),
+                    langShown
+                        ? SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        children: [
+                          Material(
+                            color: Colors.white,
+                            child: InkWell(
+                              onTap: () async {
+                                setState(() {
+                                  isAr = false;
+                                });
+                                Locale local0 = await setLocale("en");
+                                MyApp.setLocale(context, local0);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: isAr
+                                      ? Colors.white
+                                      : MyColors.simpleBlue,
+                                    border: Border.all(
+                                        color: isAr
+                                            ? MyColors.simpleBlue
+                                            : Colors.white,
+                                        width: 1)
+                                ),
+                                margin: const EdgeInsets.symmetric(horizontal: 15),
+                                padding: const EdgeInsets.all(7),
+                                alignment: Alignment.centerRight,
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                        width: 20,
+                                        height: 20,
+                                        child: Flag.fromString("US")),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "English",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          decoration: TextDecoration.none,
+                                          fontFamily: 'Tajawal'),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : const SizedBox(),
+                    const SizedBox(height: 20,),
+                    isAdmin?
+                        Material(
+                          color: Colors.white,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: InkWell(
+                              onTap: (){
+                                //TODO:GO TO USERS
+                                Navigator.of(context).pushNamed(usersPage);
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.users,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Tajawal',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                        :const SizedBox.shrink()
+                  ],
+                ),
+
+                Column(
+                  children: [
+                    const Divider(
+                      thickness: 2,
+                      color: MyColors.simpleBlue,
+                    ),
+                    Material(
+                      color: Colors.white,
+                      child: InkWell(
+                        onTap: () {
+                          //TODO:API CALL
+
+                          Navigator.popAndPushNamed(context, login);
+
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Icon(Icons.language,color: MyColors.primaryColor),
+                              SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: IconWidget(path: 'assets/images/img_6.png')
+                              ),
                               const SizedBox(
                                 width: 15,
                               ),
                               Text(
-                                AppLocalizations.of(context)!.chooseLan,
+                                AppLocalizations.of(context)!.logout,
                                 style: const TextStyle(
                                     color: MyColors.primaryColor,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                     decoration: TextDecoration.none,
                                     fontFamily: 'Tajawal'),
                               ),
                             ],
                           ),
-                          Icon(
-                            langShown ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-                            color: MyColors.primaryColor,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  langShown
-                      ? SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Colors.white,
-                          child: InkWell(
-                            onTap: () async {
-                              setState(() {
-                                isAr = true;
-                              });
-                              Locale local = await setLocale("ar");
-                              MyApp.setLocale(context, local);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isAr
-                                    ? MyColors.simpleBlue
-                                    : Colors.white,
-                              ),
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              padding: const EdgeInsets.all(5),
-                              alignment: Alignment.centerRight,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: Flag.fromString("EG")),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "العربية",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.none,
-                                        fontFamily: 'Tajawal'),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                      : const SizedBox(),
-                  const SizedBox(height: 5,),
-                  langShown
-                      ? SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Material(
-                          color: Colors.white,
-                          child: InkWell(
-                            onTap: () async {
-                              setState(() {
-                                isAr = false;
-                              });
-                              Locale local0 = await setLocale("en");
-                              MyApp.setLocale(context, local0);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: isAr
-                                    ? Colors.white
-                                    : MyColors.simpleBlue,
-                              ),
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              padding: const EdgeInsets.all(5),
-                              alignment: Alignment.centerRight,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: Flag.fromString("US")),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "English",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16,
-                                        decoration: TextDecoration.none,
-                                        fontFamily: 'Tajawal'),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                      : const SizedBox(),
-                  const SizedBox(height: 20,),
-                  isAdmin?
-                      Material(
-                        color: Colors.white,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width,
-                          child: InkWell(
-                            onTap: (){
-                              //TODO:GO TO USERS
-                              Navigator.of(context).pushNamed(usersPage);
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.users,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'Tajawal',
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                      :const SizedBox.shrink()
-                ],
-              ),
-
-              Column(
-                children: [
-                  const Divider(
-                    thickness: 2,
-                    color: Color.fromRGBO(237, 228, 228, 1),
-                  ),
-                  Material(
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () {
-                        //TODO:API CALL
-
-                        Navigator.popAndPushNamed(context, login);
-
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.transparent,
-                                    border: Border.all(
-                                        color: MyColors.primaryColor,
-                                        width: 2.5
-                                    )
-                                ),
-                                child: const Icon(size: 10,Icons.clear_rounded,color: MyColors.primaryColor)
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.logout,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                  decoration: TextDecoration.none,
-                                  fontFamily: 'Tajawal'),
-                            ),
-
-
-                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ):null,
         appBar: mainAppBar,
@@ -1586,10 +1308,12 @@ class _mainHomePageState extends State<mainHomePage> {
                           setState(() {
                             isHome = false;
                             mainAppBar = null;
-                            body = const profilePage();
+                            body = profilePage(isAr: isAr,);
                             isProfile = true;
                             isOrders = false;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1599,9 +1323,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.person,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.profile,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isProfile?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_13.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_14.png')),
+                                  Text(AppLocalizations.of(context)!.profile,style: TextStyle(fontSize: 12,color: isProfile?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isProfile? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1618,6 +1349,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             isProfile = false;
                             isOrders = false;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1627,9 +1360,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.home,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.home,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isHome?SizedBox(
+                                    width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_7.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_8.png')),
+                                  Text(AppLocalizations.of(context)!.home,style: TextStyle(fontSize: 12,color: isHome?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isHome? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1646,6 +1386,8 @@ class _mainHomePageState extends State<mainHomePage> {
                             isProfile = false;
                             isOrders = true;
                             isRequesting = false;
+                            isEdit = false;
+                            isClose = false;
                           });
                         },
                         child: SizedBox(
@@ -1655,9 +1397,16 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  const Icon(Icons.add_shopping_cart,color: MyColors.primaryColor,),
-                                  Text(AppLocalizations.of(context)!.orders,style: const TextStyle(fontSize: 12,color: MyColors.primaryColor),),
+                                  const SizedBox(height: 2,),
+                                  isOrders?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_10.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_9.png')),
+                                  Text(AppLocalizations.of(context)!.orders,style: TextStyle(fontSize: 12,color: isOrders?MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
                               isOrders? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
@@ -1668,11 +1417,15 @@ class _mainHomePageState extends State<mainHomePage> {
                       InkWell(
                         onTap: (){
                           setState(() {
-                            mainAppBar = bookingAppbar;
-                            isHome = false;
-                            isRequesting = true;
-                            isProfile = false;
-                            isOrders = false;
+                            if(!isClose){
+                              mainAppBar = bookingAppbar;
+                              isHome = false;
+                              isRequesting = true;
+                              isProfile = false;
+                              isOrders = false;
+                              isEdit = false;
+                              isClose = false;
+                            }
                           });
                         },
                         child: SizedBox(
@@ -1682,12 +1435,27 @@ class _mainHomePageState extends State<mainHomePage> {
                             children: [
                               Column(
                                 children: [
-                                  const SizedBox(height: 10,),
-                                  Icon(Icons.shopping_bag_outlined,color: isRequesting? MyColors.primaryColor:Colors.black,),
-                                  Text(AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isRequesting? MyColors.primaryColor:Colors.black),),
+                                  const SizedBox(height: 2,),
+
+                                  isClose?
+                                  SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_15.png')
+                                  )
+                                  :
+                                  isRequesting?SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_12.png')
+                                  ):SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: IconWidget(path: 'assets/images/img_11.png')),
+                                  Text(isClose? AppLocalizations.of(context)!.close:AppLocalizations.of(context)!.booking,style: TextStyle(fontSize: 12,color: isClose? MyColors.primaryColor : isRequesting? MyColors.primaryColor:const Color.fromRGBO(141, 138, 138, 1)),),
                                 ],
                               ),
-                              isRequesting? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
+                              (isClose||isRequesting)? const Divider(color: MyColors.primaryColor,thickness: 1,) : const SizedBox.shrink()
                             ],
                           ),
                         ),

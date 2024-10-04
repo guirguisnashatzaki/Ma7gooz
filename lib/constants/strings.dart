@@ -9,3 +9,4 @@ const editProfile = "/editprofile";
 const ordersPage = "/ordersPage";
 const requestingOrderPage = "/requestingOrderPage";
 const usersPage = "/usersPage";
+const userProfile = "/userProfile";
