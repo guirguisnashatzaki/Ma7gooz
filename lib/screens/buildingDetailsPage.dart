@@ -95,230 +95,233 @@ class _BuildingDetailsPageState extends State<BuildingDetailsPage> {
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    opacity: 0.1,
-                    image: AssetImage(
-                      "assets/images/knissa.png",
-                    ),
-                    fit: BoxFit.contain
-                )
-            ),
-            child: Column(
-              children: [
-                CarouselSlider(
-                  options: CarouselOptions(
-                      height: 333,
-                      autoPlay: false,
-                      enlargeCenterPage: true,
-                      aspectRatio: 2.0,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _current = index;
-                        });
-                      }),
-                  items: imgList
-                      .map((item) => Container(
-                            margin: const EdgeInsets.all(5.0),
-                            child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5.0)),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image.network(item,
-                                        fit: BoxFit.cover, width: 1000.0),
-                                    Positioned(
-                                      bottom: 0.0,
-                                      left: 0.0,
-                                      right: 0.0,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color.fromARGB(200, 0, 0, 0),
-                                              Color.fromARGB(0, 0, 0, 0)
-                                            ],
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topCenter,
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 20.0),
-                                        child: Text(
-                                          'No. ${imgList.indexOf(item)} image',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ))
-                      .toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: imgList.asMap().entries.map((entry) {
-                    return GestureDetector(
-                      onTap: () => _controller.animateToPage(entry.key),
-                      child: Container(
-                        width: 12.0,
-                        height: 12.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: (Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black)
-                                .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+          SingleChildScrollView(
+            child: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      opacity: 0.1,
+                      image: AssetImage(
+                        "assets/images/knissa.png",
                       ),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SingleChildScrollView(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: MyColors.simpleBlue,
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            setState(() {
-                              showDetails = !showDetails;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                widget.item.name,
-                                style: const TextStyle(
-                                    fontFamily: 'Tajawal',
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: MyColors.primaryColor),
-                              ),
-                              IconButton(
-                                  icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                                  onPressed: () {
-                                    setState(() {
-                                      showDetails = !showDetails;
-                                    });
-                                  }),
-                            ],
-                          ),
-                        ),
-                        showDetails? Column(
-                          children: List.generate(widget.item.floors.length, (index) {
-                            return Column(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    setState(() {
-                                      showFloorDetails![index] = !showFloorDetails![index];
-                                    });
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        widget.item.floors[index].floorName.toString(),
-                                        style: const TextStyle(
-                                            fontFamily: 'Tajawal',
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            color: MyColors.primaryColor),
-                                      ),
-                                      IconButton(
-                                          icon:
-                                          showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
-                                          onPressed: () {
-                                            setState(() {
-                                              showFloorDetails![index] = !showFloorDetails![index];
-                                            });
-
-                                          }),
-                                    ],
-                                  ),
-                                ),
-                                showFloorDetails![index]? Container(
-                                  margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                                  child: Column(
-                                    children: List.generate(
-                                        widget.item.floors[index].rooms.length,
-                                        (numOfFloor) {
-                                      return Row(
-                                        children: [
-                                          const Text(
-                                            "\u2022 ",
-                                            style: TextStyle(
-                                                fontFamily: 'Tajawal',
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: MyColors.primaryColor),
+                      fit: BoxFit.contain
+                  )
+              ),
+              child: Column(
+                children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                        height: 333,
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        aspectRatio: 2.0,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }),
+                    items: imgList
+                        .map((item) => Container(
+                              margin: const EdgeInsets.all(5.0),
+                              child: ClipRRect(
+                                  borderRadius:
+                                      const BorderRadius.all(Radius.circular(5.0)),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Image.network(item,
+                                          fit: BoxFit.cover, width: 1000.0),
+                                      Positioned(
+                                        bottom: 0.0,
+                                        left: 0.0,
+                                        right: 0.0,
+                                        child: Container(
+                                          decoration: const BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color.fromARGB(200, 0, 0, 0),
+                                                Color.fromARGB(0, 0, 0, 0)
+                                              ],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                            ),
                                           ),
-                                          Text(
-                                            "${widget.item.floors[index].rooms[numOfFloor]
-                                                    .name} (${widget.item.floors[index]
-                                                    .rooms[numOfFloor].capacity} ${AppLocalizations.of(context)!.person})",
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 20.0),
+                                          child: Text(
+                                            'No. ${imgList.indexOf(item)} image',
                                             style: const TextStyle(
-                                                fontFamily: 'Tajawal',
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: MyColors.primaryColor),
+                                              color: Colors.white,
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ],
-                                      );
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ))
+                        .toList(),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imgList.asMap().entries.map((entry) {
+                      return GestureDetector(
+                        onTap: () => _controller.animateToPage(entry.key),
+                        child: Container(
+                          width: 12.0,
+                          height: 12.0,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: (Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black)
+                                  .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SingleChildScrollView(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      margin: const EdgeInsets.fromLTRB(28, 0, 28, 0),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: MyColors.simpleBlue,
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              setState(() {
+                                showDetails = !showDetails;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  widget.item.name,
+                                  style: const TextStyle(
+                                      fontFamily: 'Tajawal',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: MyColors.primaryColor),
+                                ),
+                                IconButton(
+                                    icon: showDetails? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                    onPressed: () {
+                                      setState(() {
+                                        showDetails = !showDetails;
+                                      });
                                     }),
-                                  ),
-                                ):const SizedBox()
                               ],
-                            );
-                          }),
-                        ):const SizedBox(),
-
-                      ],
+                            ),
+                          ),
+                          showDetails? Column(
+                            children: List.generate(widget.item.floors.length, (index) {
+                              return Column(
+                                children: [
+                                  InkWell(
+                                    onTap: (){
+                                      setState(() {
+                                        showFloorDetails![index] = !showFloorDetails![index];
+                                      });
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          widget.item.floors[index].floorName.toString(),
+                                          style: const TextStyle(
+                                              fontFamily: 'Tajawal',
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: MyColors.primaryColor),
+                                        ),
+                                        IconButton(
+                                            icon:
+                                            showFloorDetails![index]? const Icon(Icons.arrow_drop_up, size: 30):const Icon(Icons.arrow_drop_down, size: 30),
+                                            onPressed: () {
+                                              setState(() {
+                                                showFloorDetails![index] = !showFloorDetails![index];
+                                              });
+            
+                                            }),
+                                      ],
+                                    ),
+                                  ),
+                                  showFloorDetails![index]? Container(
+                                    margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                    child: Column(
+                                      children: List.generate(
+                                          widget.item.floors[index].rooms.length,
+                                          (numOfFloor) {
+                                        return Row(
+                                          children: [
+                                            const Text(
+                                              "\u2022 ",
+                                              style: TextStyle(
+                                                  fontFamily: 'Tajawal',
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: MyColors.primaryColor),
+                                            ),
+                                            Text(
+                                              "${widget.item.floors[index].rooms[numOfFloor]
+                                                      .name} (${widget.item.floors[index]
+                                                      .rooms[numOfFloor].capacity} ${AppLocalizations.of(context)!.person})",
+                                              style: const TextStyle(
+                                                  fontFamily: 'Tajawal',
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: MyColors.primaryColor),
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  ):const SizedBox()
+                                ],
+                              );
+                            }),
+                          ):const SizedBox(),
+            
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 60,),
-                ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
-                      side: MaterialStateProperty.all(const BorderSide(
-                          color: MyColors.secondaryColor, width: 1)),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.fromLTRB(60, 14, 60, 14))),
-                  onPressed: (){
-                    Navigator.popAndPushNamed(context, home,arguments: true);
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.book,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Tajawal',
-                        color: Colors.white),
+                  const SizedBox(height: 60,),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        backgroundColor: MaterialStateProperty.all(MyColors.primaryColor),
+                        side: MaterialStateProperty.all(const BorderSide(
+                            color: MyColors.secondaryColor, width: 1)),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.fromLTRB(60, 14, 60, 14))),
+                    onPressed: (){
+                      Navigator.popAndPushNamed(context, home,arguments: true);
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.book,
+                      style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Tajawal',
+                          color: Colors.white),
+                    ),
                   ),
-                )
-              ],
+                  const SizedBox(height: 20,),
+                ],
+              ),
             ),
           ),
           menuOpened ? Positioned(

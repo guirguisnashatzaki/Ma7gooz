@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:minamakram/Screens/NotificationPage.dart';
 import 'package:minamakram/Screens/buildingDetailsPage.dart';
 import 'package:minamakram/Screens/buildingPage.dart';
@@ -15,7 +16,8 @@ import 'constants/strings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
-void main() {
+void main() async {
+  await ScreenUtil.ensureScreenSize();
   runApp(MyApp(
     appRouter: AppRouter(),
   ));
@@ -57,6 +59,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: widget.appRouter.generateRoute,

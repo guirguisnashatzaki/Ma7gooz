@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:minamakram/models/order/orderObject.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../constants/Language.dart';
@@ -438,117 +439,123 @@ class _OrdersListItemState extends State<OrdersListItem> {
             ),
           ),
           Positioned(
-              child: Container(
-                margin: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          //"\u2027 ${widget.order.id}"
-                              "\u2027 رقم الطلب",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              fontFamily: 'Tajawal',
-                              color: Colors.black),
-                          textAlign: TextAlign.right,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.servantName}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              fontFamily: 'Tajawal',
-                              color: Colors.black),
-                          textAlign: TextAlign.right,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.activity}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),
-                          textAlign: TextAlign.right,),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.serviceName}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),textAlign: TextAlign.right,),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.date}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),textAlign: TextAlign.right,),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.timeAccepted}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),textAlign: TextAlign.right,),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: [
-                        Text("\u2027 ${widget.order.buildingAccepted}/${widget.order.floorAccepted}/${widget.order.hallAccepted}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),textAlign: TextAlign.right,),
-                      ],
-                    ),
-                    widget.order.rejectionReason != null ?const SizedBox(
-                      height: 5,
-                    ):const SizedBox.shrink(),
-                    widget.order.rejectionReason != null ?Row(
-                      children: [
-                        Text("\u2027 ${widget.order.rejectionReason}",style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            fontFamily: 'Tajawal',
-                            color: Colors.black),textAlign: TextAlign.right,),
-                      ],
-                    ):const SizedBox.shrink(),
-                  ],
-                ),
+              child: SizedBox(
+                height: 250.h,
+                child: orderCard()
               ))
         ],
       ),
+    );
+  }
+
+
+  Column orderCard(){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              //"\u2027 ${widget.order.id}"
+              "\u2027 رقم الطلب",
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  fontFamily: 'Tajawal',
+                  color: Colors.black),
+              textAlign: TextAlign.right,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.servantName}",
+              style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  fontFamily: 'Tajawal',
+                  color: Colors.black),
+              textAlign: TextAlign.right,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.activity}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),
+              textAlign: TextAlign.right,),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.serviceName}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),textAlign: TextAlign.right,),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.date}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),textAlign: TextAlign.right,),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.timeAccepted}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),textAlign: TextAlign.right,),
+          ],
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          children: [
+            Text("\u2027 ${widget.order.buildingAccepted}/${widget.order.floorAccepted}/${widget.order.hallAccepted}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),textAlign: TextAlign.right,),
+          ],
+        ),
+        widget.order.rejectionReason != null ?const SizedBox(
+          height: 5,
+        ):const SizedBox.shrink(),
+        widget.order.rejectionReason != null ?Row(
+          children: [
+            Text("\u2027 ${widget.order.rejectionReason}",style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                fontFamily: 'Tajawal',
+                color: Colors.black),textAlign: TextAlign.right,),
+          ],
+        ):const SizedBox.shrink(),
+      ],
     );
   }
 }

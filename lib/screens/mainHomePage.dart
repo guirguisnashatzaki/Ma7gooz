@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:minamakram/Screens/HomePage.dart';
 import 'package:minamakram/Screens/closeBuildingPage.dart';
 import 'package:minamakram/Screens/editProfilePage.dart';
@@ -741,68 +742,7 @@ class _mainHomePageState extends State<mainHomePage> {
                     child: SingleChildScrollView(
                       child: Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: colors[0],
-                                      border: Border.all(
-                                          color: MyColors.simpleBlue, width: 1)),
-                                ),
-                                Container(
-                                  width: 66,
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    color: colors[1],
-                                  ),
-                                ),
-                                Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: colors[2],
-                                      border: Border.all(
-                                          color: MyColors.simpleBlue, width: 1)),
-                                ),
-                                Container(
-                                  width: 66,
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    color: colors[3],
-                                  ),
-                                ),
-                                Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: colors[4],
-                                      border: Border.all(
-                                          color: MyColors.simpleBlue, width: 1)),
-                                ),
-                                Container(
-                                  width: 66,
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    color: colors[5],
-                                  ),
-                                ),
-                                Container(
-                                  width: 35,
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: colors[6],
-                                      border: Border.all(
-                                          color: MyColors.simpleBlue, width: 1)),
-                                )
-                              ],
-                            ),
+                            pageIndicator(),
                             const SizedBox(
                               height: 32,
                             ),
@@ -1467,6 +1407,71 @@ class _mainHomePageState extends State<mainHomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Row pageIndicator(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          width: 35.w,
+          height: 35.h,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colors[0],
+              border: Border.all(
+                  color: MyColors.simpleBlue, width: 1)),
+        ),
+        Container(
+          width: 50.w,
+          height: 2.h,
+          decoration: BoxDecoration(
+            color: colors[1],
+          ),
+        ),
+        Container(
+          width: 35.w,
+          height: 35.h,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colors[2],
+              border: Border.all(
+                  color: MyColors.simpleBlue, width: 1)),
+        ),
+        Container(
+          width: 50.w,
+          height: 2.h,
+          decoration: BoxDecoration(
+            color: colors[3],
+          ),
+        ),
+        Container(
+          width: 35.w,
+          height: 35.h,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colors[4],
+              border: Border.all(
+                  color: MyColors.simpleBlue, width: 1)),
+        ),
+        Container(
+          width: 50.w,
+          height: 2.h,
+          decoration: BoxDecoration(
+            color: colors[5],
+          ),
+        ),
+        Container(
+          width: 35.w,
+          height: 35.h,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: colors[6],
+              border: Border.all(
+                  color: MyColors.simpleBlue, width: 1)),
+        )
+      ],
     );
   }
 }
