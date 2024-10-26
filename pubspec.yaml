@@ -50,6 +50,8 @@ dependencies:
   syncfusion_flutter_datepicker: ^27.1.52
   flutter_broadcasts: ^0.4.0
   flutter_screenutil: ^5.9.3
+  build_runner: ^2.4.6
+  json_annotation: ^4.8.1
 
 
 dev_dependencies:
@@ -64,6 +66,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   flutter_native_splash: ^2.3.7
   flutter_launcher_icons: ^0.14.1
+  json_serializable: ^6.7.1
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
